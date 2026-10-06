@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  BookOpen, Search, GitBranch, Dna, Sparkles, ShieldCheck, Home, Wrench,
+  BookOpen, Search, GitBranch, Dna, Sparkles, ShieldCheck, Home as HomeIcon, Wrench,
   FileText, Landmark, ScrollText, Newspaper, Users, Map, ClipboardList,
   CheckCircle2, ArrowRight, ChevronRight, Plus, X, Menu, GraduationCap,
   Microscope, HelpCircle
@@ -51,7 +51,7 @@ export default function HomePage(){
       <button className="kinley" onClick={()=>setShowKinley(true)}><Sparkles size={17}/> Kinley</button>
     </header>
 
-    {section==="Home" && <Home go={go} setShowKinley={setShowKinley}/>}
+    {section==="Home" && <HomeSection go={go} setShowKinley={setShowKinley}/>}
     {section==="Learn" && <Learn lessons={lessons} lesson={lesson} setLesson={setLesson}/>}
     {section==="Research" && <Research go={go}/>}
     {section==="Tree" && <Tree people={people} person={person} setPerson={setPerson} add={()=>{if(person.trim()){setPeople([...people,person.trim()]);setPerson("")}}}/>}
@@ -62,14 +62,14 @@ export default function HomePage(){
     
     <nav>
       {[
-        ["Home",Home, "Home"],["Learn",BookOpen,"Learn"],["Research",Search,"Research"],
+        ["Home",HomeIcon, "Home"],["Learn",BookOpen,"Learn"],["Research",Search,"Research"],
         ["Tree",GitBranch,"Tree"],["Tools",Wrench,"Tools"]
       ].map(([name,Icon,key])=><button className={section===key?"active":""} onClick={()=>go(key as Section)} key={key as string}><Icon size={19}/><span>{name as string}</span></button>)}
     </nav>
   </main>
 }
 
-function Home({go,setShowKinley}:{go:(s:Section)=>void,setShowKinley:(v:boolean)=>void}){
+function HomeSection({go,setShowKinley}:{go:(s:Section)=>void,setShowKinley:(v:boolean)=>void}){
  return <><section className="hero"><div><p className="eyebrow">THE GENEALOGY GUIDE</p><h2>Build a family tree you can actually prove.</h2><p>Go beyond names and dates. Learn how to find records, evaluate evidence, solve difficult relationships, use DNA responsibly, and document every discovery.</p><div className="heroActions"><button className="primary" onClick={()=>go("Learn")}>Start Learning <ArrowRight size={17}/></button><button className="secondary" onClick={()=>go("Research")}>Research Tools</button></div></div><div className="principle"><ShieldCheck size={27}/><strong>The Kinley Principle</strong><span>Never invent an ancestor to fill a gap. A blank generation is better than a false one.</span><small>Evidence first • Sources matter • Conflicts get investigated</small></div></section>
  <section className="stats"><div><b>12</b><span>Core lessons</span></div><div><b>6</b><span>Research guides</span></div><div><b>5</b><span>Evidence levels</span></div><div><b>1</b><span>Rule: prove it</span></div></section>
  <section className="section"><div className="sectionTitle"><div><p className="eyebrow">EXPLORE</p><h3>Everything you need to research smarter</h3><p>Start anywhere. Genealogy Guide is designed to grow with you from your first family interview to advanced documentary research.</p></div></div>
