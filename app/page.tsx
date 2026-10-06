@@ -241,15 +241,19 @@ function Tree(){
  };
 
  const parseGEDCOM=(text:string)=>{
-   const lines=text.split(/\r?\n/);
+   // GEDCOM files from Ancestry commonly use CRLF line endings and standard
+   // level/xref/tag/value records. Keep parsing entirely client-side so the
+   // exported family tree never has to leave the user's browser.
+   const lines=text.replace(/^\\uFEFF/,"").split(/\\r?\\n/);
    const people:any[]=[]; const relationships:any[]=[]; const sources:any[]=[];
    const byId=new Map<string,any>();
    const families:any[]=[];
    let current:any=null; let currentFamily:any=null; let event="";
    for(const raw of lines){
-     const line=raw.trimEnd(); const m=line.match(/^(\\d+) (?:@([^@]+)@ )?([^ ]+)(?: (.*))?$/);
+     const line=raw.trimEnd();
+     const m=line.match(/^(\\d+)(?: @([^@]+)@)? ([^ ]+)(?: (.*))?$/);
      if(!m)continue;
-     const level=Number(m[1]),xref=m[2],tag=m[3],value=m[4]||"";
+     const level=Number(m[1]),xref=m[2]||"",tag=m[3],value=m[4]||"";
      if(level===0){
        current=null; currentFamily=null; event="";
        if(xref && (tag==="INDI"||tag==="PERSON")){
@@ -260,21 +264,22 @@ function Tree(){
        }
        continue;
      }
-     if(tag==="HUSB" && level===1 && currentFamily){currentFamily.husb=xref||"";continue;}
-     if(tag==="WIFE" && level===1 && currentFamily){currentFamily.wife=xref||"";continue;}
-     if(tag==="CHIL" && level===1 && currentFamily){currentFamily.children.push(xref||"");continue;}
+     if(tag==="HUSB" && level===1 && currentFamily){currentFamily.husb=xref;continue;}
+     if(tag==="WIFE" && level===1 && currentFamily){currentFamily.wife=xref;continue;}
+     if(tag==="CHIL" && level===1 && currentFamily){currentFamily.children.push(xref);continue;}
      if(!current)continue;
-     if(tag==="NAME" && level===1)current.name=value.replace(/\//g,"").trim()||current.name;
+     if(tag==="NAME" && level===1)current.name=value.replace(/\\//g,"").trim()||current.name;
      if(tag==="BIRT" && level===1){event="BIRT";continue;}
      if(tag==="DEAT" && level===1){event="DEAT";continue;}
      if(tag==="DATE" && level>=2){
        if(event==="BIRT")current.birth=value;
        if(event==="DEAT")current.death=value;
      }
-     if(tag==="PLAC" && level>=2)current.places=value;
+     if(tag==="PLAC" && level>=2)current.places=current.places ? current.places+"; "+value : value;
      if(tag==="NOTE" && level===1)current.notes=value;
+     if(tag==="CONT" && level>=2 && current.notes)current.notes+="\\n"+value;
    }
-   const has=(id:string)=>byId.has(id);
+   const has=(id:string)=>Boolean(id && byId.has(id));
    for(const fam of families){
      if(fam.husb && fam.wife && has(fam.husb)&&has(fam.wife)){
        relationships.push({id:crypto.randomUUID(),from:fam.husb,to:fam.wife,type:"Spouse of"});
