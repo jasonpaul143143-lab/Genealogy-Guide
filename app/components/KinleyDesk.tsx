@@ -177,7 +177,7 @@ export default function KinleyDesk({close}:{close:()=>void}){
               </div>
             )}
             {researching && messages[messages.length-1]?.role==="user" && <div className="kinleyMessage assistant">
-              <div className="messageAvatar"><Sparkles size={14}/></div>
+              <div className="messageAvatar typingMascot"><KinleyTreeAvatar small /></div>
               <div className="messageBubble typing"><span/><span/><span/></div>
             </div>}
             {error && <div className="kinleyError">{error}</div>}
