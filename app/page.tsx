@@ -290,6 +290,7 @@ function Tree(){
    const sources:any[]=[];
    const byId=new Map<string,any>();
    const families:any[]=[];
+   const personFamilyRefs=new Map<string,{familiesAsChild:string[];familiesAsSpouse:string[]}>();
    let currentPerson:any=null;
    let currentFamily:any=null;
    let currentEvent="";
@@ -343,6 +344,16 @@ function Tree(){
      if(!currentPerson)continue;
 
      if(level===1){
+       if(tag==="FAMS" || tag==="FAMC"){
+         const familyId=value.trim().replace(/^@|@$/g,"");
+         if(familyId){
+           const refs=personFamilyRefs.get(currentPerson.id)||{familiesAsChild:[],familiesAsSpouse:[]};
+           if(tag==="FAMS")refs.familiesAsSpouse.push(familyId); else refs.familiesAsChild.push(familyId);
+           personFamilyRefs.set(currentPerson.id,refs);
+         }
+         currentEvent="";
+         continue;
+       }
        if(tag==="NAME"){
          const cleaned=value.replaceAll("/","").replace(/\s+/g," ").trim();
          if(cleaned)currentPerson.name=cleaned;
@@ -375,33 +386,36 @@ function Tree(){
 
    const has=(id:string)=>Boolean(id && byId.has(id));
 
-   for(const family of families){
-     if(family.husb && family.wife && has(family.husb) && has(family.wife)){
-       relationships.push({
-         id:crypto.randomUUID(),
-         from:family.husb,
-         to:family.wife,
-         type:"Spouse of"
-       });
-     }
+   const relationshipKeys=new Set<string>();
+   const addParsedRelationship=(from:string,to:string,type:string)=>{
+     if(!from || !to || from===to || !has(from) || !has(to))return;
+     const key=from+"|"+to+"|"+type;
+     if(relationshipKeys.has(key))return;
+     relationshipKeys.add(key);
+     relationships.push({id:crypto.randomUUID(),from,to,type});
+   };
 
+   for(const family of families){
+     addParsedRelationship(family.husb,family.wife,"Spouse of");
      for(const child of family.children){
-       if(family.husb && has(family.husb) && has(child)){
-         relationships.push({
-           id:crypto.randomUUID(),
-           from:family.husb,
-           to:child,
-           type:"Parent of"
-         });
-       }
-       if(family.wife && has(family.wife) && has(child)){
-         relationships.push({
-           id:crypto.randomUUID(),
-           from:family.wife,
-           to:child,
-           type:"Parent of"
-         });
-       }
+       addParsedRelationship(family.husb,child,"Parent of");
+       addParsedRelationship(family.wife,child,"Parent of");
+     }
+   }
+
+   const familyById=new Map(families.map(f=>[f.id,f]));
+   for(const [personId,refs] of personFamilyRefs){
+     for(const familyId of refs.familiesAsChild){
+       const family=familyById.get(familyId);
+       if(!family)continue;
+       addParsedRelationship(family.husb,personId,"Parent of");
+       addParsedRelationship(family.wife,personId,"Parent of");
+     }
+     for(const familyId of refs.familiesAsSpouse){
+       const family=familyById.get(familyId);
+       if(!family)continue;
+       if(family.husb===personId)addParsedRelationship(personId,family.wife,"Spouse of");
+       if(family.wife===personId)addParsedRelationship(personId,family.husb,"Spouse of");
      }
    }
 
