@@ -11,7 +11,7 @@ export async function POST(req:Request){
   const url=provider==="xai"?"https://api.x.ai/v1/responses":"https://api.openai.com/v1/responses";
   const model=provider==="xai"?(process.env.XAI_MODEL||"grok-4.7"):(process.env.OPENAI_MODEL||"gpt-5.6-luna");
   const tools=[{type:"web_search"}];
-  const r=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json","Authorization:`Bearer ${key}`},body:JSON.stringify({model,tools,input:prompt})});
+  const r=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json","Authorization":`Bearer ${key}`},body:JSON.stringify({model,tools,input:prompt})});
   const data=await r.json();if(!r.ok)return NextResponse.json({error:"Surname research request failed."},{status:502});
   const text=typeof data.output_text==="string"?data.output_text:(data.output||[]).flatMap((x:any)=>x.content||[]).map((x:any)=>x.text||"").join("");
   const cleaned=text.replace(/^\s*\`\`\`json\s*/,"").replace(/\s*\`\`\`\s*$/,"");
