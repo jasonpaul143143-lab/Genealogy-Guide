@@ -6,7 +6,7 @@ import {
   ChevronRight, Plus, X, GraduationCap, Microscope, ExternalLink, Database,
   CheckCircle2, Clock3, MapPin, UserPlus, Link2, Download, Smartphone, Send, Loader2, Save, Upload
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import KinleyDesk from "./components/KinleyDesk";
 
 type Section = "Home"|"Learn"|"Research"|"Tree"|"Tools"|"DNA";
@@ -261,7 +261,7 @@ function Tree(){
      if(tag==="WIFE" && level===1 && currentFamily){currentFamily.wife=xref||"";continue;}
      if(tag==="CHIL" && level===1 && currentFamily){currentFamily.children.push(xref||"");continue;}
      if(!current)continue;
-     if(tag==="NAME" && level===1)current.name=value.replace(/\\//g,"").trim()||current.name;
+     if(tag==="NAME" && level===1)current.name=value.replace(/\//g,"").trim()||current.name;
      if(tag==="BIRT" && level===1){event="BIRT";continue;}
      if(tag==="DEAT" && level===1){event="DEAT";continue;}
      if(tag==="DATE" && level>=2){
