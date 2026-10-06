@@ -268,7 +268,7 @@ function Tree(){
      if(tag==="WIFE" && level===1 && currentFamily){currentFamily.wife=xref;continue;}
      if(tag==="CHIL" && level===1 && currentFamily){currentFamily.children.push(xref);continue;}
      if(!current)continue;
-     if(tag==="NAME" && level===1)current.name=value.replace(/\\//g,"").trim()||current.name;
+     if(tag==="NAME" && level===1)current.name=value.replaceAll("/","").trim()||current.name;
      if(tag==="BIRT" && level===1){event="BIRT";continue;}
      if(tag==="DEAT" && level===1){event="DEAT";continue;}
      if(tag==="DATE" && level>=2){
