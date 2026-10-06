@@ -555,7 +555,3 @@ function DNA(){return <section className="page"><p className="eyebrow">GENETIC G
 
 function Kinley({close,go}:{close:()=>void,go:(s:Section)=>void}){ return <KinleyDesk close={close}/> }
 function InstallHelp({close}:{close:()=>void}){return <div className="modalBack" onClick={close}><div className="modal" onClick={e=>e.stopPropagation()}><button className="close" onClick={close}><X/></button><Smartphone className="installIcon"/><p className="eyebrow">APP INSTALLATION</p><h2>Install Genealogy Guide</h2><p>On supported browsers, use your browser's <strong>Install</strong> or <strong>Add to Home Screen</strong> option. The app is being prepared as a Progressive Web App so it can launch like an app without needing a separate browser tab.</p><button className="primary full" onClick={close}><CheckCircle2 size={16}/> Got it</button></div></div>}
-
-
-/* Detailed learning and self-contained research guides */
-.lessonExpanded{display:block!important;margin-top:14px;padding:16px 18px;border-radius:16px;line-height:1.6;background:rgba(255,255,255,.045);border:1px solid rgba(212,175,55,.22);font-style:normal}.lessonExpanded>span{display:block}.lessonExpanded ol{margin:10px 0 10px 20px;padding:0}.lessonExpanded li{margin:7px 0}.guideModal{max-height:82vh;overflow:auto}.guideModal ol{margin:12px 0 16px 24px;line-height:1.65}.guideModal li{margin:8px 0}.guideModal h4{margin:18px 0 8px}
