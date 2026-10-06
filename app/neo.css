@@ -29,3 +29,28 @@ nav{background:rgba(10,22,16,.78)!important;border:1px solid rgba(255,255,255,.1
 .kinleyMessage.assistant .messageBubble{background:rgba(255,255,255,.045)!important;border-color:var(--n-line)!important;color:#dce5de}.kinleyMessage.user .messageBubble{background:linear-gradient(145deg,#286448,#1c4b35)!important}.messageLabel{color:#e2c36b!important}.kinleyComposerArea{background:rgba(7,17,13,.94)!important;border-color:var(--n-line)!important}.kinleyComposer{background:rgba(255,255,255,.045)!important;border-color:rgba(255,255,255,.12)!important}.kinleyComposer textarea{color:#eef2ec!important}.kinleySend{background:linear-gradient(145deg,#e3c36a,#b18c3a)!important;color:#0b1710!important}
 .plansBack{background:rgba(2,10,6,.82)!important}.premiumPlansModal{background:#0b1711!important;border-color:rgba(229,197,109,.18)!important}.premiumPlansHead{background:linear-gradient(145deg,#10251a,#0b1711)!important;border-color:var(--n-line)!important}.premiumPlansHead h2,.premiumPlanCard h3,.premiumPlanCard .planPrice strong{color:#f5f2e9!important}.premiumPlansHead>div>p:not(.eyebrow),.planSubtitle,.premiumPlanCard li,.plansFine{color:#9ba89f!important}.activePlanBanner,.premiumPlanCard,.zenithTeaser,.plansTrust span,.checkoutNotice{background:rgba(255,255,255,.04)!important;border-color:var(--n-line)!important}
 @media(max-width:700px){.hero{padding:36px 24px!important}.hero h2{font-size:44px!important}.stats{grid-template-columns:1fr 1fr}.page h2{font-size:45px!important}}
+/* Kinley v2 polish */
+.kinleyRecommendations{margin:18px 0 4px;padding:14px;border:1px solid rgba(228,195,107,.14);border-radius:18px;background:linear-gradient(145deg,rgba(228,195,107,.045),rgba(63,141,99,.045));animation:recommendIn .3s ease}
+.kinleyRecommendationsHead{display:flex;align-items:center;gap:7px;color:#e4c36b;font:700 12px "Space Grotesk",sans-serif;text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px}
+.kinleyRecommendationsGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.kinleyRecommendationsGrid button{display:flex;align-items:center;justify-content:space-between;gap:10px;text-align:left;min-height:52px;padding:11px 12px;border-radius:13px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035);color:#dce5de;font:600 12px/1.35 "Manrope",sans-serif;cursor:pointer;transition:.2s}
+.kinleyRecommendationsGrid button:hover{transform:translateY(-2px);border-color:rgba(228,195,107,.35);background:rgba(228,195,107,.07);color:#fff}
+.kinleyRecommendationsGrid svg{flex:0 0 auto;color:#e4c36b}
+.kinleyError{border:1px solid rgba(255,105,105,.22)!important;background:rgba(255,70,70,.07)!important;color:#ffb6b6!important;border-radius:14px!important;padding:12px 14px!important;margin-top:12px}
+.kinleyChat{width:min(1180px,calc(100vw - 32px))!important;height:min(900px,calc(100vh - 32px))!important;border-radius:28px!important;overflow:hidden}
+.kinleyChatHeader{min-height:76px!important;padding:14px 18px!important}
+.kinleyChatBody{scrollbar-width:thin;scrollbar-color:rgba(228,195,107,.35) transparent}
+.kinleyMessages{max-width:920px;margin:0 auto;padding:30px 22px 18px}
+.kinleyMessage{animation:messageIn .22s ease both}
+.kinleyMessageText{white-space:pre-wrap;overflow-wrap:anywhere}
+.kinleyComposerArea{padding:12px 20px 16px!important}
+.kinleyComposer{max-width:920px;margin:0 auto}
+.kinleyComposerFooter,.kinleyCapabilityStrip{max-width:920px;margin-left:auto;margin-right:auto}
+@keyframes recommendIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes messageIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media(max-width:760px){
+ .kinleyChat{width:100vw!important;height:100dvh!important;max-height:none!important;border-radius:0!important}
+ .kinleyRecommendationsGrid{grid-template-columns:1fr}
+ .kinleyMessages{padding:22px 14px 12px}
+ .kinleyComposerArea{padding:10px 12px 12px!important}
+}
