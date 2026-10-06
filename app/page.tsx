@@ -136,9 +136,29 @@ function HomeSection({go,setShowKinley,setLesson}:{go:(s:Section)=>void,setShowK
 }
 
 function Learn({lessons,lesson,setLesson}:{lessons:string[][],lesson:number|null,setLesson:(n:number|null)=>void}){
- return <section className="page"><p className="eyebrow">LEARN GENEALOGY</p><h2>From first search to serious researcher.</h2><p className="lead">Work through the lessons in order or open the skill you need right now.</p><div className="progress"><span style={{width:"8%"}}/><b>1 of 12 lessons started</b></div><div className="lessonList">{lessons.map((l,i)=>{const detail=lessonDetails[l[1]];return <button className="lesson" key={l[0]} onClick={()=>setLesson(lesson===i?null:i)}><b>{l[0]}</b><div><strong>{l[1]}</strong><span>{l[2]}</span>{lesson===i&&detail&&<em className="lessonExpanded"><CheckCircle2 size={16}/><span><strong>Objective:</strong> {detail.objective}</span><ol>{detail.sections.map((s,n)=><li key={n}>{s}</li>)}</ol><span><strong>Practice:</strong> Write one research question from your own family tree and list the record type you would search first. Do not record a relationship as proven until the evidence supports it.</span></em>}</div><ChevronRight/></button>})}</div></section>
+ const [completed,setCompleted]=useState<number[]>([]);
+ useEffect(()=>{try{const x=localStorage.getItem("gg-guide-complete");if(x)setCompleted(JSON.parse(x))}catch{}},[]);
+ const toggleComplete=(i:number)=>{const next=completed.includes(i)?completed.filter(x=>x!==i):[...completed,i];setCompleted(next);localStorage.setItem("gg-guide-complete",JSON.stringify(next));};
+ const current=lesson===null?null:lessons[lesson];
+ const detail=current?lessonDetails[current[1]]:null;
+ return <section className="page">
+  <div className="guideHero"><div><p className="eyebrow">THE GENEALOGY GUIDE</p><h2>Learn genealogy like a researcher.</h2><p className="lead">A practical, evidence-first field guide. Start at Lesson 1 if you are new, or jump directly to the skill you need.</p></div><div className="guideProgress"><strong>{completed.length}/{lessons.length}</strong><span>lessons completed</span><div><i style={{width:`${Math.round(completed.length/lessons.length*100)}%`}}/></div></div></div>
+  <div className="guidePrinciples"><span><b>01</b> Ask a precise question</span><span><b>02</b> Find the right record</span><span><b>03</b> Evaluate the evidence</span><span><b>04</b> Prove the relationship</span></div>
+  <div className="guideLayout">
+   <aside className="guideMap"><p className="eyebrow">FIELD GUIDE</p>{lessons.map((l,i)=><button className={lesson===i?"active":""} key={l[0]} onClick={()=>setLesson(i)}><b>{l[0]}</b><span>{l[1]}</span>{completed.includes(i)&&<CheckCircle2 size={14}/>}</button>)}</aside>
+   <div className="guideContent">
+    {detail&&current?<article className="guideChapter">
+      <div className="chapterTop"><span>LESSON {current[0]}</span><span>{completed.includes(lesson!)?"COMPLETED":"IN PROGRESS"}</span></div>
+      <h3>{current[1]}</h3><p className="chapterIntro">{detail.objective}</p>
+      <div className="guideSteps"><div className="guideSectionTitle"><BookOpen size={17}/><strong>What you need to know</strong></div>{detail.sections.map((s,n)=><div className="guideStep" key={n}><b>{n+1}</b><p>{s}</p></div>)}</div>
+      <div className="guidePractice"><div><Microscope size={18}/><strong>Practice in your own tree</strong></div><p>Write one specific research question. Name the person, place, approximate date, and relationship or fact you are trying to establish. Then choose the record you would search first and explain why.</p></div>
+      <div className="guideRule"><ShieldCheck size={17}/><div><strong>Genealogist's rule</strong><span>Do not upgrade a possibility into a fact because it fits. If the evidence does not prove the relationship, preserve the gap and keep researching.</span></div></div>
+      <button className={completed.includes(lesson!)?"completeButton done":"completeButton"} onClick={()=>toggleComplete(lesson!)}>{completed.includes(lesson!)?<><CheckCircle2 size={16}/> Lesson completed</>:<>Mark lesson complete <ArrowRight size={16}/></>}</button>
+    </article>:<div className="guideWelcome"><p className="eyebrow">START HERE</p><h3>Your genealogy field guide</h3><p>Choose Lesson 1 to learn the research method, then work through the guide in order. Every lesson is built around a real genealogical task.</p><button className="primary" onClick={()=>setLesson(0)}>Begin Lesson 1 <ArrowRight size={16}/></button></div>}
+   </div>
+  </div>
+ </section>
 }
-
 const guideDetails:Record<string,{what:string;steps:string[];watch:string}> = {
   "Record Guide":{what:"A record guide helps you choose the record most likely to answer a specific genealogy question.",steps:["Define the fact or relationship you need to establish.","Choose records created closest to the event or by people with first-hand knowledge.","Search the correct jurisdiction and time period.","Inspect the original image when available and capture a precise citation.","Write exactly what the record establishes, then identify what still needs proof."],watch:"Indexes, compiled trees, and memorial pages can be useful discovery tools, but do not automatically prove the relationship."},
   "Census Research":{what:"Census research works best when you compare the same household and surrounding community across multiple census years.",steps:["Identify the likely county, township, district, and census year.","Search spelling variants, initials, and approximate ages.","Inspect the image and record household members, relationships, occupations, birthplaces, and neighbors.","Build a timeline across every available census and note changes instead of silently correcting them.","Use census evidence to generate hypotheses, then seek vital, probate, land, church, or other records for stronger proof."],watch:"Census ages and birthplaces can be wrong, and indexers can misread names. Never reject a candidate on one field alone."},
