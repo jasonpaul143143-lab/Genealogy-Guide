@@ -354,3 +354,57 @@ header{height:76px;padding:0 26px;box-shadow:0 8px 30px #20382a0d}
 .dangerButton{transition:.2s!important}
 @media(max-width:900px){.toolGrid{grid-template-columns:1fr 1fr}.treeLayout{grid-template-columns:1fr}.personPanel{position:static}.treeToolbar{align-items:stretch}.treeToolbar>*{margin:0}.kinleyStarterGrid{grid-template-columns:1fr}}
 @media(max-width:600px){.page{padding:28px 16px 110px}.toolGrid{grid-template-columns:1fr}.kinleyChat{width:100%!important;height:100dvh!important;border-radius:0!important}.kinleyWelcome{padding:55px 18px 35px!important}.kinleyStarterGrid{grid-template-columns:1fr}.treeToolbar{padding:10px}.treeToolbar button{flex:1}.treeToolbar>span{width:100%;justify-content:center}}
+
+/* Premium Kinley subscription experience */
+.plansBack{z-index:95!important;background:rgba(10,22,16,.74)!important;backdrop-filter:blur(18px);padding:18px!important}
+.premiumPlansModal{position:relative!important;width:min(1180px,96vw)!important;max-height:94vh!important;overflow:auto!important;background:#fbfaf6!important;border:1px solid #d8d0c0!important;border-radius:34px!important;padding:0!important;box-shadow:0 40px 140px rgba(0,0,0,.38)!important}
+.plansAurora{position:absolute;inset:0 0 auto;height:300px;pointer-events:none;background:radial-gradient(circle at 15% 10%,rgba(61,118,82,.18),transparent 34%),radial-gradient(circle at 85% 4%,rgba(214,177,83,.2),transparent 32%);opacity:.9}
+.premiumPlansHead{position:relative;padding:48px 48px 28px!important;background:linear-gradient(180deg,#fffefa,#f8f5ed)!important;border-bottom:1px solid #e5dfd3!important}
+.plansKicker{font:800 11px/1 Source Sans 3,sans-serif;letter-spacing:.18em;color:#6d755f;display:flex;align-items:center;gap:8px;margin-bottom:13px}
+.plansSpark{display:grid;place-items:center;width:25px;height:25px;border-radius:8px;background:#1f4d38;color:#e3c879;box-shadow:0 5px 14px #1f4d3828}
+.premiumPlansHead h2{font-family:"DM Serif Display",serif;font-size:clamp(36px,5vw,62px);line-height:.98;letter-spacing:-1.5px;max-width:760px;margin:0 0 14px;color:#17251e}
+.premiumPlansHead>div>p:not(.eyebrow){max-width:700px;color:#6d756d;font-size:16px;line-height:1.55;margin:0}
+.activePlanBanner{position:relative;margin:-1px 48px 22px;padding:16px 18px;display:flex;align-items:center;gap:13px;border:1px solid #d7d0c2;border-radius:18px;background:#fffefa;box-shadow:0 12px 30px #20382a0c;z-index:2}
+.activePlanIcon{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:#e7efe7;color:#1f4d38}
+.activePlanBanner>div:nth-child(2){display:flex;flex-direction:column;gap:2px;min-width:0}
+.activePlanBanner span{font-size:9px;letter-spacing:.14em;font-weight:800;color:#8a9089}
+.activePlanBanner strong{font-family:"DM Serif Display",serif;font-size:21px;color:#20372b}
+.activePlanBanner small{color:#737b73}
+.activePlanStatus{margin-left:auto;display:flex;align-items:center;gap:6px;border-radius:999px;padding:8px 11px;background:#edf4ed;color:#2f6b4e;font-size:12px;font-weight:800}
+.premiumPlansGrid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:14px!important;padding:0 48px 22px!important}
+.premiumPlanCard{position:relative;display:flex;flex-direction:column;min-height:455px!important;padding:22px!important;border-radius:22px!important;background:#fffefa!important;border:1px solid #ded7ca!important;box-shadow:0 10px 30px #20382a0a!important;overflow:hidden;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.premiumPlanCard:hover{transform:translateY(-5px);box-shadow:0 22px 50px #20382a18!important;border-color:#c8b783}
+.premiumPlanCard.isFeatured{border:2px solid #b79a52!important;box-shadow:0 18px 45px #9d7e2c20!important}
+.premiumPlanCard.isActive{background:linear-gradient(180deg,#f8fbf7,#fffefa)!important;border-color:#78a083!important}
+.premiumPlanCard:before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,#2f6b4e,#d9b65f);opacity:.55}
+.premiumPlanCard.gold:before{background:#d9b65f}.premiumPlanCard.violet:before{background:linear-gradient(90deg,#725b93,#caa9dd)}.premiumPlanCard.midnight:before{background:linear-gradient(90deg,#1c3045,#7c9bb5)}
+.planCardTop{display:flex;gap:10px;align-items:center}
+.planIcon{width:39px;height:39px;border-radius:12px;display:grid;place-items:center;background:#edf2ed;color:#315b45}
+.gold .planIcon{background:#faf1d8;color:#9b7731}.violet .planIcon{background:#f0eafa;color:#71578e}.midnight .planIcon{background:#e8eef3;color:#29455c}
+.planTier{display:block;text-transform:uppercase;letter-spacing:.13em;font-size:9px;font-weight:800;color:#858c84}
+.premiumPlanCard h3{font-family:"DM Serif Display",serif;font-size:25px;margin:1px 0 0;color:#20372b}
+.planSubtitle{font-size:13px;line-height:1.45;color:#707870;min-height:58px;margin:15px 0 0}
+.premiumPlanCard .planPrice{display:flex;align-items:baseline;gap:5px;margin:14px 0 0}
+.premiumPlanCard .planPrice strong{font:34px/1 "DM Serif Display",serif;color:#17251e}
+.premiumPlanCard .planPrice span{font-size:11px;color:#7c847d}
+.planRule{height:1px;background:#e8e2d8;margin:17px 0 10px}
+.premiumPlanCard ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:9px;flex:1}
+.premiumPlanCard li{display:flex;gap:8px;align-items:flex-start;font-size:12px;color:#4e5a52;line-height:1.35}
+.premiumPlanCard li svg{flex:none;color:#2f6b4e;margin-top:1px}
+.planCapability{display:grid;grid-template-columns:1fr auto;gap:4px 8px;margin:17px 0;padding:10px;border-radius:12px;background:#f5f2e9;color:#7b837b;font-size:10px}
+.planCapability b{color:#315443;text-transform:capitalize}
+.planChoose{min-height:43px!important;border-radius:13px!important;padding:10px 12px!important}
+.activePlanButton{background:#e9f0e9!important;color:#2f6b4e!important;cursor:default!important}
+.zenithTeaser{margin:0 48px 18px;padding:16px 18px;display:flex;align-items:center;gap:13px;border:1px dashed #c5b98f;border-radius:18px;background:linear-gradient(100deg,#f7f1dd,#f5f2ea)}
+.zenithMark{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:#263b31;color:#d9b65f}
+.zenithTeaser>div:nth-child(2){display:flex;flex-direction:column;gap:1px}.zenithTeaser span{font-size:9px;letter-spacing:.14em;font-weight:800;color:#8a7b4d}.zenithTeaser strong{font-family:"DM Serif Display",serif;font-size:20px;color:#26372f}.zenithTeaser p{margin:2px 0 0;font-size:12px;color:#70776f}.zenithArrow{margin-left:auto;font-size:20px;color:#9a8650}
+.plansTrust{display:flex;gap:9px;flex-wrap:wrap;padding:0 48px 18px}.plansTrust span{display:flex;align-items:center;gap:6px;padding:8px 10px;border:1px solid #e0d9cd;border-radius:999px;background:#fffefa;color:#687169;font-size:10px;font-weight:700}.plansTrust svg{color:#315b45}
+.checkoutNotice{margin:0 48px 14px;border:1px solid #d8b45d;border-radius:14px;background:#fff8e6;padding:12px;color:#6c5930;display:flex;flex-direction:column;gap:3px}.checkoutNotice small{color:#85744d}
+.plansFine{display:block;padding:0 48px 24px;color:#8a9089;line-height:1.45}
+.kinleyWelcomeModel{display:inline-flex;align-items:center;gap:7px;margin:0 auto 13px;padding:7px 11px;border:1px solid #ddd6c8;border-radius:999px;background:#fffdf8;color:#556057;font-size:11px;font-weight:800;letter-spacing:.04em}
+.kinleyModelDot{width:7px;height:7px;border-radius:50%;background:#315b45;box-shadow:0 0 0 4px #315b4518}.kinleyModelDot.gold{background:#b08b3e;box-shadow:0 0 0 4px #b08b3e18}.kinleyModelDot.violet{background:#71578e;box-shadow:0 0 0 4px #71578e18}.kinleyModelDot.midnight{background:#29455c;box-shadow:0 0 0 4px #29455c18}
+.kinleyCapabilityStrip{max-width:900px;margin:10px auto 7px;display:flex;gap:9px;align-items:center;justify-content:center;flex-wrap:wrap;color:#717a72;font-size:11px}.kinleyCapabilityStrip span:first-child{color:#315443;font-weight:800}.kinleyCapabilityStrip span:last-child{padding-left:9px;border-left:1px solid #ddd6c8}
+.kinleyTierBadge{font-weight:800!important;letter-spacing:.04em}.kinleyTierBadge.gold{background:#faf1d8!important;color:#85692d!important}.kinleyTierBadge.violet{background:#f0eafa!important;color:#71578e!important}.kinleyTierBadge.midnight{background:#e8eef3!important;color:#29455c!important}
+@media(max-width:1000px){.premiumPlansGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.premiumPlanCard{min-height:430px!important}}
+@media(max-width:650px){.premiumPlansModal{width:100%!important;max-height:100dvh!important;border-radius:0!important}.premiumPlansHead{padding:35px 22px 24px!important}.activePlanBanner{margin:0 22px 18px}.premiumPlansGrid{grid-template-columns:1fr!important;padding:0 22px 18px!important}.premiumPlanCard{min-height:auto!important}.zenithTeaser{margin:0 22px 16px}.plansTrust{padding:0 22px 16px}.plansFine{padding:0 22px 22px}.checkoutNotice{margin:0 22px 14px}.activePlanStatus{font-size:0;padding:8px}.activePlanStatus svg{margin:0}.premiumPlansHead .close{right:12px;top:12px}}
+@media(prefers-reduced-motion:reduce){.premiumPlanCard{transition:none}.premiumPlanCard:hover{transform:none}}
