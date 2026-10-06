@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import KinleyDesk from "./components/KinleyDesk";
+import FamilyTreeCanvas from "./components/FamilyTreeCanvas";
 import Plans from "./components/Plans";
 import { parseMigrationStops } from "./lib/migration";
 import { unzipSync, strFromU8 } from "fflate";
@@ -416,8 +417,7 @@ function Tree(){
   </div>
   <div className="treeLayout">
    <div className="treePanel">
-    <div className="treeTop"><div className="treeNode mainNode"><GitBranch size={17}/><span>{people[0].name}</span><small>Root</small></div></div>
-    <div className="branches">{people.slice(1).map(p=><button className={selected===p.id?"treeNode selected":"treeNode"} key={p.id} onClick={()=>setSelected(p.id)}><GitBranch size={15}/><span>{p.name}</span><small>{p.relation} • {p.status}</small></button>)}</div>
+    <FamilyTreeCanvas people={people} relationships={relationships} selectedId={selected} onSelect={setSelected}/>
     <div className="addPerson" id="add-person">
       <input id="tree-person-name" value={name} onChange={e=>setName(e.target.value)} placeholder="Person's name"/>
       <select value={relation} onChange={e=>setRelation(e.target.value)}><option>Parent</option><option>Grandparent</option><option>Child</option><option>Spouse</option><option>Sibling</option><option>Other</option></select>

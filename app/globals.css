@@ -242,3 +242,62 @@ main:after{right:0;background:
 .kinleyMessages .messageAvatar{background:radial-gradient(circle at 50% 25%,#fff8df,#e8eee8 66%);border-color:#d2c8aa}
 @media(max-width:700px){.kinleyIdentity .kinleyTreeAvatar{width:66px;height:66px;transform:scale(1.02)}.kinleyWelcomeIcon.mascotWelcome:after{display:none}}
 @media(prefers-reduced-motion:reduce){.kinleyTreeAvatar,.kinleyTreeAvatar .treeLeaf,.kinleyTreeAvatar .kinleyGlow,.kinleyTreeAvatar .kinleyCrown,.kinleyWelcomeIcon.mascotWelcome:before{animation:none!important}}
+
+
+/* Ancestry / FamilySearch-inspired family tree canvas */
+.familyTreeShell{border:1px solid #d8d1c2;border-radius:22px;background:#f8f6ef;overflow:hidden;box-shadow:0 18px 42px #26352d12;margin-bottom:18px}
+.familyTreeHeader{display:flex;justify-content:space-between;gap:18px;align-items:center;padding:20px 22px;border-bottom:1px solid #e2dccf;background:linear-gradient(180deg,#fbfaf6,#f4f1e8)}
+.familyTreeHeader h3{margin:2px 0 5px;font-family:"DM Serif Display",serif;font-size:25px;color:#25362c}
+.familyTreeHeader span{display:block;color:#737b73;font-size:12px;line-height:1.45}
+.familyTreeStats{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.familyTreeStats span{display:flex;align-items:center;gap:6px;padding:8px 10px;border:1px solid #ddd6c8;border-radius:999px;background:#fffdf8;color:#536056;font-weight:700;white-space:nowrap}
+.familyTreeCanvas{position:relative;min-height:690px;padding:24px 22px 30px;overflow:auto;background:
+ radial-gradient(circle at 50% 36%,#dbe7dc66 0 2px,transparent 3px),
+ linear-gradient(90deg,transparent 49.9%,#d8d0c022 50%,transparent 50.1%),
+ #f7f5ee}
+.familyTreeCanvas:before{content:"";position:absolute;inset:0;background-image:linear-gradient(#ffffff22 1px,transparent 1px),linear-gradient(90deg,#ffffff22 1px,transparent 1px);background-size:32px 32px;opacity:.38;pointer-events:none}
+.familyTreeGeneration,.familyTreeGrowth,.familyTreeSiblings{position:relative;z-index:2}
+.familyTreeGeneration{display:flex;flex-direction:column;align-items:center;gap:9px}
+.generationLabel{font-size:10px;text-transform:uppercase;letter-spacing:.13em;font-weight:800;color:#788178;display:flex;align-items:center;gap:5px}
+.familyTreeCards{display:flex;justify-content:center;align-items:center;gap:14px;flex-wrap:wrap;min-height:58px}
+.familyTreeCard{position:relative;display:flex;align-items:center;gap:10px;min-width:190px;max-width:245px;padding:11px 14px;text-align:left;border:1px solid #d7d1c5;border-radius:13px;background:#fffdf9;color:#27372e;box-shadow:0 5px 14px #26352d0d;cursor:pointer;transition:transform .18s,box-shadow .18s,border-color .18s,background .18s;animation:familyTreeCardIn .35s ease both}
+.familyTreeCard:hover{transform:translateY(-3px);border-color:#b9aa85;box-shadow:0 12px 25px #26352d16}
+.familyTreeCard.isSelected{border:2px solid #315b45;background:#f4f8f1;box-shadow:0 12px 30px #315b4528;transform:scale(var(--tree-scale,1))}
+.familyTreeCard.compact{min-width:160px;max-width:205px;padding:9px 11px}
+.familyTreeAvatar{width:31px;height:31px;border-radius:50%;display:grid;place-items:center;flex:none;background:#e8eee8;color:#315b45;border:1px solid #cad7c9}
+.familyTreeCard.compact .familyTreeAvatar{width:27px;height:27px}
+.familyTreeCardBody{min-width:0;display:flex;flex-direction:column;gap:2px}
+.familyTreeCardBody strong{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.familyTreeDates{font-size:11px;color:#68736b}
+.familyTreePlace{font-size:10px;color:#8a9089;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.familyTreeSelectedDot{position:absolute;right:8px;top:8px;width:7px;height:7px;border-radius:50%;background:#d8b45d;box-shadow:0 0 0 3px #d8b45d22}
+.emptyTreeCard{cursor:default;opacity:.65}
+.emptyTreeAvatar{width:29px;height:29px;border-radius:50%;display:grid;place-items:center;border:1px dashed #aeb5ac;color:#858e86}
+.emptyTreeText{font-size:11px;color:#7d857e}
+.treeEmptyHint{padding:10px 14px;border:1px dashed #cfc8ba;border-radius:10px;background:#fffdf966;color:#8a9089;font-size:11px}
+.familyTreeLine{position:relative;height:36px;width:min(680px,90%);display:flex;justify-content:center;align-items:center;color:#8a8f87;font-size:9px;text-transform:uppercase;letter-spacing:.11em}
+.familyTreeLine:before{content:"";position:absolute;top:0;bottom:0;left:50%;width:2px;background:linear-gradient(#c9c1b2,#d8b45d,#c9c1b2);transform:translateX(-50%);opacity:.8}
+.familyTreeLine span{position:relative;z-index:1;background:#f7f5ee;border:1px solid #ddd6c9;border-radius:999px;padding:4px 8px}
+.familyTreeTrunk{position:absolute;left:50%;top:175px;bottom:250px;width:26px;transform:translateX(-50%);pointer-events:none;opacity:.16}
+.treeTrunkCore{position:absolute;left:50%;top:0;bottom:0;width:5px;background:#315b45;border-radius:999px;transform:translateX(-50%)}
+.treeTrunkGlow{position:absolute;inset:0;border-radius:999px;background:linear-gradient(180deg,#315b4500,#315b4544,#d8b45d22,#315b4500);filter:blur(7px)}
+.familyTreeFocusRow{display:flex;align-items:center;justify-content:center;gap:10px;min-height:78px}
+.spouseCluster{display:flex;align-items:center;gap:8px;padding-left:8px}
+.spouseCluster>svg{color:#a96d69;fill:#f3d6d4}
+.relationshipConnector{width:28px;height:2px;background:#cbbf9f;display:block}
+.familyTreeSiblings{margin:14px auto 0;width:min(920px,96%);padding:12px 14px;border:1px solid #e0d9cb;border-radius:14px;background:#ffffff7a}
+.familyTreeSiblings .familyTreeCards{min-height:45px}
+.familyTreeGrowth{width:min(420px,92%);margin:25px auto 0;padding:20px 20px 16px;text-align:center;border:1px solid #ddd6c8;border-radius:18px;background:linear-gradient(180deg,#fbfaf5,#eef2e9);box-shadow:0 10px 25px #26352d0d;overflow:hidden}
+.growthCanopy{position:relative;width:150px;height:75px;margin:0 auto 4px;transition:transform .45s ease}
+.growthCanopy span{position:absolute;width:58px;height:48px;border-radius:55% 45% 52% 48%;background:radial-gradient(circle at 35% 30%,#7c9b76,#315b45 72%);box-shadow:0 4px 12px #315b4525;animation:canopyBreathe 3.5s ease-in-out infinite}
+.growthCanopy span:nth-child(1){left:45px;top:2px}.growthCanopy span:nth-child(2){left:15px;top:25px;transform:scale(.8)}.growthCanopy span:nth-child(3){right:14px;top:23px;transform:scale(.85)}.growthCanopy span:nth-child(4){left:52px;top:30px;transform:scale(.9)}.growthCanopy span:nth-child(5){left:73px;top:16px;transform:scale(.62)}
+.growthTrunk{width:13px;height:47px;margin:-9px auto 0;border-radius:7px;background:linear-gradient(90deg,#765331,#a27748,#765331);box-shadow:0 5px 10px #76533125}
+.growthRoots{position:relative;width:70px;height:10px;margin:-1px auto 8px}
+.growthRoots i{position:absolute;width:35px;height:3px;border-radius:5px;background:#765331;top:2px}.growthRoots i:first-child{left:0;transform:rotate(17deg)}.growthRoots i:last-child{right:0;transform:rotate(-17deg)}
+.familyTreeGrowth strong{display:block;color:#315443;font-size:14px}.familyTreeGrowth small{display:block;margin-top:3px;color:#7c847d;font-size:10px}
+.familyTreeLegend{display:flex;gap:15px;align-items:center;flex-wrap:wrap;padding:12px 18px;border-top:1px solid #e2dccf;background:#fbfaf6;color:#7a8179;font-size:10px}
+.familyTreeLegend span{display:flex;align-items:center;gap:5px}.legendDot{width:8px;height:8px;border-radius:50%;display:inline-block}.legendDot.selected{background:#315b45}.legendDot.connected{background:#8ca48a}.legendDot.empty{border:1px dashed #a9aea8}
+@keyframes familyTreeCardIn{from{opacity:0;transform:translateY(8px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes canopyBreathe{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-2px) scale(1.035)}}
+@media(max-width:720px){.familyTreeHeader{align-items:flex-start;flex-direction:column}.familyTreeStats{justify-content:flex-start}.familyTreeCanvas{min-height:760px;padding-left:12px;padding-right:12px}.familyTreeCard{min-width:175px}.familyTreeFocusRow{flex-direction:column}.spouseCluster{padding-left:0}.familyTreeTrunk{display:none}}
+@media(prefers-reduced-motion:reduce){.familyTreeCard,.growthCanopy span{animation:none!important}.familyTreeCard{transition:none}.growthCanopy{transition:none}}
