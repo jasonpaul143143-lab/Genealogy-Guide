@@ -241,35 +241,49 @@ function Tree(){
    const lines=text.split(/\r?\n/);
    const people:any[]=[]; const relationships:any[]=[]; const sources:any[]=[];
    const byId=new Map<string,any>();
-   let current:any=null;
+   const families:any[]=[];
+   let current:any=null; let currentFamily:any=null; let event="";
    for(const raw of lines){
      const line=raw.trimEnd(); const m=line.match(/^(\\d+) (?:@([^@]+)@ )?([^ ]+)(?: (.*))?$/);
      if(!m)continue;
      const level=Number(m[1]),xref=m[2],tag=m[3],value=m[4]||"";
      if(level===0){
-       current=null;
+       current=null; currentFamily=null; event="";
        if(xref && (tag==="INDI"||tag==="PERSON")){
          current={id:xref,name:"Unnamed person",relation:"Imported",status:"Imported — needs review",birth:"",death:"",places:"",notes:""};
          byId.set(xref,current); people.push(current);
+       }else if(xref && tag==="FAM"){
+         currentFamily={id:xref,husb:"",wife:"",children:[]}; families.push(currentFamily);
        }
        continue;
      }
+     if(tag==="HUSB" && level===1 && currentFamily){currentFamily.husb=xref||"";continue;}
+     if(tag==="WIFE" && level===1 && currentFamily){currentFamily.wife=xref||"";continue;}
+     if(tag==="CHIL" && level===1 && currentFamily){currentFamily.children.push(xref||"");continue;}
      if(!current)continue;
-     if(tag==="NAME")current.name=value.replace(/\//g,"").trim()||current.name;
-     if(tag==="BIRT"||tag==="DEAT"){current._event=tag;}
-     if(level===2 && tag==="DATE" && current._event==="BIRT")current.birth=value;
-     if(level===2 && tag==="DATE" && current._event==="DEAT")current.death=value;
-     if(level===2 && tag==="PLAC")current.places=value;
-     if(level===1 && tag==="NOTE")current.notes=value;
+     if(tag==="NAME" && level===1)current.name=value.replace(/\\//g,"").trim()||current.name;
+     if(tag==="BIRT" && level===1){event="BIRT";continue;}
+     if(tag==="DEAT" && level===1){event="DEAT";continue;}
+     if(tag==="DATE" && level>=2){
+       if(event==="BIRT")current.birth=value;
+       if(event==="DEAT")current.death=value;
+     }
+     if(tag==="PLAC" && level>=2)current.places=value;
+     if(tag==="NOTE" && level===1)current.notes=value;
    }
-   for(const raw of lines){
-     const m=raw.match(/^1 (FAMC|FAMS) @([^@]+)@/);
-     if(m){
-       const childOrSpouse=raw; void childOrSpouse;
+   const has=(id:string)=>byId.has(id);
+   for(const fam of families){
+     if(fam.husb && fam.wife && has(fam.husb)&&has(fam.wife)){
+       relationships.push({id:crypto.randomUUID(),from:fam.husb,to:fam.wife,type:"Spouse of"});
+     }
+     for(const child of fam.children){
+       if(fam.husb && has(fam.husb)&&has(child))relationships.push({id:crypto.randomUUID(),from:fam.husb,to:child,type:"Parent of"});
+       if(fam.wife && has(fam.wife)&&has(child))relationships.push({id:crypto.randomUUID(),from:fam.wife,to:child,type:"Parent of"});
      }
    }
    return {people,relationships,sources};
  };
+
  const exportTree=()=>{
    const blob=new Blob([JSON.stringify({people,sources,relationships,exportedAt:new Date().toISOString()},null,2)],{type:"application/json"});
    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="genealogy-guide-tree.json";a.click();URL.revokeObjectURL(a.href);
