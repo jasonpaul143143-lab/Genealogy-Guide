@@ -201,6 +201,21 @@ export default function FamilyTreeCanvas({ people, relationships, selectedId, on
         </div>
       </div>
 
+      <div className="familyTreeAllPeople">
+        <div className="generationLabel"><Users size={14} /> All people in this imported tree ({people.length})</div>
+        <div className="familyTreeAllPeopleGrid">
+          {people.map((person) => (
+            <PersonCard
+              key={person.id}
+              person={person}
+              selected={person.id === selectedId}
+              onSelect={onSelect}
+              compact
+            />
+          ))}
+        </div>
+      </div>
+
       <div className="familyTreeLegend">
         <span><i className="legendDot selected" /> Selected person</span>
         <span><i className="legendDot connected" /> Connected family</span>
