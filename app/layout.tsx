@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
+import "./neo.css";
 import ServiceWorkerRegister from "./ServiceWorkerRegister";
 
 export const metadata: Metadata={
