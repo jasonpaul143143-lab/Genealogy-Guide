@@ -7,8 +7,7 @@ const SYSTEM = `You are Kinley, an evidence-first genealogy research investigato
 function extractText(data:any){
   if(typeof data?.output_text==="string") return data.output_text;
   const parts=data?.output?.flatMap((item:any)=>item?.content||[])||[];
-  return parts.filter((p:any)=>typeof p?.text==="string").map((p:any)=>p.text).join("
-");
+  return parts.filter((p:any)=>typeof p?.text==="string").map((p:any)=>p.text).join("\n");
 }
 
 export async function POST(req:Request){
