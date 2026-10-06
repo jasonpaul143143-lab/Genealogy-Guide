@@ -82,32 +82,18 @@ export default function KinleyDesk({close}:{close:()=>void}){
       })
       });
 
-      if(!response.ok || !response.body){
-        const data=await response.json().catch(()=>null);
-        throw new Error(data?.error || "Kinley could not connect to the research engine.");
+      const data=await response.json().catch(()=>null);
+      if(!response.ok){
+        throw new Error(data?.error ? data.error+(data?.detail ? " "+data.detail : "") : "Kinley could not connect to the research engine.");
       }
 
-      const reader=response.body.getReader();
-      const decoder=new TextDecoder();
-      let answer="";
+      const answer=typeof data?.answer==="string" ? data.answer.trim() : "";
+      if(!answer) throw new Error("Kinley returned an empty response. Please try again.");
 
-      while(true){
-        const {value,done}=await reader.read();
-        if(done) break;
-        answer+=decoder.decode(value,{stream:true});
-        setMessages(prev=>{
-          const copy=[...prev];
-          const last=copy.length-1;
-          if(last>=0 && copy[last].role==="kinley") copy[last]={...copy[last],text:answer};
-          return copy;
-        });
-      }
-
-      answer+=decoder.decode();
       setMessages(prev=>{
         const copy=[...prev];
         const last=copy.length-1;
-        if(last>=0 && copy[last].role==="kinley") copy[last]={...copy[last],text:answer.trim() || "I wasn't able to produce a response. Please try again."};
+        if(last>=0 && copy[last].role==="kinley") copy[last]={...copy[last],text:answer};
         return copy;
       });
     }catch(err){
