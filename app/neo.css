@@ -151,3 +151,115 @@ nav button.active{color:#f0d47a!important}
 .lessonExpanded{display:block!important;margin-top:14px;padding:16px 18px;border-radius:16px;line-height:1.6;background:rgba(255,255,255,.045)!important;border:1px solid rgba(228,195,107,.22)!important;font-style:normal!important}
 .lessonExpanded>span{display:block}.lessonExpanded ol{margin:10px 0 10px 20px;padding:0}.lessonExpanded li{margin:7px 0}.lessonExpanded strong{color:#f0eee7!important}
 .guideModal{max-height:82vh;overflow:auto}.guideModal ol{margin:12px 0 16px 24px;line-height:1.65}.guideModal li{margin:8px 0}.guideModal h4{margin:18px 0 8px;color:#f0eee7!important}
+
+
+/* Genealogy Guide — complete interface system v3 */
+:root{
+ --gg-bg:#050b08;--gg-panel:#0a1510;--gg-panel2:#0d1c14;--gg-panel3:#11251a;
+ --gg-border:rgba(218,190,101,.16);--gg-gold:#e6c96f;--gg-green:#5eaa79;
+ --gg-text:#f3f4ee;--gg-muted:#91a198;
+}
+html,body,main{background:var(--gg-bg)!important;color:var(--gg-text)!important}
+body{background:
+ radial-gradient(900px 520px at 8% -8%,rgba(65,128,87,.24),transparent 60%),
+ radial-gradient(800px 500px at 96% 0,rgba(218,190,101,.10),transparent 58%),
+ linear-gradient(180deg,#050b08 0%,#07110c 50%,#050b08 100%)!important}
+header{background:rgba(5,11,8,.88)!important;border-bottom:1px solid var(--gg-border)!important}
+header,.hero,.page,.section,.feature,.stats,.lessons,.researchBanner,.treePanel,.personPanel,.recordsBox,.toolGrid,.dnaCards,.evidence,.notice,.familyTreeShell,.genealogyTreeShell,.modal,.toolModal,.premiumPlansModal,.kinleyChat{isolation:isolate}
+.hero,.page,.section,.feature,.stats,.lessons,.researchBanner,.treePanel,.personPanel,.recordsBox,.toolGrid article,.dnaCards article,.evidence,.notice,.familyTreeShell{background:linear-gradient(145deg,rgba(14,29,21,.97),rgba(7,16,11,.97))!important;border-color:rgba(218,190,101,.12)!important}
+.hero{border-radius:34px!important}
+.page{padding-bottom:110px!important}
+section{color:var(--gg-text)!important}
+h1,h2,h3,h4,h5,strong{color:#f4f4ee!important}
+p,span,li,label{color:inherit}
+.lead,.page>.lead,.sectionTitle p:not(.eyebrow),.grid article p,.toolGrid article p,.dnaCards article p{color:var(--gg-muted)!important}
+input,select,textarea{background:#08120d!important;color:#eef2ec!important;border:1px solid rgba(255,255,255,.10)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.02)!important}
+button{font-family:"Manrope",sans-serif!important}
+.secondary,.secondary.light,.toolOpenButton{background:#0d1c14!important;color:#e9eee9!important;border:1px solid rgba(255,255,255,.11)!important}
+.secondary:hover,.secondary.light:hover,.toolOpenButton:hover{background:#13281c!important;border-color:rgba(230,201,111,.38)!important}
+.primary{background:linear-gradient(135deg,#e8cb72,#b79643)!important;color:#07110b!important}
+nav{background:rgba(6,14,10,.94)!important}
+nav button{background:transparent!important}
+.modalBack,.plansBack,.kinleyBack{background:rgba(1,5,3,.91)!important}
+.modal,.toolModal,.premiumPlansModal,.kinleyChat{background:#08130d!important;border:1px solid rgba(230,201,111,.17)!important}
+.cardIcon{background:#10271a!important;border-color:rgba(230,201,111,.17)!important}
+.stats div{background:#0a1710!important}
+.stats div:hover,.grid article:hover,.toolGrid article:hover,.dnaCards article:hover{background:#102018!important}
+.treeToolbar{background:#0a1710!important;border:1px solid rgba(255,255,255,.08)!important}
+.treeSectionBox,.sourceHint,.treeImportStatus,.migrationUnlock{background:#0a1710!important;border-color:rgba(255,255,255,.09)!important}
+.sourceCard,.relationshipItem,.attached{background:#0c1912!important;border-color:rgba(255,255,255,.08)!important}
+.kinleyStarterGrid button,.kinleyRecommendationsGrid button{background:#0c1a13!important}
+.premiumPlanCard{background:#0b1811!important}
+.installButton,.plansButton,.kinley{background:#0b1912!important}
+::selection{background:rgba(230,201,111,.28)!important}
+
+/* 2D FamilySearch-inspired silhouette: flat, organic, no 3D tree */
+.genealogyTreeShell{overflow:hidden!important;background:#07110c!important;border:1px solid rgba(230,201,111,.15)!important;border-radius:28px!important}
+.genealogyTreeHeader{background:linear-gradient(180deg,#0d1d14,#09130e)!important}
+.genealogyTreeHeader h3{font-family:"DM Serif Display",serif!important;font-size:28px!important}
+.genealogyTreeHeader>div>span{color:#84958b!important}
+.ancestorStat{color:#e6c96f!important;border-color:rgba(230,201,111,.22)!important;background:rgba(230,201,111,.06)!important}
+.genealogyTreeViewport{background:
+ radial-gradient(ellipse at 50% 0,rgba(82,151,101,.12),transparent 48%),
+ linear-gradient(180deg,#07110c,#06100b)!important;
+ border-top:1px solid rgba(255,255,255,.06)!important;
+ border-bottom:1px solid rgba(255,255,255,.06)!important;
+ padding:22px!important}
+.genealogyTreeTitle{display:flex;justify-content:space-between;gap:18px;align-items:center;padding:8px 6px 18px}
+.genealogyTreeTitle strong{display:block;font:700 20px "Space Grotesk",sans-serif!important}
+.genealogyTreeTitle span{display:block;color:#7f9086!important;font-size:12px;margin-top:4px}
+.genealogyTreeHint{padding:9px 12px;border:1px dashed rgba(230,201,111,.28);border-radius:999px;background:rgba(230,201,111,.05);color:#d7bd68!important}
+.genealogyTreeGraphic{height:520px;overflow:auto;display:flex;align-items:center;justify-content:center;border-radius:22px;background:
+ radial-gradient(ellipse at 50% 32%,rgba(69,139,88,.11),transparent 34%),
+ repeating-linear-gradient(0deg,rgba(255,255,255,.012) 0 1px,transparent 1px 30px)!important}
+.genealogyTreeGraphic svg{width:100%;min-width:760px;height:100%;display:block}
+.genealogyMainTrunk,.genealogyRootPath,.genealogyCanopyPath{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.genealogyMainTrunk{stroke:#6e9f72;stroke-width:9;opacity:.9}
+.genealogyRootPath{stroke:#527f5d;stroke-width:5;opacity:.82;transition:.25s}
+.genealogyRootPath:hover{stroke:#e0c66d;stroke-width:7}
+.genealogyCanopyPath{stroke:#5b966a;stroke-width:12;opacity:.82}
+.genealogyCanopyCore{fill:#24573a;stroke:#6fac7d;stroke-width:2;opacity:.96}
+.genealogyCanopyCore:nth-of-type(2n){fill:#2d6745}
+.genealogyFocusNode{cursor:pointer}
+.focusNode{fill:#e2c66d;stroke:#f5e6a6;stroke-width:4;filter:drop-shadow(0 4px 10px rgba(230,201,111,.18))}
+.nodeAncestor{fill:#183c28;stroke:#6aa479;stroke-width:3}
+.nodeSelected{fill:#d9bd61;stroke:#f5e5a5;stroke-width:4}
+.genealogyPersonNode{cursor:pointer}
+.genealogyPersonNode:hover .nodeAncestor{fill:#286044;stroke:#e6c96f}
+.genealogyNodeInitial{font:800 14px "Space Grotesk",sans-serif;fill:#f4f4ee;pointer-events:none}
+.nodeSelected+.genealogyNodeInitial{fill:#08110b}
+.genealogyNodeLabel{font:700 11px "Manrope",sans-serif;fill:#cbd7cf;paint-order:stroke;stroke:#06100b;stroke-width:4px;stroke-linejoin:round;pointer-events:none}
+.focusNodeLabel{font:800 14px "Space Grotesk",sans-serif;fill:#f0df99;paint-order:stroke;stroke:#06100b;stroke-width:5px;stroke-linejoin:round}
+.genealogyTreeMetrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0 0}
+.genealogyTreeMetrics div{padding:15px 14px;border-radius:16px;background:#0a1710;border:1px solid rgba(255,255,255,.07)}
+.genealogyTreeMetrics strong{display:block;color:#e6c96f!important;font:800 24px "Space Grotesk",sans-serif}
+.genealogyTreeMetrics span{display:block;color:#7f9086!important;font-size:11px;margin-top:3px}
+.genealogyTreeLegend{display:flex;flex-wrap:wrap;gap:16px;margin-top:14px;padding:8px 4px;color:#7f9086!important;font-size:11px}
+.treeLegendDot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:#5d9b6d}
+.treeLegendDot.focus{background:#e3c66b}.treeLegendDot.open{background:#43574a}
+.genealogyTreePeople{padding:20px;background:#08130d}
+.genealogyPeopleGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px;margin-top:10px}
+.genealogyPersonChip{display:grid;grid-template-columns:30px 1fr;grid-template-rows:auto auto;column-gap:9px;text-align:left;padding:10px;border-radius:13px;background:#0b1912!important;border:1px solid rgba(255,255,255,.07)!important;color:#e7eee9!important;cursor:pointer}
+.genealogyPersonChip>span{grid-row:1/3;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#183d28;color:#e5c86b;font-weight:800}
+.genealogyPersonChip strong{font-size:12px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.genealogyPersonChip small{color:#73847a!important;font-size:10px}
+.genealogyPersonChip.selected{border-color:rgba(230,201,111,.4)!important;background:#10251a!important}
+.genealogyTreeFoot{display:flex;gap:8px;align-items:center;padding:14px 20px;color:#788a7f!important;font-size:11px;background:#06100b;border-top:1px solid rgba(255,255,255,.06)}
+.genealogyTreeFoot svg{color:#c9ae56;flex:0 0 auto}
+@media(max-width:800px){
+ .genealogyTreeGraphic{height:470px;justify-content:flex-start}
+ .genealogyTreeMetrics{grid-template-columns:1fr 1fr}
+ .genealogyTreeTitle{display:block}
+ .genealogyTreeHint{display:inline-block;margin-top:10px}
+}
+@media(max-width:560px){
+ .genealogyTreeViewport{padding:12px!important}
+ .genealogyTreeGraphic{height:430px}
+ .genealogyTreeMetrics{grid-template-columns:1fr 1fr}
+ .genealogyPeopleGrid{grid-template-columns:1fr}
+}
+
+/* Remove any remaining legacy light surfaces, including nested elements */
+header *,nav *,main *{--legacy-white:transparent}
+main .white,main [style*="background:#fff"],main [style*="background: #fff"],main [style*="background-color:#fff"],main [style*="background-color: #fff"]{background:#0a1710!important;color:#e8eee9!important}
+main [style*="#ffffff"],main [style*="#fffdf8"],main [style*="#faf8f2"],main [style*="#f7f3ea"],main [style*="white"]{background:#0a1710!important;color:#e8eee9!important}
