@@ -299,6 +299,12 @@ function Tree(){
  const migrationReady=migrationStops.length>=2 && migrationStates.length>=2;
  const openMigration=()=>{if(migrationReady)window.location.href="/migration-map?from=tree";};
  const otherPeople=people.filter(p=>p.id!==current.id);
+ const currentHasSources=currentSources.length>0;
+ const sourceHint= !currentHasSources ? {
+   title:"Need help finding a source?",
+   text: current.birth ? "Start with census, birth/baptism, marriage, death, land, probate, church, military, or newspaper records that match this person's place and date." : "Add an estimated date and location first. Genealogy Guide can then suggest the record types most likely to help.",
+   steps:["Define exactly what you are trying to prove.","Search the strongest record type for that question.","Save the original record or a precise citation.","Write down what the record actually establishes."]
+ } : null;
 
  return <section className="page">
   <p className="eyebrow">MY FAMILY TREE</p><h2>Your research database.</h2>
@@ -342,6 +348,7 @@ function Tree(){
     </div>}
     <h4>Relationships</h4>
     {currentRels.length===0?<p className="empty">No relationship links recorded yet.</p>:currentRels.map(r=>{const id=r.from===current.id?r.to:r.from;const p=people.find(x=>x.id===id);return <button className="attached relationshipItem" key={r.id} onClick={()=>setSelected(id)}><GitBranch size={15}/><span>{r.type}<small>{p?.name||"Unknown person"}</small></span></button>})}
+    {sourceHint&&<div className="sourceHint"><div className="sourceHintIcon"><Search size={18}/></div><div><p className="eyebrow">SOURCE HELPER</p><h4>{sourceHint.title}</h4><p>{sourceHint.text}</p><ol>{sourceHint.steps.map(s=><li key={s}>{s}</li>)}</ol><button type="button" className="secondary light" onClick={()=>document.querySelector(".wideInput")?.scrollIntoView({behavior:"smooth",block:"center"})}>Start adding evidence <ArrowRight size={14}/></button></div></div>}
     <h4>Add a source</h4>
     <input className="wideInput" value={sourceTitle} onChange={e=>setSourceTitle(e.target.value)} placeholder="Source title / record description"/>
     <div className="treeFormRow"><select value={sourceType} onChange={e=>setSourceType(e.target.value)}><option>Census</option><option>Birth / baptism</option><option>Marriage</option><option>Death / burial</option><option>Probate</option><option>Deed / land</option><option>Military</option><option>Church</option><option>Newspaper</option><option>DNA</option><option>Other</option></select><input value={sourceUrl} onChange={e=>setSourceUrl(e.target.value)} placeholder="Record URL (optional)"/></div>
