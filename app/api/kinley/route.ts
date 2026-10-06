@@ -57,17 +57,7 @@ export async function POST(request: NextRequest){
     const tree=body?.tree;
     const plan:PlanId=normalizePlan(body?.plan);
     const planConfig=PLAN_CONFIG[plan];
-    const treeContext=tree ? `
-STRUCTURED FAMILY TREE CONTEXT FROM THE USER'S LOCAL DATABASE:
-People:
-${JSON.stringify(tree.people || [], null, 2)}
-Relationships:
-${JSON.stringify(tree.relationships || [], null, 2)}
-Sources:
-${JSON.stringify(tree.sources || [], null, 2)}
-
-Use this as user-provided research context. Do not treat it as independently verified. When answering a question about a person, inspect the relevant people, relationships, and sources before making a recommendation. Point out missing sources, conflicting dates/places, disconnected people, and unsupported relationships. Never silently upgrade a tree entry into proof.
-` : "";
+    const treeJson=tree ? JSON.stringify({people:(tree.people||[]).slice(0,18),relationships:(tree.relationships||[]).slice(0,40),sources:(tree.sources||[]).slice(0,30)}) : "";\n    const treeContext=treeJson ? "LOCAL FAMILY TREE CONTEXT (user-provided, not independently verified):\\n"+treeJson : "";
 
     if(!messages.length){
       return new Response(JSON.stringify({error:"Please enter a message."}),{status:400,headers:{"Content-Type":"application/json"}});
@@ -104,6 +94,7 @@ When the user asks for research help, do not merely answer from memory. Use the 
         instructions:fullInstructions,
         input:messages,
         tools:[{type:"web_search"}],
+        max_output_tokens: plan === "free" ? 700 : plan === "researcher" ? 1100 : 1500,
         store:false
       })
     });
@@ -111,11 +102,11 @@ When the user asks for research help, do not merely answer from memory. Use the 
     const payload=await upstream.json().catch(()=>null);
 
     if(!upstream.ok){
-      const detail=payload?.error?.message || payload?.detail || "Unknown OpenAI error.";
+      const detail=payload?.error?.message || payload?.detail || "Unknown OpenAI error.";\n      const status=upstream.status===429 ? 429 : 502;
       return new Response(JSON.stringify({
         error:"Kinley's research engine returned an error.",
         detail:String(detail).slice(0,700)
-      }),{status:502,headers:{"Content-Type":"application/json"}});
+      }),{status,headers:{"Content-Type":"application/json"}});
     }
 
     const answer=typeof payload?.output_text==="string"
