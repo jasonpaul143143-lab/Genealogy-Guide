@@ -11,6 +11,8 @@ type ChatMessage = {
 
 const STORAGE = "gg-kinley-chat";
 
+function displayText(text:string){ return String(text || "").replace(/\\n/g, "\n"); }
+
 const starterPrompts = [
   "Help me find the parents of a specific ancestor.",
   "Build a research plan for a genealogy brick wall.",
@@ -122,7 +124,7 @@ export default function KinleyDesk({close}:{close:()=>void}){
     localStorage.removeItem(STORAGE);
   };
 
-  const copyText=(text:string)=>navigator.clipboard?.writeText(text);
+  const copyText=(text:string)=>navigator.clipboard?.writeText(displayText(text));
 
   return <div className="modalBack kinleyBack" onClick={close}>
     <div className="kinleyChat" onClick={e=>e.stopPropagation()}>
@@ -168,7 +170,7 @@ export default function KinleyDesk({close}:{close:()=>void}){
                 {message.role==="kinley" && <div className="messageAvatar"><KinleyTreeAvatar small /></div>}
                 <div className="messageBubble">
                   {message.role==="kinley" && <div className="messageMeta"><span className="messageLabel">Kinley</span>{i===messages.length-1 && elapsed>0 && <span className="workedFor"><Clock size={11}/> Worked for {elapsed.toFixed(1)} seconds</span>}</div>}
-                  <p>{message.text || (researching && i===messages.length-1 ? "Researching…" : "")}</p>
+                  <p className="kinleyMessageText">{displayText(message.text) || (researching && i===messages.length-1 ? "Researching…" : "")}</p>
                   {message.role==="kinley" && message.text && <button className="messageCopy" onClick={()=>copyText(message.text)}><Copy size={12}/> Copy</button>}
                 </div>
               </div>
