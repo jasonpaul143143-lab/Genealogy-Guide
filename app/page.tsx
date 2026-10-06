@@ -244,14 +244,14 @@ function Tree(){
    // GEDCOM files from Ancestry commonly use CRLF line endings and standard
    // level/xref/tag/value records. Keep parsing entirely client-side so the
    // exported family tree never has to leave the user's browser.
-   const lines=text.replace(/^\\uFEFF/,"").split(/\\r?\\n/);
+   const lines=text.replace(/^\uFEFF/,"").split(/\r?\n/);
    const people:any[]=[]; const relationships:any[]=[]; const sources:any[]=[];
    const byId=new Map<string,any>();
    const families:any[]=[];
    let current:any=null; let currentFamily:any=null; let event="";
    for(const raw of lines){
      const line=raw.trimEnd();
-     const m=line.match(/^(\\d+)(?: @([^@]+)@)? ([^ ]+)(?: (.*))?$/);
+     const m=line.match(/^(\d+)(?: @([^@]+)@)? ([^ ]+)(?: (.*))?$/);
      if(!m)continue;
      const level=Number(m[1]),xref=m[2]||"",tag=m[3],value=m[4]||"";
      if(level===0){
@@ -277,7 +277,7 @@ function Tree(){
      }
      if(tag==="PLAC" && level>=2)current.places=current.places ? current.places+"; "+value : value;
      if(tag==="NOTE" && level===1)current.notes=value;
-     if(tag==="CONT" && level>=2 && current.notes)current.notes+="\\n"+value;
+     if(tag==="CONT" && level>=2 && current.notes)current.notes+="\n"+value;
    }
    const has=(id:string)=>Boolean(id && byId.has(id));
    for(const fam of families){
