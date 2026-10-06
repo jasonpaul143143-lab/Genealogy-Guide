@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import { normalizePlan, PLAN_CONFIG, canUse, type PlanId } from "../../lib/plans";
 
 export const runtime = "edge";
 
@@ -54,6 +55,8 @@ export async function POST(request: NextRequest){
       .slice(-20)
       .map((m:any)=>({role:m.role==="kinley" ? "assistant" : "user",content:m.text}));
     const tree=body?.tree;
+    const plan:PlanId=normalizePlan(body?.plan);
+    const planConfig=PLAN_CONFIG[plan];
     const treeContext=tree ? `
 STRUCTURED FAMILY TREE CONTEXT FROM THE USER'S LOCAL DATABASE:
 People:
@@ -70,9 +73,22 @@ Use this as user-provided research context. Do not treat it as independently ver
       return new Response(JSON.stringify({error:"Please enter a message."}),{status:400,headers:{"Content-Type":"application/json"}});
     }
 
-    const model=process.env.OPENAI_MODEL || "gpt-6-luna";
+    const model=process.env.OPENAI_MODEL || planConfig.model;
 
     const fullInstructions=KINLEY_INSTRUCTIONS + treeContext + `
+ACTIVE GENEALOGY GUIDE PLAN: ${planConfig.name}
+KINLEY MODE: ${planConfig.mode}
+REASONING LEVEL: ${planConfig.reasoning}
+AVAILABLE CAPABILITIES: ${planConfig.capabilities.join(", ")}
+
+Plan behavior:
+- Free/Quick: answer efficiently and do not perform deep investigation.
+- Researcher/Deep: perform broader research and evidence comparison when web research is appropriate.
+- Genealogist or Family/Expert: perform multi-step identity and contradiction analysis, but never invent evidence.
+- Never claim a paid capability was used unless it is actually available to the active plan.
+- The plan changes research depth and available features, not the evidence standard. Never upgrade confidence merely because the plan is higher.
+
+
 When the user asks for research help, do not merely answer from memory. Use the available web research tool when current or specific historical details need verification. Prefer authoritative repositories, archives, record collections, government sources, libraries, and original-record images when available. Give the user the exact record type, jurisdiction, date range, and search strategy that would let them reproduce the work.
 `;
 
@@ -84,6 +100,7 @@ When the user asks for research help, do not merely answer from memory. Use the 
       },
       body:JSON.stringify({
         model,
+        reasoning: {effort: planConfig.reasoning},
         instructions:fullInstructions,
         input:messages,
         tools:[{type:"web_search"}],
