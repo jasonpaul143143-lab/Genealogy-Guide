@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  BookOpen, Search, GitBranch, Dna, Sparkles, ShieldCheck, Home as HomeIcon, Wrench,
+  BookOpen, Search, GitBranch, Dna, Sparkles, ShieldCheck, Home as HomeIcon, Wrench, MapPinned,
   FileText, Landmark, ScrollText, Newspaper, Users, ClipboardList, ArrowRight,
   ChevronRight, Plus, X, GraduationCap, Microscope, ExternalLink, Database,
   CheckCircle2, Clock3, MapPin, UserPlus, Link2, Download, Smartphone, Send, Loader2, Save, Upload
@@ -9,6 +9,7 @@ import {
 import { useEffect, useState, useRef } from "react";
 import KinleyDesk from "./components/KinleyDesk";
 import Plans from "./components/Plans";
+import { parseMigrationStops } from "./lib/migration";
 
 type Section = "Home"|"Learn"|"Research"|"Tree"|"Tools"|"DNA";
 type ToolKey = "Evidence Checker"|"Research Log"|"Name Variants"|"Timeline Builder"|"Relationship Analyzer"|"Brick Wall Planner"|null;
@@ -293,6 +294,10 @@ function Tree(){
  const current=people.find(p=>p.id===selected)||people[0];
  const currentSources=sources.filter(s=>s.personId===current.id);
  const currentRels=relationships.filter(r=>r.from===current.id || r.to===current.id);
+ const migrationStops=parseMigrationStops(people,relationships,sources);
+ const migrationStates=Array.from(new Set(migrationStops.map(s=>s.state)));
+ const migrationReady=migrationStops.length>=2 && migrationStates.length>=2;
+ const openMigration=()=>{if(migrationReady)window.location.href="/migration-map?from=tree";};
  const otherPeople=people.filter(p=>p.id!==current.id);
 
  return <section className="page">
@@ -347,6 +352,11 @@ function Tree(){
    </div>
   </div>
   {importStatus&&<div className="treeImportStatus"><strong>Tree import:</strong> {importStatus}<small>Supported: GEDCOM (.ged/.gedcom) and Genealogy Guide JSON. Ancestry and FamilySearch trees should be exported from their service as GEDCOM first; the app does not bypass their account or export controls.</small></div>}
+  {migrationReady&&<div className="migrationUnlock">
+   <div className="migrationUnlockIcon"><MapPinned size={23}/></div>
+   <div className="migrationUnlockCopy"><p className="eyebrow">MIGRATION MAP UNLOCKED</p><h3>Your tree shows movement across states.</h3><p>Genealogy Guide found {migrationStops.length} location points across {migrationStates.length} states in your tree. Open the map to watch the ancestor locations in chronological order.</p><small>Only locations found in your tree are used. A connecting line shows chronological evidence, not an exact travel route.</small></div>
+   <button className="primary" onClick={openMigration}><MapPinned size={17}/> View Migration Map <ArrowRight size={15}/></button>
+  </div>}
   <div className="notice"><ShieldCheck/><span><strong>Evidence reminder:</strong> the database stores claims and sources; it does not automatically prove a relationship. Kinley can use this structured tree context to identify missing evidence, conflicts, and better next records.</span></div>
  </section>
 }
