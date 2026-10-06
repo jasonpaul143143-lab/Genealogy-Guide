@@ -120,19 +120,115 @@ function Research({go}:{go:(s:Section)=>void}){
 }
 
 function Tree(){
- const [people,setPeople]=useState([{id:"root",name:"Your research starting point",relation:"Root",status:"Starting point"}]);
- const [name,setName]=useState(""); const [relation,setRelation]=useState("Parent"); const [selected,setSelected]=useState("root"); const [records,setRecords]=useState<any[]>([]); const [loaded,setLoaded]=useState(false);
- useEffect(()=>{try{const saved=localStorage.getItem("gg-tree");if(saved){const data=JSON.parse(saved);if(Array.isArray(data.people))setPeople(data.people);if(Array.isArray(data.records))setRecords(data.records)}}catch{}finally{setLoaded(true)}},[]);
- useEffect(()=>{if(loaded)localStorage.setItem("gg-tree",JSON.stringify({people,records,updatedAt:new Date().toISOString()}))},[people,records,loaded]);
- const add=()=>{if(!name.trim())return;const id=crypto.randomUUID();setPeople([...people,{id,name:name.trim(),relation,status:"Needs sources"}]);setName("");setSelected(id)};
- const addRecord=(personId:string,type:string)=>setRecords([...records,{id:crypto.randomUUID(),personId,type,date:new Date().toLocaleDateString()}]);
- const exportTree=()=>{const blob=new Blob([JSON.stringify({people,records,exportedAt:new Date().toISOString()},null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="genealogy-guide-tree.json";a.click();URL.revokeObjectURL(a.href)};
+ type Person={id:string,name:string,relation:string,status:string,birth:string,death:string,places:string,notes:string};
+ type Source={id:string,personId:string,title:string,type:string,date:string,url:string,notes:string};
+ type Rel={id:string,from:string,to:string,type:string};
+ const [people,setPeople]=useState<Person[]>([{id:"root",name:"Your research starting point",relation:"Root",status:"Starting point",birth:"",death:"",places:"",notes:""}]);
+ const [sources,setSources]=useState<Source[]>([]);
+ const [relationships,setRelationships]=useState<Rel[]>([]);
+ const [selected,setSelected]=useState("root");
+ const [name,setName]=useState(""); const [relation,setRelation]=useState("Parent");
+ const [birth,setBirth]=useState(""); const [death,setDeath]=useState(""); const [places,setPlaces]=useState("");
+ const [sourceTitle,setSourceTitle]=useState(""); const [sourceType,setSourceType]=useState("Census"); const [sourceUrl,setSourceUrl]=useState(""); const [sourceNotes,setSourceNotes]=useState("");
+ const [relTo,setRelTo]=useState(""); const [relType,setRelType]=useState("Parent of");
+ const [loaded,setLoaded]=useState(false);
+
+ useEffect(()=>{
+   try{
+     const saved=localStorage.getItem("gg-tree");
+     if(saved){
+       const data=JSON.parse(saved);
+       if(Array.isArray(data.people))setPeople(data.people);
+       if(Array.isArray(data.sources))setSources(data.sources);
+       if(Array.isArray(data.relationships))setRelationships(data.relationships);
+       if(Array.isArray(data.records) && !Array.isArray(data.sources)){
+         setSources(data.records.map((r:any)=>({id:r.id,personId:r.personId,title:r.type,type:r.type,date:r.date,url:"",notes:""})));
+       }
+     }
+   }catch{} finally{setLoaded(true)}
+ },[]);
+ useEffect(()=>{
+   if(loaded)localStorage.setItem("gg-tree",JSON.stringify({people,sources,relationships,updatedAt:new Date().toISOString()}));
+ },[people,sources,relationships,loaded]);
+
+ const add=()=>{
+   if(!name.trim())return;
+   const id=crypto.randomUUID();
+   const person={id,name:name.trim(),relation,status:"Needs sources",birth:birth.trim(),death:death.trim(),places:places.trim(),notes:""};
+   setPeople(prev=>[...prev,person]);
+   setName("");setBirth("");setDeath("");setPlaces("");setSelected(id);
+ };
+ const addRelationship=()=>{
+   if(!relTo || relTo===selected)return;
+   const id=crypto.randomUUID();
+   setRelationships(prev=>[...prev,{id,from:selected,to:relTo,type:relType}]);
+ };
+ const addSource=()=>{
+   if(!sourceTitle.trim())return;
+   setSources(prev=>[...prev,{id:crypto.randomUUID(),personId:selected,title:sourceTitle.trim(),type:sourceType,date:new Date().toLocaleDateString(),url:sourceUrl.trim(),notes:sourceNotes.trim()}]);
+   setSourceTitle("");setSourceUrl("");setSourceNotes("");
+   setPeople(prev=>prev.map(p=>p.id===selected && p.status==="Needs sources"?{...p,status:"Research in progress"}:p));
+ };
+ const exportTree=()=>{
+   const blob=new Blob([JSON.stringify({people,sources,relationships,exportedAt:new Date().toISOString()},null,2)],{type:"application/json"});
+   const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="genealogy-guide-tree.json";a.click();URL.revokeObjectURL(a.href);
+ };
  const current=people.find(p=>p.id===selected)||people[0];
- return <section className="page"><p className="eyebrow">MY FAMILY TREE</p><h2>Your research database.</h2><p className="lead">People, relationships, research records, and evidence status are stored in this browser so your working tree survives page refreshes.</p>
- <div className="treeToolbar"><button className="primary" onClick={()=>document.getElementById("add-person")?.focus()}><UserPlus size={17}/> Add person</button><button className="secondary light" onClick={exportTree}><Download size={16}/> Export tree</button><span><ShieldCheck size={16}/> Local research database</span></div>
- <div className="treeLayout"><div className="treePanel"><div className="treeTop"><div className="treeNode mainNode"><GitBranch size={17}/><span>{people[0].name}</span><small>Root</small></div></div><div className="branches">{people.slice(1).map((p)=><button className={selected===p.id?"treeNode selected":"treeNode"} key={p.id} onClick={()=>setSelected(p.id)}><GitBranch size={15}/><span>{p.name}</span><small>{p.relation} • {p.status}</small></button>)}</div><div className="addPerson" id="add-person"><input value={name} onChange={e=>setName(e.target.value)} placeholder="Person's name"/><select value={relation} onChange={e=>setRelation(e.target.value)}><option>Parent</option><option>Grandparent</option><option>Child</option><option>Spouse</option><option>Sibling</option><option>Other</option></select><button onClick={add}><Plus size={18}/> Add Person</button></div></div>
- <div className="personPanel"><p className="eyebrow">SELECTED PERSON</p><h3>{current.name}</h3><p><MapPin size={15}/> Relationship: {current.relation}</p><div className="statusBadge">{current.status}</div><h4>Record checklist</h4>{["Birth / baptism","Marriage","Census","Death / burial","Military","Probate / land"].map(x=><button className="recordCheck" key={x} onClick={()=>addRecord(current.id,x)}><span>{x}</span><Plus size={14}/></button>)}<h4>Attached research records</h4>{records.filter(r=>r.personId===current.id).length===0?<p className="empty">No records attached yet.</p>:records.filter(r=>r.personId===current.id).map((r:any)=><div className="attached" key={r.id}><CheckCircle2 size={15}/><span>{r.type}<small>Added {r.date}</small></span></div>)}<a className="ancestrySearch" href={"https://www.ancestry.com/search/?name="+encodeURIComponent(current.name)} target="_blank" rel="noreferrer"><Search size={15}/> Search this person on Ancestry <ExternalLink size={14}/></a></div></div>
- <div className="notice"><ShieldCheck/><span><strong>Evidence reminder:</strong> a person being in the database does not prove a relationship. Exported JSON is your portable working copy; a future account system can sync it across devices.</span></div></section>
+ const currentSources=sources.filter(s=>s.personId===current.id);
+ const currentRels=relationships.filter(r=>r.from===current.id || r.to===current.id);
+ const otherPeople=people.filter(p=>p.id!==current.id);
+
+ return <section className="page">
+  <p className="eyebrow">MY FAMILY TREE</p><h2>Your research database.</h2>
+  <p className="lead">This is now a structured local genealogy database: people, life details, relationships, sources, and research notes stay together in your browser.</p>
+  <div className="treeToolbar">
+   <button className="primary" onClick={()=>document.getElementById("tree-person-name")?.focus()}><UserPlus size={17}/> Add person</button>
+   <button className="secondary light" onClick={exportTree}><Download size={16}/> Export tree</button>
+   <span><ShieldCheck size={16}/> Stored locally on this device</span>
+  </div>
+  <div className="treeLayout">
+   <div className="treePanel">
+    <div className="treeTop"><div className="treeNode mainNode"><GitBranch size={17}/><span>{people[0].name}</span><small>Root</small></div></div>
+    <div className="branches">{people.slice(1).map(p=><button className={selected===p.id?"treeNode selected":"treeNode"} key={p.id} onClick={()=>setSelected(p.id)}><GitBranch size={15}/><span>{p.name}</span><small>{p.relation} • {p.status}</small></button>)}</div>
+    <div className="addPerson" id="add-person">
+      <input id="tree-person-name" value={name} onChange={e=>setName(e.target.value)} placeholder="Person's name"/>
+      <select value={relation} onChange={e=>setRelation(e.target.value)}><option>Parent</option><option>Grandparent</option><option>Child</option><option>Spouse</option><option>Sibling</option><option>Other</option></select>
+      <input value={birth} onChange={e=>setBirth(e.target.value)} placeholder="Birth (e.g. 1842)"/>
+      <input value={death} onChange={e=>setDeath(e.target.value)} placeholder="Death (e.g. 1922)"/>
+      <input value={places} onChange={e=>setPlaces(e.target.value)} placeholder="Places / counties / states"/>
+      <button onClick={add}><Plus size={18}/> Add Person</button>
+    </div>
+    <div className="treeSectionBox">
+      <h4>Connect a relationship</h4>
+      <div className="treeFormRow">
+       <select value={relType} onChange={e=>setRelType(e.target.value)}><option>Parent of</option><option>Child of</option><option>Spouse of</option><option>Sibling of</option><option>Associated with</option></select>
+       <select value={relTo} onChange={e=>setRelTo(e.target.value)}><option value="">Choose person</option>{otherPeople.map(p=><option value={p.id} key={p.id}>{p.name}</option>)}</select>
+       <button className="secondary light" onClick={addRelationship}>Connect</button>
+      </div>
+    </div>
+   </div>
+   <div className="personPanel">
+    <p className="eyebrow">SELECTED PERSON</p><h3>{current.name}</h3>
+    <p><MapPin size={15}/> Relationship: {current.relation}</p>
+    <div className="statusBadge">{current.status}</div>
+    {(current.birth||current.death||current.places)&&<div className="personFacts">
+      {current.birth&&<span><strong>Birth</strong>{current.birth}</span>}
+      {current.death&&<span><strong>Death</strong>{current.death}</span>}
+      {current.places&&<span><strong>Places</strong>{current.places}</span>}
+    </div>}
+    <h4>Relationships</h4>
+    {currentRels.length===0?<p className="empty">No relationship links recorded yet.</p>:currentRels.map(r=>{const id=r.from===current.id?r.to:r.from;const p=people.find(x=>x.id===id);return <button className="attached relationshipItem" key={r.id} onClick={()=>setSelected(id)}><GitBranch size={15}/><span>{r.type}<small>{p?.name||"Unknown person"}</small></span></button>})}
+    <h4>Add a source</h4>
+    <input className="wideInput" value={sourceTitle} onChange={e=>setSourceTitle(e.target.value)} placeholder="Source title / record description"/>
+    <div className="treeFormRow"><select value={sourceType} onChange={e=>setSourceType(e.target.value)}><option>Census</option><option>Birth / baptism</option><option>Marriage</option><option>Death / burial</option><option>Probate</option><option>Deed / land</option><option>Military</option><option>Church</option><option>Newspaper</option><option>DNA</option><option>Other</option></select><input value={sourceUrl} onChange={e=>setSourceUrl(e.target.value)} placeholder="Record URL (optional)"/></div>
+    <textarea className="wideTextarea" value={sourceNotes} onChange={e=>setSourceNotes(e.target.value)} placeholder="What does this source actually say? Include page, image, certificate, archive, or collection details."/>
+    <button className="primary full" onClick={addSource}><Plus size={16}/> Attach source to {current.name}</button>
+    <h4>Attached sources</h4>
+    {currentSources.length===0?<p className="empty">No sources attached yet.</p>:currentSources.map(s=><div className="sourceCard" key={s.id}><div><strong>{s.title}</strong><small>{s.type} • Added {s.date}</small>{s.notes&&<span>{s.notes}</span>}{s.url&&<a href={s.url} target="_blank" rel="noreferrer">Open record</a>}</div></div>)}
+   </div>
+  </div>
+  <div className="notice"><ShieldCheck/><span><strong>Evidence reminder:</strong> the database stores claims and sources; it does not automatically prove a relationship. Kinley can use this structured tree context to identify missing evidence, conflicts, and better next records.</span></div>
+ </section>
 }
 function Tools(){
  const [open,setOpen]=useState<ToolKey>(null);
