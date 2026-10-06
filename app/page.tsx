@@ -168,6 +168,21 @@ function Tree(){
    const id=crypto.randomUUID();
    setRelationships(prev=>[...prev,{id,from:selected,to:relTo,type:relType}]);
  };
+ const deletePerson=()=>{
+   if(!current || current.id==="root"){ setImportStatus("The starting point cannot be deleted."); return; }
+   const personName=current.name;
+   setPeople(prev=>prev.filter(p=>p.id!==current.id));
+   setRelationships(prev=>prev.filter(r=>r.from!==current.id && r.to!==current.id));
+   setSources(prev=>prev.filter(s=>s.personId!==current.id));
+   setSelected(people.find(p=>p.id!==current.id)?.id || "root");
+   setImportStatus(`Deleted ${personName} and its relationship/source records.`);
+ };
+ const deleteTree=()=>{
+   if(!window.confirm("Delete the entire family tree from this device? This removes all imported people, relationships, and sources."))return;
+   const root={id:"root",name:"Your research starting point",relation:"Root",status:"Starting point",birth:"",death:"",places:"",notes:""};
+   setPeople([root]); setSources([]); setRelationships([]); setSelected("root");
+   setImportStatus("Family tree deleted. The database is ready for a fresh import.");
+ };
  const addSource=()=>{
    if(!sourceTitle.trim())return;
    setSources(prev=>[...prev,{id:crypto.randomUUID(),personId:selected,title:sourceTitle.trim(),type:sourceType,date:new Date().toLocaleDateString(),url:sourceUrl.trim(),notes:sourceNotes.trim()}]);
@@ -230,7 +245,7 @@ function Tree(){
      return degree(b.id)-degree(a.id);
    })[0];
    setSelected(bestImported?.id || additions[0]?.id || selected);
-   setImportStatus(`Imported ${importedPeople.length} people. Existing matching people were merged; imported entries are marked for review.`);
+   setImportStatus(`Imported ${importedPeople.length} people and automatically connected ${newRels.length} relationships. Existing matching people were merged; imported entries are marked for review.`);
  };
 
  const importTreeFile=async(e:React.ChangeEvent<HTMLInputElement>)=>{
@@ -424,6 +439,8 @@ function Tree(){
    <button className="secondary light" onClick={()=>importInputRef.current?.click()}><Upload size={16}/> Import tree</button>
    <input ref={importInputRef} type="file" accept=".ged,.gedcom,.json,.zip" hidden onChange={importTreeFile}/>
    <button className="secondary light" onClick={exportTree}><Download size={16}/> Export tree</button>
+   <button className="dangerButton" onClick={deletePerson} disabled={current.id==="root"}>Delete person</button>
+   <button className="dangerButton" onClick={deleteTree}>Delete tree</button>
    <span><ShieldCheck size={16}/> Stored locally on this device</span>
   </div>
   <div className="treeLayout">
