@@ -57,7 +57,8 @@ export async function POST(request: NextRequest){
     const tree=body?.tree;
     const plan:PlanId=normalizePlan(body?.plan);
     const planConfig=PLAN_CONFIG[plan];
-    const treeJson=tree ? JSON.stringify({people:(tree.people||[]).slice(0,18),relationships:(tree.relationships||[]).slice(0,40),sources:(tree.sources||[]).slice(0,30)}) : "";\n    const treeContext=treeJson ? "LOCAL FAMILY TREE CONTEXT (user-provided, not independently verified):\\n"+treeJson : "";
+    const treeJson=tree ? JSON.stringify({people:(tree.people||[]).slice(0,18),relationships:(tree.relationships||[]).slice(0,40),sources:(tree.sources||[]).slice(0,30)}) : "";
+    const treeContext=treeJson ? "LOCAL FAMILY TREE CONTEXT (user-provided, not independently verified):\\n"+treeJson : "";
 
     if(!messages.length){
       return new Response(JSON.stringify({error:"Please enter a message."}),{status:400,headers:{"Content-Type":"application/json"}});
@@ -102,7 +103,8 @@ When the user asks for research help, do not merely answer from memory. Use the 
     const payload=await upstream.json().catch(()=>null);
 
     if(!upstream.ok){
-      const detail=payload?.error?.message || payload?.detail || "Unknown OpenAI error.";\n      const status=upstream.status===429 ? 429 : 502;
+      const detail=payload?.error?.message || payload?.detail || "Unknown OpenAI error.";
+      const status=upstream.status===429 ? 429 : 502;
       return new Response(JSON.stringify({
         error:"Kinley's research engine returned an error.",
         detail:String(detail).slice(0,700)
