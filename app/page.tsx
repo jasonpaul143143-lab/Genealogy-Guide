@@ -241,54 +241,134 @@ function Tree(){
  };
 
  const parseGEDCOM=(text:string)=>{
-   // GEDCOM files from Ancestry commonly use CRLF line endings and standard
-   // level/xref/tag/value records. Keep parsing entirely client-side so the
-   // exported family tree never has to leave the user's browser.
-   const lines=text.replace(/^\\uFEFF/,"").split(/\\r?\\n/);
-   const people:any[]=[]; const relationships:any[]=[]; const sources:any[]=[];
+   // Ancestry exports standard GEDCOM records such as:
+   // 0 @I1@ INDI / 1 NAME / 1 BIRT / 2 DATE / 1 FAMS @F1@
+   // 0 @F1@ FAM / 1 HUSB @I1@ / 1 WIFE @I2@ / 1 CHIL @I3@
+   const normalized=text.replace(/^\uFEFF/,"");
+   const lines=normalized.split(/\r?\n/);
+   const people:any[]=[];
+   const relationships:any[]=[];
+   const sources:any[]=[];
    const byId=new Map<string,any>();
    const families:any[]=[];
-   let current:any=null; let currentFamily:any=null; let event="";
+   let currentPerson:any=null;
+   let currentFamily:any=null;
+   let currentEvent="";
+
    for(const raw of lines){
      const line=raw.trimEnd();
-     const m=line.match(/^(\\d+)(?: @([^@]+)@)? ([^ ]+)(?: (.*))?$/);
-     if(!m)continue;
-     const level=Number(m[1]),xref=m[2]||"",tag=m[3],value=m[4]||"";
+     if(!line)continue;
+
+     // GEDCOM: level, optional @xref@, tag, optional value.
+     const match=line.match(/^(\d+) (?:(@[^@]+@) )?([^ ]+)(?: (.*))?$/);
+     if(!match)continue;
+
+     const level=Number(match[1]);
+     const xref=(match[2]||"").replace(/^@|@$/g,"");
+     const tag=match[3];
+     const value=match[4]||"";
+
      if(level===0){
-       current=null; currentFamily=null; event="";
-       if(xref && (tag==="INDI"||tag==="PERSON")){
-         current={id:xref,name:"Unnamed person",relation:"Imported",status:"Imported — needs review",birth:"",death:"",places:"",notes:""};
-         byId.set(xref,current); people.push(current);
+       currentPerson=null;
+       currentFamily=null;
+       currentEvent="";
+
+       if(xref && (tag==="INDI" || tag==="PERSON")){
+         currentPerson={
+           id:xref,
+           name:"Unnamed person",
+           relation:"Imported",
+           status:"Imported — needs review",
+           birth:"",
+           death:"",
+           places:"",
+           notes:""
+         };
+         byId.set(xref,currentPerson);
+         people.push(currentPerson);
        }else if(xref && tag==="FAM"){
-         currentFamily={id:xref,husb:"",wife:"",children:[]}; families.push(currentFamily);
+         currentFamily={id:xref,husb:"",wife:"",children:[]};
+         families.push(currentFamily);
        }
        continue;
      }
-     if(tag==="HUSB" && level===1 && currentFamily){currentFamily.husb=xref;continue;}
-     if(tag==="WIFE" && level===1 && currentFamily){currentFamily.wife=xref;continue;}
-     if(tag==="CHIL" && level===1 && currentFamily){currentFamily.children.push(xref);continue;}
-     if(!current)continue;
-     if(tag==="NAME" && level===1)current.name=value.replace(/\\//g,"").trim()||current.name;
-     if(tag==="BIRT" && level===1){event="BIRT";continue;}
-     if(tag==="DEAT" && level===1){event="DEAT";continue;}
-     if(tag==="DATE" && level>=2){
-       if(event==="BIRT")current.birth=value;
-       if(event==="DEAT")current.death=value;
+
+     // Family links occur inside a FAM record.
+     if(currentFamily && level===1){
+       if(tag==="HUSB"){currentFamily.husb=xref;continue;}
+       if(tag==="WIFE"){currentFamily.wife=xref;continue;}
+       if(tag==="CHIL"){currentFamily.children.push(xref);continue;}
      }
-     if(tag==="PLAC" && level>=2)current.places=current.places ? current.places+"; "+value : value;
-     if(tag==="NOTE" && level===1)current.notes=value;
-     if(tag==="CONT" && level>=2 && current.notes)current.notes+="\\n"+value;
+
+     if(!currentPerson)continue;
+
+     if(level===1){
+       if(tag==="NAME"){
+         const cleaned=value.replaceAll("/","").replace(/\s+/g," ").trim();
+         if(cleaned)currentPerson.name=cleaned;
+         currentEvent="";
+         continue;
+       }
+       if(tag==="BIRT"){currentEvent="BIRT";continue;}
+       if(tag==="DEAT"){currentEvent="DEAT";continue;}
+       if(tag==="NOTE"){currentPerson.notes=value;continue;}
+       currentEvent="";
+     }
+
+     if(level>=2 && tag==="DATE"){
+       if(currentEvent==="BIRT")currentPerson.birth=value;
+       if(currentEvent==="DEAT")currentPerson.death=value;
+       continue;
+     }
+
+     if(level>=2 && tag==="PLAC"){
+       currentPerson.places=currentPerson.places
+         ? currentPerson.places+"; "+value
+         : value;
+       continue;
+     }
+
+     if(level>=2 && tag==="CONT" && currentPerson.notes){
+       currentPerson.notes+="\\n"+value;
+     }
    }
+
    const has=(id:string)=>Boolean(id && byId.has(id));
-   for(const fam of families){
-     if(fam.husb && fam.wife && has(fam.husb)&&has(fam.wife)){
-       relationships.push({id:crypto.randomUUID(),from:fam.husb,to:fam.wife,type:"Spouse of"});
+
+   for(const family of families){
+     if(family.husb && family.wife && has(family.husb) && has(family.wife)){
+       relationships.push({
+         id:crypto.randomUUID(),
+         from:family.husb,
+         to:family.wife,
+         type:"Spouse of"
+       });
      }
-     for(const child of fam.children){
-       if(fam.husb && has(fam.husb)&&has(child))relationships.push({id:crypto.randomUUID(),from:fam.husb,to:child,type:"Parent of"});
-       if(fam.wife && has(fam.wife)&&has(child))relationships.push({id:crypto.randomUUID(),from:fam.wife,to:child,type:"Parent of"});
+
+     for(const child of family.children){
+       if(family.husb && has(family.husb) && has(child)){
+         relationships.push({
+           id:crypto.randomUUID(),
+           from:family.husb,
+           to:child,
+           type:"Parent of"
+         });
+       }
+       if(family.wife && has(family.wife) && has(child)){
+         relationships.push({
+           id:crypto.randomUUID(),
+           from:family.wife,
+           to:child,
+           type:"Parent of"
+         });
+       }
      }
    }
+
+   if(!people.length){
+     throw new Error("The GEDCOM file was read, but no individual records were found. Make sure you exported the actual family tree as a GEDCOM file from Ancestry.");
+   }
+
    return {people,relationships,sources};
  };
 
