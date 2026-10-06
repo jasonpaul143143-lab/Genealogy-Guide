@@ -6,7 +6,7 @@ import { Camera, CheckCircle2, ExternalLink, FileText, ImagePlus, Info, ShieldCh
 type PhotoStatus="verified"|"review"|"document"|"none"|"ai";
 type Photo={id:string;person:string;status:PhotoStatus;title:string;source:string;url:string;notes:string;data?:string};
 
-const labels:Record<PhotoStatus,string>={verified:"Verified photograph","review":"Historical image — review","document":"Document / record","none":"No verified photograph","ai:"AI reconstruction — labeled"};
+const labels:Record<PhotoStatus,string>={verified:"Verified photograph","review":"Historical image — review","document":"Document / record","none":"No verified photograph",ai:"AI reconstruction — labeled"};
 const colors:Record<PhotoStatus,string>={verified:"photoVerified",review:"photoReview",document:"photoDocument",none:"photoNone",ai:"photoAi"};
 
 export default function AncestorGallery(){
