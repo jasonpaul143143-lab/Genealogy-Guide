@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import KinleyDesk from "./components/KinleyDesk";
+import Plans from "./components/Plans";
 
 type Section = "Home"|"Learn"|"Research"|"Tree"|"Tools"|"DNA";
 type ToolKey = "Evidence Checker"|"Research Log"|"Name Variants"|"Timeline Builder"|"Relationship Analyzer"|"Brick Wall Planner"|null;
@@ -58,6 +59,7 @@ export default function HomePage(){
   const [section,setSection]=useState<Section>("Home");
   const [lesson,setLesson]=useState<number|null>(null);
   const [showKinley,setShowKinley]=useState(false);
+  const [showPlans,setShowPlans]=useState(false);
   const [showInstall,setShowInstall]=useState(false);
   const [installEvent,setInstallEvent]=useState<any>(null);
 
@@ -73,7 +75,7 @@ export default function HomePage(){
   return <main>
     <header>
       <button className="brand brandButton" onClick={()=>go("Home")}><Logo/><div><h1>Genealogy Guide</h1><p>Learn. Research. Prove.</p></div></button>
-      <div className="headerActions"><button className="installButton" onClick={install}><Smartphone size={16}/> Install</button><button className="kinley" onClick={()=>setShowKinley(true)}><Sparkles size={17}/> Kinley</button></div>
+      <div className="headerActions"><button className="installButton" onClick={install}><Smartphone size={16}/> Install</button><button className="plansButton" onClick={()=>setShowPlans(true)}>Plans</button><button className="kinley" onClick={()=>setShowKinley(true)}><Sparkles size={17}/> Kinley</button></div>
     </header>
 
     {section==="Home" && <HomeSection go={go} setShowKinley={setShowKinley} setLesson={setLesson}/>}
@@ -83,7 +85,7 @@ export default function HomePage(){
     {section==="Tools" && <Tools/>}
     {section==="DNA" && <DNA/>}
 
-    {showKinley && <Kinley close={()=>setShowKinley(false)} go={go}/>}
+    {showKinley && <Kinley close={()=>setShowKinley(false)} go={go}/>}\n    {showPlans && <Plans close={()=>setShowPlans(false)}/>}
     {showInstall && !installEvent && <InstallHelp close={()=>setShowInstall(false)}/>}
 
     <nav>
