@@ -86,64 +86,44 @@ When the user asks for research help, do not merely answer from memory. Use the 
         model,
         instructions:fullInstructions,
         input:messages,
-        stream:true,
-        tools:[{type:"web_search"}]
+        tools:[{type:"web_search"}],
+        store:false
       })
     });
 
+    const payload=await upstream.json().catch(()=>null);
+
     if(!upstream.ok){
-      const detail=await upstream.text();
+      const detail=payload?.error?.message || payload?.detail || "Unknown OpenAI error.";
       return new Response(JSON.stringify({
         error:"Kinley's research engine returned an error.",
-        detail:detail.slice(0,500)
+        detail:String(detail).slice(0,700)
       }),{status:502,headers:{"Content-Type":"application/json"}});
     }
 
-    if(!upstream.body){
-      return new Response(JSON.stringify({error:"Kinley returned no response stream."}),{status:502,headers:{"Content-Type":"application/json"}});
+    const answer=typeof payload?.output_text==="string"
+      ? payload.output_text.trim()
+      : Array.isArray(payload?.output)
+        ? payload.output.flatMap((item:any)=>Array.isArray(item?.content)?item.content:[])
+            .filter((part:any)=>part?.type==="output_text" && typeof part?.text==="string")
+            .map((part:any)=>part.text)
+            .join("")
+            .trim()
+        : "";
+
+    if(!answer){
+      return new Response(JSON.stringify({
+        error:"Kinley completed the research request but returned no text.",
+        detail:"The model response did not contain readable output."
+      }),{status:502,headers:{"Content-Type":"application/json"}});
     }
 
-    const reader=upstream.body.getReader();
-    const decoder=new TextDecoder();
-    const encoder=new TextEncoder();
-
-    const stream=new ReadableStream({
-      async start(controller){
-        let buffer="";
-        try{
-          while(true){
-            const {value,done}=await reader.read();
-            if(done) break;
-            buffer+=decoder.decode(value,{stream:true});
-            const lines=buffer.split("\n");
-            buffer=lines.pop() || "";
-
-            for(const line of lines){
-              if(!line.startsWith("data: ")) continue;
-              const data=line.slice(6).trim();
-              if(!data || data==="[DONE]") continue;
-              try{
-                const event=JSON.parse(data);
-                if(event.type==="response.output_text.delta" && typeof event.delta==="string"){
-                  controller.enqueue(encoder.encode(event.delta));
-                }
-              }catch{}
-            }
-          }
-          controller.close();
-        }catch(error){
-          controller.error(error);
-        }finally{
-          reader.releaseLock();
-        }
+    return new Response(JSON.stringify({answer}),{
+      headers:{
+        "Content-Type":"application/json; charset=utf-8",
+        "Cache-Control":"no-store"
       }
     });
-
-    return new Response(stream,{headers:{
-      "Content-Type":"text/plain; charset=utf-8",
-      "Cache-Control":"no-cache, no-transform",
-      "X-Accel-Buffering":"no"
-    }});
   }catch{
     return new Response(JSON.stringify({error:"Kinley could not process that request. Please try again."}),{status:500,headers:{"Content-Type":"application/json"}});
   }
