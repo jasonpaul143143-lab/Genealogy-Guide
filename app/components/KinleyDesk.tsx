@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { BookOpen, Copy, FileText, Plus, Search, Send, Sparkles, X, Clock } from "lucide-react";
+import { BookOpen, Copy, FileText, Plus, Search, Send, Sparkles, X, Clock, Lock } from "lucide-react";
+import { PLAN_CONFIG, normalizePlan, type PlanId } from "../lib/plans";
 
 type ChatMessage = {
   role: "user" | "kinley";
@@ -34,6 +35,11 @@ export default function KinleyDesk({close}:{close:()=>void}){
   const [researching,setResearching] = useState(false);
   const [elapsed,setElapsed] = useState(0);
   const [error,setError] = useState("");
+  const [plan,setPlan] = useState<PlanId>("free");
+
+  useEffect(()=>{
+    try{ setPlan(normalizePlan(localStorage.getItem("gg-plan"))); }catch{}
+  },[]);
   const startedAt = useRef<number | null>(null);
 
   useEffect(()=>{
@@ -77,6 +83,7 @@ export default function KinleyDesk({close}:{close:()=>void}){
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify({
+        plan,
         messages:nextMessages,
         tree: (()=>{try{return JSON.parse(localStorage.getItem("gg-tree") || "null")}catch{return null}})()
       })
@@ -124,10 +131,11 @@ export default function KinleyDesk({close}:{close:()=>void}){
           <KinleyTreeAvatar />
           <div>
             <strong>Kinley</strong>
-            <span>Genealogy Research Assistant</span>
+            <span>{PLAN_CONFIG[plan].name} · {PLAN_CONFIG[plan].mode} mode</span>
           </div>
         </div>
         <div className="kinleyHeaderActions">
+          <div className="kinleyPlanBadge">{plan==="free" ? <Lock size={12}/> : <Sparkles size={12}/>} {PLAN_CONFIG[plan].mode.toUpperCase()}</div>
           <button title="New conversation" onClick={clearChat}><Plus size={18}/></button>
           <button title="Close Kinley" onClick={close}><X size={19}/></button>
         </div>
@@ -193,7 +201,7 @@ export default function KinleyDesk({close}:{close:()=>void}){
           <span><BookOpen size={13}/> Learn how to verify</span>
           <button onClick={()=>navigator.clipboard?.writeText(input)} disabled={!input.trim()}><Copy size={13}/> Copy question</button>
         </div>
-        <small>Kinley is a helper, not a replacement for the underlying records. It will tell you when evidence is missing or conflicting.</small>
+        <small>Kinley changes research depth with your verified Genealogy Guide subscription. Higher tiers unlock deeper research tools, but the evidence standard never changes.</small>
       </div>
     </div>
   </div>
