@@ -263,3 +263,34 @@ nav button{background:transparent!important}
 header *,nav *,main *{--legacy-white:transparent}
 main .white,main [style*="background:#fff"],main [style*="background: #fff"],main [style*="background-color:#fff"],main [style*="background-color: #fff"]{background:#0a1710!important;color:#e8eee9!important}
 main [style*="#ffffff"],main [style*="#fffdf8"],main [style*="#faf8f2"],main [style*="#f7f3ea"],main [style*="white"]{background:#0a1710!important;color:#e8eee9!important}
+
+
+/* Research Command Center */
+.researchCommandCenter{margin-top:26px;border:1px solid rgba(230,201,111,.16);border-radius:26px;overflow:hidden;background:#07110c;box-shadow:0 24px 70px rgba(0,0,0,.28)}
+.rccHeader{display:flex;justify-content:space-between;gap:20px;padding:26px;background:linear-gradient(135deg,#10261a,#09140e);border-bottom:1px solid rgba(255,255,255,.07)}
+.rccHeader h3{font:700 27px "DM Serif Display",serif!important;margin:4px 0}
+.rccHeader p:not(.eyebrow){color:#87978d!important;max-width:760px;margin:6px 0 0}
+.rccTabs{display:flex;gap:6px;padding:10px;background:#08130d;border-bottom:1px solid rgba(255,255,255,.06);overflow:auto}
+.rccTabs button{white-space:nowrap;border:1px solid transparent;background:transparent;color:#819087;padding:10px 13px;border-radius:11px;cursor:pointer}
+.rccTabs button.active{background:rgba(230,201,111,.09);border-color:rgba(230,201,111,.25);color:#e6c96f}
+.rccStats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:18px}
+.rccStats div{background:#0a1710;border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:16px}
+.rccStats strong{display:block;color:#e6c96f!important;font:800 25px "Space Grotesk",sans-serif}
+.rccStats span{color:#7d8d84!important;font-size:11px}
+.rccGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 18px 18px}
+.rccGrid article{padding:18px;border-radius:16px;background:#0b1912;border:1px solid rgba(255,255,255,.07)}
+.rccGrid svg{color:#e6c96f}.rccGrid h4{margin:10px 0 5px}.rccGrid p{color:#899990!important;font-size:12px;line-height:1.55;margin:0}
+.rccQuick{display:flex;gap:8px;padding:0 18px 20px;flex-wrap:wrap}
+.rccQuick button{background:#0d1d14;color:#dfe8e2;border:1px solid rgba(255,255,255,.08);border-radius:11px;padding:10px 13px;cursor:pointer}
+.rccForm{margin:18px;padding:18px;border-radius:18px;background:#0a1710;border:1px solid rgba(255,255,255,.07)}
+.rccForm h4{margin:0 0 12px}.rccForm input,.rccForm select,.rccForm textarea{width:100%;margin-bottom:9px;border-radius:10px;padding:11px 12px;box-sizing:border-box}
+.rccForm textarea{min-height:82px;resize:vertical}.rccFormGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.rccFilters{display:flex;align-items:center;gap:8px;padding:0 18px 14px}.rccSearch{display:flex;align-items:center;gap:8px;flex:1;background:#08130d;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:0 10px}.rccSearch input{border:0!important;background:transparent!important;margin:0!important;outline:none}.rccFilters select{background:#0a1710;color:#dfe8e2;border:1px solid rgba(255,255,255,.08);padding:10px;border-radius:10px}
+.evidenceVaultList,.rccList,.timelineList{display:grid;gap:8px;padding:0 18px 20px}
+.evidenceVaultList article,.rccList article,.timelineList article{display:flex;align-items:flex-start;gap:12px;padding:14px;border-radius:14px;background:#0b1912;border:1px solid rgba(255,255,255,.07)}
+.evidenceId{font:800 10px "Space Grotesk";color:#d5ba5e;min-width:65px}.evidenceMain,.rccList article>div{flex:1}.evidenceMain strong,.rccList strong,.timelineList strong{display:block;color:#edf1ec!important;font-size:13px}.evidenceMain span,.rccList span,.timelineList span,.timelineList small{display:block;color:#75867c!important;font-size:10px;margin-top:4px}.evidenceMain p,.rccList p{color:#9aa89f!important;font-size:11px;line-height:1.5;margin:7px 0 0}
+.evidenceLevel{font-size:10px;padding:5px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.1);white-space:nowrap}.evidenceLevel.supported{color:#aee0bb;background:rgba(78,160,99,.12)}.evidenceLevel.probable{color:#d9cf8d;background:rgba(197,172,76,.12)}.evidenceLevel.possible{color:#a8c7df;background:rgba(73,125,169,.12)}.evidenceLevel.unverified{color:#9ba7a1;background:rgba(255,255,255,.05)}.evidenceLevel.disproved{color:#e6a0a0;background:rgba(180,60,60,.12)}
+.iconDanger{background:transparent;border:0;color:#7c8b82;cursor:pointer;padding:5px}.iconDanger:hover{color:#e99b9b}
+.rccEmpty{padding:25px;text-align:center;color:#718178;border:1px dashed rgba(255,255,255,.08);border-radius:14px}
+.timelineList article time{min-width:95px;color:#e4c76c;font:700 12px "Space Grotesk"}.timelineList small{margin-top:6px}
+@media(max-width:800px){.rccHeader{display:block}.rccHeader .secondary{margin-top:14px}.rccStats{grid-template-columns:1fr 1fr}.rccGrid{grid-template-columns:1fr}.rccFormGrid{grid-template-columns:1fr}}
