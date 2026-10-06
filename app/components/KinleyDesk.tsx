@@ -17,6 +17,14 @@ const starterPrompts = [
   "Help me determine which records I should search next."
 ];
 
+function KinleyTreeAvatar({small=false}:{small?:boolean}){return <div className={small ? "kinleyTreeAvatar small" : "kinleyTreeAvatar"} aria-label="Kinley DNA tree mascot" role="img">
+    <span className="dnaSpine left"/><span className="dnaSpine right"/>
+    <span className="dnaStep s1"/><span className="dnaStep s2"/><span className="dnaStep s3"/>
+    <span className="treeBranch b1"/><span className="treeBranch b2"/><span className="treeBranch b3"/><span className="treeBranch b4"/>
+    <span className="treeLeaf l1"/><span className="treeLeaf l2"/><span className="treeLeaf l3"/><span className="treeLeaf l4"/>
+    <span className="treeFace"><i/><i/><b/></span>
+  </div>}
+
 export default function KinleyDesk({close}:{close:()=>void}){
   const [input,setInput] = useState("");
   const [messages,setMessages] = useState<ChatMessage[]>([]);
@@ -124,7 +132,7 @@ export default function KinleyDesk({close}:{close:()=>void}){
     <div className="kinleyChat" onClick={e=>e.stopPropagation()}>
       <header className="kinleyChatHeader">
         <div className="kinleyIdentity">
-          <div className="kinleyAvatar"><Sparkles size={19}/></div>
+          <KinleyTreeAvatar />
           <div>
             <strong>Kinley</strong>
             <span>Genealogy Research Assistant</span>
@@ -139,7 +147,7 @@ export default function KinleyDesk({close}:{close:()=>void}){
       <div className="kinleyChatBody">
         {messages.length === 0 ? (
           <div className="kinleyWelcome">
-            <div className="kinleyWelcomeIcon"><Sparkles size={27}/></div>
+            <div className="kinleyWelcomeIcon mascotWelcome"><KinleyTreeAvatar /></div>
             <h2>How can I help with your family tree?</h2>
             <p>
               Talk to me normally. Ask a quick question, work through a difficult
@@ -160,7 +168,7 @@ export default function KinleyDesk({close}:{close:()=>void}){
           <div className="kinleyMessages">
             {messages.map((message,i)=>
               <div className={message.role==="user" ? "kinleyMessage user" : "kinleyMessage assistant"} key={i}>
-                {message.role==="kinley" && <div className="messageAvatar"><Sparkles size={14}/></div>}
+                {message.role==="kinley" && <div className="messageAvatar"><KinleyTreeAvatar small /></div>}
                 <div className="messageBubble">
                   {message.role==="kinley" && <div className="messageMeta"><span className="messageLabel">Kinley</span>{i===messages.length-1 && elapsed>0 && <span className="workedFor"><Clock size={11}/> Worked for {elapsed.toFixed(1)} seconds</span>}</div>}
                   <p>{message.text || (researching && i===messages.length-1 ? "Researching…" : "")}</p>
