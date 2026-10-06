@@ -3,8 +3,16 @@
   "short_name": "Genealogy Guide",
   "description": "Learn genealogy, research records, build family trees, and evaluate evidence.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#f7f3ea",
   "theme_color": "#244d3b",
-  "icons": []
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
 }
