@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, type CSSProperties } from "react";
 import { ChevronDown, ChevronUp, GitBranch, Heart, Users } from "lucide-react";
 
 type Person = {
@@ -150,7 +150,7 @@ export default function FamilyTreeCanvas({ people, relationships, selectedId, on
         </div>
       </div>
 
-      <div className="familyTreeCanvas" style={{ "--tree-scale": scale } as React.CSSProperties}>
+      <div className="familyTreeCanvas" style={{ "--tree-scale": scale } as CSSProperties}>
         <div className="familyTreeGeneration grandparentGeneration">
           <div className="generationLabel"><ChevronUp size={14} /> Grandparents</div>
           <div className="familyTreeCards">{grandparents.length ? grandparents.map((p) => <PersonCard key={p.id} person={p} selected={p.id === selectedId} onSelect={onSelect} compact />) : <div className="treeEmptyHint">Add parent links to reveal earlier generations</div>}</div>
