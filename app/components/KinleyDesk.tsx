@@ -18,10 +18,13 @@ const starterPrompts = [
 ];
 
 function KinleyTreeAvatar({small=false}:{small?:boolean}){return <div className={small ? "kinleyTreeAvatar small" : "kinleyTreeAvatar"} aria-label="Kinley DNA tree mascot" role="img">
+    <span className="kinleyGlow"/>
+    <span className="kinleyCrown" aria-hidden="true">✦</span>
     <span className="dnaSpine left"/><span className="dnaSpine right"/>
-    <span className="dnaStep s1"/><span className="dnaStep s2"/><span className="dnaStep s3"/>
+    <span className="dnaStep s1"/><span className="dnaStep s2"/><span className="dnaStep s3"/><span className="dnaStep s4"/>
     <span className="treeBranch b1"/><span className="treeBranch b2"/><span className="treeBranch b3"/><span className="treeBranch b4"/>
-    <span className="treeLeaf l1"/><span className="treeLeaf l2"/><span className="treeLeaf l3"/><span className="treeLeaf l4"/>
+    <span className="treeLeaf l1"/><span className="treeLeaf l2"/><span className="treeLeaf l3"/><span className="treeLeaf l4"/><span className="treeLeaf l5"/>
+    <span className="treeRoot r1"/><span className="treeRoot r2"/>
     <span className="treeFace"><i/><i/><b/></span>
   </div>}
 
