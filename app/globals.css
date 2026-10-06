@@ -125,3 +125,36 @@ nav button.active{background:#e8eee8;border-radius:14px}
 .secondary.light{transition:transform .15s,background .15s}
 .secondary.light:hover{transform:translateY(-2px);background:#e7e3d8}
 @media(max-width:550px){.hero h2{font-size:39px}.hero{border-radius:22px}}
+
+
+/* Kinley DNA Tree mascot */
+.kinleyTreeAvatar{position:relative;width:38px;height:42px;flex:none;filter:drop-shadow(0 4px 7px #203b2d22);animation:kinleyTreeFloat 3.2s ease-in-out infinite}
+.kinleyTreeAvatar.small{width:30px;height:32px;filter:none;animation-duration:2.8s}
+.kinleyTreeAvatar .dnaSpine{position:absolute;width:5px;height:29px;border:2px solid #d5ae55;border-radius:50%;top:7px;z-index:1}
+.kinleyTreeAvatar .dnaSpine.left{left:8px;transform:rotate(22deg)}
+.kinleyTreeAvatar .dnaSpine.right{right:8px;transform:rotate(-22deg)}
+.kinleyTreeAvatar .dnaStep{position:absolute;height:2px;width:17px;background:#d5ae55;left:10px;z-index:2;border-radius:3px}
+.kinleyTreeAvatar .s1{top:12px}.kinleyTreeAvatar .s2{top:20px}.kinleyTreeAvatar .s3{top:28px}
+.kinleyTreeAvatar .treeBranch{position:absolute;height:3px;background:#315b45;border-radius:4px;transform-origin:left center;z-index:3}
+.kinleyTreeAvatar .b1{width:14px;left:18px;top:9px;transform:rotate(-34deg)}
+.kinleyTreeAvatar .b2{width:13px;left:17px;top:14px;transform:rotate(30deg)}
+.kinleyTreeAvatar .b3{width:12px;left:17px;top:7px;transform:rotate(-62deg)}
+.kinleyTreeAvatar .b4{width:12px;left:18px;top:18px;transform:rotate(58deg)}
+.kinleyTreeAvatar .treeLeaf{position:absolute;width:7px;height:7px;border-radius:50% 50% 45% 50%;background:#315b45;z-index:4;box-shadow:0 0 0 2px #e8eee8}
+.kinleyTreeAvatar .l1{left:28px;top:1px}.kinleyTreeAvatar .l2{left:29px;top:10px}.kinleyTreeAvatar .l3{left:25px;top:18px}.kinleyTreeAvatar .l4{left:34px;top:5px}
+.kinleyTreeAvatar .treeFace{position:absolute;left:10px;top:31px;width:19px;height:10px;border-radius:50%;background:#f4e2aa;z-index:5;border:1px solid #b99648}
+.kinleyTreeAvatar .treeFace i{position:absolute;width:2.5px;height:2.5px;border-radius:50%;background:#24362d;top:3px}
+.kinleyTreeAvatar .treeFace i:first-child{left:5px}.kinleyTreeAvatar .treeFace i:nth-child(2){right:5px}
+.kinleyTreeAvatar .treeFace b{position:absolute;width:6px;height:3px;border-bottom:1.5px solid #24362d;border-radius:50%;left:6px;top:5px}
+.kinleyTreeAvatar.small .dnaSpine{height:22px;width:4px;top:5px}.kinleyTreeAvatar.small .dnaSpine.left{left:6px}.kinleyTreeAvatar.small .dnaSpine.right{right:6px}
+.kinleyTreeAvatar.small .dnaStep{width:13px;left:8px}.kinleyTreeAvatar.small .s1{top:9px}.kinleyTreeAvatar.small .s2{top:15px}.kinleyTreeAvatar.small .s3{top:21px}
+.kinleyTreeAvatar.small .treeBranch{height:2px}.kinleyTreeAvatar.small .b1{width:10px;left:15px;top:7px}.kinleyTreeAvatar.small .b2{width:9px;left:14px;top:11px}.kinleyTreeAvatar.small .b3{width:9px;left:14px;top:5px}.kinleyTreeAvatar.small .b4{width:9px;left:15px;top:14px}
+.kinleyTreeAvatar.small .treeLeaf{width:5px;height:5px}.kinleyTreeAvatar.small .l1{left:22px;top:0}.kinleyTreeAvatar.small .l2{left:23px;top:7px}.kinleyTreeAvatar.small .l3{left:20px;top:13px}.kinleyTreeAvatar.small .l4{left:27px;top:4px}
+.kinleyTreeAvatar.small .treeFace{left:8px;top:24px;width:15px;height:8px}.kinleyTreeAvatar.small .treeFace i{width:2px;height:2px;top:2px}.kinleyTreeAvatar.small .treeFace i:first-child{left:4px}.kinleyTreeAvatar.small .treeFace i:nth-child(2){right:4px}.kinleyTreeAvatar.small .treeFace b{width:5px;height:2px;left:5px;top:4px}
+.mascotWelcome{width:72px;height:72px;border-radius:22px}
+.mascotWelcome .kinleyTreeAvatar{transform:scale(1.25)}
+@keyframes kinleyTreeFloat{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-3px) rotate(1deg)}}
+.kinleyTreeAvatar .treeLeaf{animation:kinleyLeafPulse 2.6s ease-in-out infinite}
+.kinleyTreeAvatar .l2{animation-delay:.35s}.kinleyTreeAvatar .l3{animation-delay:.7s}.kinleyTreeAvatar .l4{animation-delay:1.05s}
+@keyframes kinleyLeafPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+.kinleyAvatar{background:#e8eee8}
