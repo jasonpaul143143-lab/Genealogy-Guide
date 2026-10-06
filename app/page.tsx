@@ -309,9 +309,10 @@ function Tree(){
 
      // Family links occur inside a FAM record.
      if(currentFamily && level===1){
-       if(tag==="HUSB"){currentFamily.husb=xref;continue;}
-       if(tag==="WIFE"){currentFamily.wife=xref;continue;}
-       if(tag==="CHIL"){currentFamily.children.push(xref);continue;}
+       const linkedId=value.trim().replace(/^@|@$/g,"");
+       if(tag==="HUSB"){currentFamily.husb=linkedId;continue;}
+       if(tag==="WIFE"){currentFamily.wife=linkedId;continue;}
+       if(tag==="CHIL"){if(linkedId)currentFamily.children.push(linkedId);continue;}
      }
 
      if(!currentPerson)continue;
