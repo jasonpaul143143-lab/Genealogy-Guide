@@ -294,3 +294,67 @@ main [style*="#ffffff"],main [style*="#fffdf8"],main [style*="#faf8f2"],main [st
 .rccEmpty{padding:25px;text-align:center;color:#718178;border:1px dashed rgba(255,255,255,.08);border-radius:14px}
 .timelineList article time{min-width:95px;color:#e4c76c;font:700 12px "Space Grotesk"}.timelineList small{margin-top:6px}
 @media(max-width:800px){.rccHeader{display:block}.rccHeader .secondary{margin-top:14px}.rccStats{grid-template-columns:1fr 1fr}.rccGrid{grid-template-columns:1fr}.rccFormGrid{grid-template-columns:1fr}}
+
+
+/* FINAL VISUAL POLISH — motion, depth, focus */
+.visualExperience{
+  position:relative;overflow:hidden;margin:22px 0 0;padding:24px 26px 18px;
+  border:1px solid rgba(230,201,111,.16);border-radius:28px;
+  background:linear-gradient(135deg,rgba(15,34,23,.98),rgba(7,16,11,.98));
+  box-shadow:0 22px 70px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.035);
+}
+.experienceGlow{
+  position:absolute;width:440px;height:260px;right:-120px;top:-150px;border-radius:50%;
+  background:radial-gradient(circle,rgba(230,201,111,.15),transparent 68%);
+  filter:blur(12px);animation:ggGlow 7s ease-in-out infinite alternate;pointer-events:none;
+}
+.experienceHeader{position:relative;display:flex;align-items:flex-start;justify-content:space-between;gap:18px}
+.experienceHeader h3{margin:3px 0 5px;font:700 25px "DM Serif Display",serif!important}
+.experienceHeader>div:first-child p:not(.eyebrow){margin:0;color:#84958b!important;font-size:12px;max-width:650px;line-height:1.55}
+.liveBadge{display:flex;align-items:center;gap:8px;white-space:nowrap;padding:8px 11px;border:1px solid rgba(106,164,121,.22);border-radius:999px;background:rgba(78,160,99,.07);color:#9bc9a7;font-size:10px}
+.liveBadge span{width:6px;height:6px;border-radius:50%;background:#75c287;box-shadow:0 0 0 4px rgba(117,194,135,.08);animation:ggPulse 2s ease-in-out infinite}
+.experienceStage{position:relative;display:grid;grid-template-columns:210px 1fr;align-items:center;gap:24px;min-height:190px;margin-top:12px}
+.orbitScene{position:relative;height:165px;display:grid;place-items:center}
+.orbit{position:absolute;border:1px solid rgba(230,201,111,.17);border-radius:50%;transform:rotate(-18deg)}
+.orbitOne{width:138px;height:72px;animation:ggOrbit 9s linear infinite}
+.orbitTwo{width:105px;height:150px;transform:rotate(35deg);animation:ggOrbitReverse 12s linear infinite}
+.orbitCore{width:62px;height:62px;border-radius:20px;display:grid;place-items:center;color:#e6c96f;
+ background:radial-gradient(circle at 35% 30%,#31583c,#102219 72%);border:1px solid rgba(230,201,111,.3);
+ box-shadow:0 0 45px rgba(91,150,106,.15),inset 0 1px 0 rgba(255,255,255,.08);animation:ggFloat 4s ease-in-out infinite}
+.orbitDot{position:absolute;width:7px;height:7px;border-radius:50%;background:#e6c96f;box-shadow:0 0 12px rgba(230,201,111,.5)}
+.dotA{top:31px;left:50%;animation:ggDotA 4s linear infinite}.dotB{right:25px;bottom:42px;background:#6fac7d;animation:ggDotB 5s linear infinite}.dotC{left:28px;bottom:48px;background:#6fac7d;animation:ggDotC 6s linear infinite}
+.discoveryCard{position:relative;display:grid;grid-template-columns:44px 1fr 22px;gap:13px;align-items:start;padding:20px;border-radius:20px;
+ background:linear-gradient(145deg,rgba(20,42,28,.88),rgba(8,19,13,.9));border:1px solid rgba(230,201,111,.15);
+ box-shadow:0 14px 40px rgba(0,0,0,.18);animation:ggReveal .55s cubic-bezier(.2,.8,.2,1)}
+.discoveryIcon{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;color:#e6c96f;background:rgba(230,201,111,.08);border:1px solid rgba(230,201,111,.18)}
+.discoveryKicker{font:700 9px "Space Grotesk",sans-serif;letter-spacing:.14em;color:#8da096}
+.discoveryCopy h4{margin:4px 0 4px;font-size:17px}.discoveryCopy p{margin:0;color:#87978d!important;font-size:11px;line-height:1.55;max-width:580px}
+.discoveryCopy button{display:inline-flex;align-items:center;gap:7px;margin-top:12px;border:0;background:transparent;color:#e6c96f;padding:0;font:700 11px "Manrope",sans-serif;cursor:pointer}
+.discoveryCopy button:hover{gap:10px}.discoveryCheck{color:#6da67b;margin-top:2px}
+.experienceDots{display:flex;justify-content:center;gap:6px;margin-top:2px}.experienceDots button{width:22px;height:3px;padding:0;border:0;border-radius:10px;background:#294233;cursor:pointer;transition:.25s}.experienceDots button.active{width:38px;background:#d9bd61}
+.stats{position:relative}
+.stats div{transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease}
+.stats div:hover{transform:translateY(-3px);border-color:rgba(230,201,111,.22)!important;box-shadow:0 12px 28px rgba(0,0,0,.18)}
+.grid article,.toolGrid article,.dnaCards article,.lesson{transition:transform .28s ease,border-color .28s ease,background .28s ease,box-shadow .28s ease}
+.grid article:hover,.toolGrid article:hover,.dnaCards article:hover{transform:translateY(-4px);box-shadow:0 16px 35px rgba(0,0,0,.18)}
+.lesson:hover{transform:translateX(4px);border-color:rgba(230,201,111,.22)!important}
+.primary,.secondary,.plansButton,.kinley,.installButton{transition:transform .2s ease,box-shadow .2s ease,filter .2s ease}
+.primary:hover,.secondary:hover,.plansButton:hover,.kinley:hover,.installButton:hover{transform:translateY(-2px)}
+.primary:hover{box-shadow:0 10px 24px rgba(230,201,111,.16);filter:brightness(1.04)}
+.eyebrow{letter-spacing:.14em!important}
+@keyframes ggReveal{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes ggGlow{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(-35px,25px,0) scale(1.12)}}
+@keyframes ggPulse{0%,100%{opacity:.55;transform:scale(.9)}50%{opacity:1;transform:scale(1.15)}}
+@keyframes ggFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes ggOrbit{to{transform:rotate(342deg)}}@keyframes ggOrbitReverse{to{transform:rotate(-325deg)}}
+@keyframes ggDotA{0%{transform:translate(-54px,-22px)}50%{transform:translate(54px,22px)}100%{transform:translate(-54px,-22px)}}
+@keyframes ggDotB{0%{transform:translate(0,0)}50%{transform:translate(-20px,-15px)}100%{transform:translate(0,0)}}
+@keyframes ggDotC{0%{transform:translate(0,0)}50%{transform:translate(16px,13px)}100%{transform:translate(0,0)}}
+@media(max-width:760px){
+ .visualExperience{padding:20px 16px 15px}.experienceHeader{display:block}.liveBadge{display:inline-flex;margin-top:12px}
+ .experienceStage{grid-template-columns:1fr;min-height:0;gap:2px}.orbitScene{height:120px;transform:scale(.82)}
+ .discoveryCard{padding:15px}.experienceDots{margin-top:7px}
+}
+@media(prefers-reduced-motion:reduce){
+ .visualExperience *,.visualExperience *::before,.visualExperience *::after{animation:none!important;transition:none!important}
+}
