@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import "./globals.css";
+import ServiceWorkerRegister from "./ServiceWorkerRegister";
 
 export const metadata: Metadata={
   title:"Genealogy Guide",
-  description:"Learn genealogy, research family history, build your tree, and explore genetic genealogy.",
+  description:"Learn genealogy, research family history, build your tree, and investigate evidence with Kinley.",
   manifest:"/manifest.webmanifest"
 };
 
-export default function RootLayout({children}:{children:React.ReactNode}){
-  return <html lang="en"><body>{children}<script dangerouslySetInnerHTML={{__html:`if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}));}`}}/></body></html>
+export default function RootLayout({children}:{children:ReactNode}){
+ return <html lang="en"><body>{children}<ServiceWorkerRegister/></body></html>;
 }
