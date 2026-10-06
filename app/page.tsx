@@ -10,6 +10,7 @@ import { useEffect, useState, useRef } from "react";
 import KinleyDesk from "./components/KinleyDesk";
 import Plans from "./components/Plans";
 import { parseMigrationStops } from "./lib/migration";
+import { unzipSync, strFromU8 } from "fflate";
 
 type Section = "Home"|"Learn"|"Research"|"Tree"|"Tools"|"DNA";
 type ToolKey = "Evidence Checker"|"Research Log"|"Name Variants"|"Timeline Builder"|"Relationship Analyzer"|"Brick Wall Planner"|null;
@@ -225,15 +226,27 @@ function Tree(){
    const file=e.target.files?.[0]; if(!file)return;
    setImportStatus("");
    try{
-     const text=await file.text();
      const lower=file.name.toLowerCase();
+
      if(lower.endsWith(".json")){
-       mergeImportedTree(JSON.parse(text));
+       mergeImportedTree(JSON.parse(await file.text()));
      }else if(lower.endsWith(".ged") || lower.endsWith(".gedcom")){
-       const parsed=parseGEDCOM(text);
-       mergeImportedTree(parsed);
+       mergeImportedTree(parseGEDCOM(await file.text()));
+     }else if(lower.endsWith(".zip")){
+       // Ancestry delivers downloaded GEDCOMs inside a ZIP archive.
+       // Open the archive locally and find the actual family-tree file.
+       const bytes=new Uint8Array(await file.arrayBuffer());
+       const archive=unzipSync(bytes);
+       const gedEntry=Object.entries(archive).find(([name])=>{
+         const n=name.toLowerCase();
+         return n.endsWith(".ged") || n.endsWith(".gedcom");
+       });
+       if(!gedEntry){
+         throw new Error("This ZIP does not contain a .ged or .gedcom family tree file. Make sure it is the Ancestry tree download, not a DNA or account-data download.");
+       }
+       mergeImportedTree(parseGEDCOM(strFromU8(gedEntry[1])));
      }else{
-       throw new Error("Please choose a .ged, .gedcom, or .json genealogy export.");
+       throw new Error("Please choose the Ancestry ZIP download, a .ged/.gedcom file, or a Genealogy Guide .json export.");
      }
    }catch(err){
      setImportStatus(err instanceof Error?err.message:"Could not import that tree.");
@@ -397,7 +410,7 @@ function Tree(){
   <div className="treeToolbar">
    <button className="primary" onClick={()=>document.getElementById("tree-person-name")?.focus()}><UserPlus size={17}/> Add person</button>
    <button className="secondary light" onClick={()=>importInputRef.current?.click()}><Upload size={16}/> Import tree</button>
-   <input ref={importInputRef} type="file" accept=".ged,.gedcom,.json" hidden onChange={importTreeFile}/>
+   <input ref={importInputRef} type="file" accept=".ged,.gedcom,.json,.zip" hidden onChange={importTreeFile}/>
    <button className="secondary light" onClick={exportTree}><Download size={16}/> Export tree</button>
    <span><ShieldCheck size={16}/> Stored locally on this device</span>
   </div>
@@ -443,7 +456,7 @@ function Tree(){
     {currentSources.length===0?<p className="empty">No sources attached yet.</p>:currentSources.map(s=><div className="sourceCard" key={s.id}><div><strong>{s.title}</strong><small>{s.type} • Added {s.date}</small>{s.notes&&<span>{s.notes}</span>}{s.url&&<a href={s.url} target="_blank" rel="noreferrer">Open record</a>}</div></div>)}
    </div>
   </div>
-  {importStatus&&<div className="treeImportStatus"><strong>Tree import:</strong> {importStatus}<small>Supported: GEDCOM (.ged/.gedcom) and Genealogy Guide JSON. Ancestry and FamilySearch trees should be exported from their service as GEDCOM first; the app does not bypass their account or export controls.</small></div>}
+  {importStatus&&<div className="treeImportStatus"><strong>Tree import:</strong> {importStatus}<small>Supported: Ancestry ZIP/GEDCOM (.zip/.ged/.gedcom) and Genealogy Guide JSON. Ancestry ZIP downloads are opened locally in your browser and the GEDCOM inside is imported. The app does not access your Ancestry account.</small></div>}
   {migrationReady&&<div className="migrationUnlock">
    <div className="migrationUnlockIcon"><MapPinned size={23}/></div>
    <div className="migrationUnlockCopy"><p className="eyebrow">MIGRATION MAP UNLOCKED</p><h3>Your tree shows movement across states.</h3><p>Genealogy Guide found {migrationStops.length} location points across {migrationStates.length} states in your tree. Open the map to watch the ancestor locations in chronological order.</p><small>Only locations found in your tree are used. A connecting line shows chronological evidence, not an exact travel route.</small></div>
