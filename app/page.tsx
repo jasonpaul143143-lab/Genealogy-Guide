@@ -11,6 +11,7 @@ import KinleyDesk from "./components/KinleyDesk";
 import ResearchCommandCenter from "./components/ResearchCommandCenter";
 import FamilyTreeCanvas from "./components/FamilyTreeCanvas";
 import Plans from "./components/Plans";
+import VisualExperience from "./components/VisualExperience";
 import { parseMigrationStops } from "./lib/migration";
 import { unzipSync, strFromU8 } from "fflate";
 
@@ -119,6 +120,7 @@ export default function HomePage(){
 function HomeSection({go,setShowKinley,setLesson}:{go:(s:Section)=>void,setShowKinley:(v:boolean)=>void,setLesson:(n:number|null)=>void}){
  return <>
  <section className="hero"><div><p className="eyebrow">THE GENEALOGY GUIDE</p><h2>Build a family tree you can actually prove.</h2><p>Go beyond names and dates. Learn how to find records, evaluate evidence, solve difficult relationships, use DNA responsibly, and document every discovery.</p><div className="heroActions"><button className="primary" onClick={()=>go("Learn")}>Start Learning <ArrowRight size={17}/></button><button className="secondary" onClick={()=>go("Research")}>Research Center</button></div></div><div className="principle"><ShieldCheck size={27}/><strong>The Kinley Principle</strong><span>Never invent an ancestor to fill a gap. A blank generation is better than a false one.</span><small>Evidence first • Sources matter • Conflicts get investigated</small></div></section>
+ <VisualExperience onResearch={()=>go("Research")} onTree={()=>go("Tree")} onKinley={()=>setShowKinley(true)}/>
  <section className="stats"><div><b>12</b><span>Core lessons</span></div><div><b>6</b><span>Research guides</span></div><div><b>5</b><span>Evidence levels</span></div><div><b>∞</b><span>Research questions</span></div></section>
  <section className="section"><div className="sectionTitle"><div><p className="eyebrow">EXPLORE</p><h3>Everything you need to research smarter</h3><p>Start anywhere. Genealogy Guide is designed to grow from a first family interview into advanced documentary and genetic research.</p></div></div>
  <div className="grid">{[
