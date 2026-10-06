@@ -135,7 +135,7 @@ export default function KinleyDesk({close}:{close:()=>void}){
           </div>
         </div>
         <div className="kinleyHeaderActions">
-          <div className="kinleyPlanBadge">{plan==="free" ? <Lock size={12}/> : <Sparkles size={12}/>} {PLAN_CONFIG[plan].mode.toUpperCase()}</div>
+          <div className={"kinleyPlanBadge kinleyTierBadge " + PLAN_CONFIG[plan].accent}>{plan==="free" ? <Lock size={12}/> : <Sparkles size={12}/>} {PLAN_CONFIG[plan].tierLabel.toUpperCase()}</div>
           <button title="New conversation" onClick={clearChat}><Plus size={18}/></button>
           <button title="Close Kinley" onClick={close}><X size={19}/></button>
         </div>
@@ -145,7 +145,7 @@ export default function KinleyDesk({close}:{close:()=>void}){
         {messages.length === 0 ? (
           <div className="kinleyWelcome">
             <div className="kinleyWelcomeIcon mascotWelcome"><KinleyTreeAvatar /></div>
-            <h2>How can I help with your family tree?</h2>
+            <div className="kinleyWelcomeModel"><span className={"kinleyModelDot " + PLAN_CONFIG[plan].accent}></span>{PLAN_CONFIG[plan].kinleyName}</div>\n            <h2>Research your family history with confidence.</h2>
             <p>
               Talk to me normally. Ask a quick question, work through a difficult
               ancestor, or investigate a genealogy brick wall. When the question
@@ -201,7 +201,7 @@ export default function KinleyDesk({close}:{close:()=>void}){
           <span><BookOpen size={13}/> Learn how to verify</span>
           <button onClick={()=>navigator.clipboard?.writeText(input)} disabled={!input.trim()}><Copy size={13}/> Copy question</button>
         </div>
-        <small>Kinley changes research depth with your verified Genealogy Guide subscription. Higher tiers unlock deeper research tools, but the evidence standard never changes.</small>
+        <div className="kinleyCapabilityStrip"><span><b>{PLAN_CONFIG[plan].kinleyName}</b></span><span>{PLAN_CONFIG[plan].description}</span></div><small>Higher tiers unlock deeper research tools. Kinley never upgrades a conclusion just because a plan is more expensive.</small>
       </div>
     </div>
   </div>
