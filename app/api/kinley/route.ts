@@ -53,12 +53,28 @@ export async function POST(request: NextRequest){
       .filter((m:any)=>m && (m.role==="user" || m.role==="kinley") && typeof m.text==="string")
       .slice(-20)
       .map((m:any)=>({role:m.role==="kinley" ? "assistant" : "user",content:m.text}));
+    const tree=body?.tree;
+    const treeContext=tree ? `
+STRUCTURED FAMILY TREE CONTEXT FROM THE USER'S LOCAL DATABASE:
+People:
+${JSON.stringify(tree.people || [], null, 2)}
+Relationships:
+${JSON.stringify(tree.relationships || [], null, 2)}
+Sources:
+${JSON.stringify(tree.sources || [], null, 2)}
+
+Use this as user-provided research context. Do not treat it as independently verified. When answering a question about a person, inspect the relevant people, relationships, and sources before making a recommendation. Point out missing sources, conflicting dates/places, disconnected people, and unsupported relationships. Never silently upgrade a tree entry into proof.
+` : "";
 
     if(!messages.length){
       return new Response(JSON.stringify({error:"Please enter a message."}),{status:400,headers:{"Content-Type":"application/json"}});
     }
 
     const model=process.env.OPENAI_MODEL || "gpt-6-luna";
+
+    const fullInstructions=KINLEY_INSTRUCTIONS + treeContext + `
+When the user asks for research help, do not merely answer from memory. Use the available web research tool when current or specific historical details need verification. Prefer authoritative repositories, archives, record collections, government sources, libraries, and original-record images when available. Give the user the exact record type, jurisdiction, date range, and search strategy that would let them reproduce the work.
+`;
 
     const upstream=await fetch("https://api.openai.com/v1/responses",{
       method:"POST",
@@ -68,7 +84,7 @@ export async function POST(request: NextRequest){
       },
       body:JSON.stringify({
         model,
-        instructions:KINLEY_INSTRUCTIONS,
+        instructions:fullInstructions,
         input:messages,
         stream:true,
         tools:[{type:"web_search"}]
