@@ -301,3 +301,6 @@ main:after{right:0;background:
 @keyframes canopyBreathe{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-2px) scale(1.035)}}
 @media(max-width:720px){.familyTreeHeader{align-items:flex-start;flex-direction:column}.familyTreeStats{justify-content:flex-start}.familyTreeCanvas{min-height:760px;padding-left:12px;padding-right:12px}.familyTreeCard{min-width:175px}.familyTreeFocusRow{flex-direction:column}.spouseCluster{padding-left:0}.familyTreeTrunk{display:none}}
 @media(prefers-reduced-motion:reduce){.familyTreeCard,.growthCanopy span{animation:none!important}.familyTreeCard{transition:none}.growthCanopy{transition:none}}
+
+
+.dangerButton{border:1px solid #e2b8b8;background:#fff7f7;color:#9b2c2c;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px}.dangerButton:hover:not(:disabled){background:#feecec;border-color:#cf8b8b}.dangerButton:disabled{opacity:.45;cursor:not-allowed}
