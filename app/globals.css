@@ -78,3 +78,5 @@
 .toolOpenButton{cursor:pointer;position:relative;z-index:2;pointer-events:auto}.toolSaved{margin-top:14px;padding:11px 14px;border:1px solid #cbd7c9;background:#f2f6f0;border-radius:10px;color:#315443;font-size:13px;display:flex;align-items:center;gap:7px}.toolModal{z-index:1000!important}.toolModal button{cursor:pointer;pointer-events:auto}.toolModal textarea{width:100%;min-height:170px;resize:vertical;display:block}
 
 .sourceHint{display:grid;grid-template-columns:auto 1fr;gap:12px;margin:14px 0;padding:14px;border:1px solid #d9d1bf;border-radius:14px;background:#faf7ef}.sourceHintIcon{width:38px;height:38px;border-radius:10px;background:#315443;color:#f4e2aa;display:grid;place-items:center}.sourceHint h4{margin:2px 0 5px}.sourceHint p:not(.eyebrow){margin:0 0 8px;color:#667168;font-size:13px;line-height:1.45}.sourceHint ol{margin:0 0 10px;padding-left:20px;color:#68736b;font-size:12px;line-height:1.55}.sourceHint button{width:max-content}
+
+.toolTip{margin:10px 0;padding:10px 12px;border-radius:10px;background:#f2eee4;color:#69736b;font-size:12px;line-height:1.45}
