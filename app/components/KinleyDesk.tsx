@@ -11,6 +11,16 @@ type ChatMessage = {
 
 const STORAGE = "gg-kinley-chat";
 
+function recommendedQuestions(question:string){
+  const q=question.trim();
+  if(!q) return [];
+  return [
+    `What evidence would actually prove or disprove this?`,
+    `What records should I search next for this question?`,
+    `What identity or timeline conflicts should I check?`
+  ];
+}
+
 function displayText(text:string){ return String(text || "").replace(/\\n/g, "\n"); }
 
 const starterPrompts = [
@@ -38,6 +48,7 @@ export default function KinleyDesk({close}:{close:()=>void}){
   const [elapsed,setElapsed] = useState(0);
   const [error,setError] = useState("");
   const [plan,setPlan] = useState<PlanId>("free");
+  const [recommendations,setRecommendations] = useState<string[]>([]);
 
   useEffect(()=>{
     try{ setPlan(normalizePlan(localStorage.getItem("gg-plan"))); }catch{}
@@ -147,7 +158,8 @@ export default function KinleyDesk({close}:{close:()=>void}){
         {messages.length === 0 ? (
           <div className="kinleyWelcome">
             <div className="kinleyWelcomeIcon mascotWelcome"><KinleyTreeAvatar /></div>
-            <div className="kinleyWelcomeModel"><span className={"kinleyModelDot " + PLAN_CONFIG[plan].accent}></span>{PLAN_CONFIG[plan].kinleyName}</div>\n            <h2>Research your family history with confidence.</h2>
+            <div className="kinleyWelcomeModel"><span className={"kinleyModelDot " + PLAN_CONFIG[plan].accent}></span>{PLAN_CONFIG[plan].kinleyName}</div>
+            <h2>Research your family history with confidence.</h2>
             <p>
               Talk to me normally. Ask a quick question, work through a difficult
               ancestor, or investigate a genealogy brick wall. When the question
@@ -180,6 +192,14 @@ export default function KinleyDesk({close}:{close:()=>void}){
               <div className="messageBubble typing"><span/><span/><span/></div>
             </div>}
             {error && <div className="kinleyError">{error}</div>}
+            {!researching && recommendations.length>0 && (
+              <div className="kinleyRecommendations">
+                <div className="kinleyRecommendationsHead"><Sparkles size={14}/><span>Recommended next questions</span></div>
+                <div className="kinleyRecommendationsGrid">
+                  {recommendations.map((q,i)=><button key={i} onClick={()=>setInput(q)}>{q}<Search size={13}/></button>)}
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
