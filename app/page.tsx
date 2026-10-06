@@ -206,7 +206,11 @@ function Tree(){
      from:idMap.get(String(r.from))||String(r.from),
      to:idMap.get(String(r.to))||String(r.to),
      type:String(r.type||"Associated with")
-   })).filter((r:any)=>r.from!==r.to && people.some(p=>p.id===r.from)||additions.some((p:any)=>p.id===r.from));
+   })).filter((r:any)=>{
+     const fromExists=people.some(p=>p.id===r.from)||additions.some((p:any)=>p.id===r.from);
+     const toExists=people.some(p=>p.id===r.to)||additions.some((p:any)=>p.id===r.to);
+     return r.from!==r.to && fromExists && toExists;
+   });
    const newSources=importedSources.map((s:any)=>({
      id:crypto.randomUUID(),
      personId:idMap.get(String(s.personId))||String(s.personId||""),
@@ -219,7 +223,13 @@ function Tree(){
    setPeople(prev=>[...prev,...additions]);
    setRelationships(prev=>[...prev,...newRels]);
    setSources(prev=>[...prev,...newSources]);
-   setSelected(additions[0]?.id || selected);
+   const importedIds=new Set(additions.map((p:any)=>p.id));
+   const importedCandidates=[...additions];
+   const bestImported=importedCandidates.sort((a:any,b:any)=>{
+     const degree=(id:string)=>newRels.filter((r:any)=>r.from===id||r.to===id).length;
+     return degree(b.id)-degree(a.id);
+   })[0];
+   setSelected(bestImported?.id || additions[0]?.id || selected);
    setImportStatus(`Imported ${importedPeople.length} people. Existing matching people were merged; imported entries are marked for review.`);
  };
 
