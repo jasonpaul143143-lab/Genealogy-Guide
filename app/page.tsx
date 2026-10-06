@@ -169,6 +169,107 @@ function Tree(){
    setSourceTitle("");setSourceUrl("");setSourceNotes("");
    setPeople(prev=>prev.map(p=>p.id===selected && p.status==="Needs sources"?{...p,status:"Research in progress"}:p));
  };
+ const [importStatus,setImportStatus]=useState("");
+ const importInputRef=useRef<HTMLInputElement>(null);
+
+ const mergeImportedTree=(data:any)=>{
+   const importedPeople=Array.isArray(data?.people)?data.people:[];
+   const importedRelationships=Array.isArray(data?.relationships)?data.relationships:[];
+   const importedSources=Array.isArray(data?.sources)?data.sources:(Array.isArray(data?.records)?data.records:[]);
+   if(!importedPeople.length) throw new Error("No people were found. Export a GEDCOM file from Ancestry or FamilySearch first.");
+   const existingByKey=new Map(people.map(p=>[p.name.trim().toLowerCase()+"|"+(p.birth||"").trim(),p.id]));
+   const idMap=new Map<string,string>();
+   const additions=importedPeople.map((p:any)=>{
+     const oldId=String(p.id ?? crypto.randomUUID());
+     const key=String(p.name||"").trim().toLowerCase()+"|"+String(p.birth||"").trim();
+     const existing=existingByKey.get(key);
+     if(existing){idMap.set(oldId,existing);return null;}
+     const id=crypto.randomUUID(); idMap.set(oldId,id);
+     return {
+       id,
+       name:String(p.name||"Unnamed person"),
+       relation:String(p.relation||"Imported"),
+       status:String(p.status||"Imported — needs review"),
+       birth:String(p.birth||""),
+       death:String(p.death||""),
+       places:String(p.places||p.place||""),
+       notes:String(p.notes||"Imported from genealogy tree")
+     };
+   }).filter(Boolean);
+   const newRels=importedRelationships.map((r:any)=>({
+     id:crypto.randomUUID(),
+     from:idMap.get(String(r.from))||String(r.from),
+     to:idMap.get(String(r.to))||String(r.to),
+     type:String(r.type||"Associated with")
+   })).filter((r:any)=>r.from!==r.to && people.some(p=>p.id===r.from)||additions.some((p:any)=>p.id===r.from));
+   const newSources=importedSources.map((s:any)=>({
+     id:crypto.randomUUID(),
+     personId:idMap.get(String(s.personId))||String(s.personId||""),
+     title:String(s.title||s.type||"Imported source"),
+     type:String(s.type||"Imported"),
+     date:String(s.date||""),
+     url:String(s.url||""),
+     notes:String(s.notes||"Imported with tree")
+   })).filter((s:any)=>s.personId);
+   setPeople(prev=>[...prev,...additions]);
+   setRelationships(prev=>[...prev,...newRels]);
+   setSources(prev=>[...prev,...newSources]);
+   setSelected(additions[0]?.id || selected);
+   setImportStatus(`Imported ${importedPeople.length} people. Existing matching people were merged; imported entries are marked for review.`);
+ };
+
+ const importTreeFile=async(e:React.ChangeEvent<HTMLInputElement>)=>{
+   const file=e.target.files?.[0]; if(!file)return;
+   setImportStatus("");
+   try{
+     const text=await file.text();
+     const lower=file.name.toLowerCase();
+     if(lower.endsWith(".json")){
+       mergeImportedTree(JSON.parse(text));
+     }else if(lower.endsWith(".ged") || lower.endsWith(".gedcom")){
+       const parsed=parseGEDCOM(text);
+       mergeImportedTree(parsed);
+     }else{
+       throw new Error("Please choose a .ged, .gedcom, or .json genealogy export.");
+     }
+   }catch(err){
+     setImportStatus(err instanceof Error?err.message:"Could not import that tree.");
+   }finally{e.target.value="";}
+ };
+
+ const parseGEDCOM=(text:string)=>{
+   const lines=text.split(/\r?\n/);
+   const people:any[]=[]; const relationships:any[]=[]; const sources:any[]=[];
+   const byId=new Map<string,any>();
+   let current:any=null;
+   for(const raw of lines){
+     const line=raw.trimEnd(); const m=line.match(/^(\\d+) (?:@([^@]+)@ )?([^ ]+)(?: (.*))?$/);
+     if(!m)continue;
+     const level=Number(m[1]),xref=m[2],tag=m[3],value=m[4]||"";
+     if(level===0){
+       current=null;
+       if(xref && (tag==="INDI"||tag==="PERSON")){
+         current={id:xref,name:"Unnamed person",relation:"Imported",status:"Imported — needs review",birth:"",death:"",places:"",notes:""};
+         byId.set(xref,current); people.push(current);
+       }
+       continue;
+     }
+     if(!current)continue;
+     if(tag==="NAME")current.name=value.replace(/\//g,"").trim()||current.name;
+     if(tag==="BIRT"||tag==="DEAT"){current._event=tag;}
+     if(level===2 && tag==="DATE" && current._event==="BIRT")current.birth=value;
+     if(level===2 && tag==="DATE" && current._event==="DEAT")current.death=value;
+     if(level===2 && tag==="PLAC")current.places=value;
+     if(level===1 && tag==="NOTE")current.notes=value;
+   }
+   for(const raw of lines){
+     const m=raw.match(/^1 (FAMC|FAMS) @([^@]+)@/);
+     if(m){
+       const childOrSpouse=raw; void childOrSpouse;
+     }
+   }
+   return {people,relationships,sources};
+ };
  const exportTree=()=>{
    const blob=new Blob([JSON.stringify({people,sources,relationships,exportedAt:new Date().toISOString()},null,2)],{type:"application/json"});
    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="genealogy-guide-tree.json";a.click();URL.revokeObjectURL(a.href);
@@ -183,6 +284,8 @@ function Tree(){
   <p className="lead">This is now a structured local genealogy database: people, life details, relationships, sources, and research notes stay together in your browser.</p>
   <div className="treeToolbar">
    <button className="primary" onClick={()=>document.getElementById("tree-person-name")?.focus()}><UserPlus size={17}/> Add person</button>
+   <button className="secondary light" onClick={()=>importInputRef.current?.click()}><Upload size={16}/> Import tree</button>
+   <input ref={importInputRef} type="file" accept=".ged,.gedcom,.json" hidden onChange={importTreeFile}/>
    <button className="secondary light" onClick={exportTree}><Download size={16}/> Export tree</button>
    <span><ShieldCheck size={16}/> Stored locally on this device</span>
   </div>
@@ -227,6 +330,7 @@ function Tree(){
     {currentSources.length===0?<p className="empty">No sources attached yet.</p>:currentSources.map(s=><div className="sourceCard" key={s.id}><div><strong>{s.title}</strong><small>{s.type} • Added {s.date}</small>{s.notes&&<span>{s.notes}</span>}{s.url&&<a href={s.url} target="_blank" rel="noreferrer">Open record</a>}</div></div>)}
    </div>
   </div>
+  {importStatus&&<div className="treeImportStatus"><strong>Tree import:</strong> {importStatus}<small>Supported: GEDCOM (.ged/.gedcom) and Genealogy Guide JSON. Ancestry and FamilySearch trees should be exported from their service as GEDCOM first; the app does not bypass their account or export controls.</small></div>}
   <div className="notice"><ShieldCheck/><span><strong>Evidence reminder:</strong> the database stores claims and sources; it does not automatically prove a relationship. Kinley can use this structured tree context to identify missing evidence, conflicts, and better next records.</span></div>
  </section>
 }
