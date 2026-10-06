@@ -1,5 +1,6 @@
 "use client";
 
+import "./cases.css";
 import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, CheckCircle2, ClipboardList, FileSearch, Map, Plus, Save, ShieldCheck, Target, Trash2, X } from "lucide-react";
 
@@ -18,21 +19,11 @@ function score(e:Evidence[]){
 }
 
 export default function CasesPage(){
- const [cases,setCases]=useState<CaseFile[]>([]);
- const [active,setActive]=useState<string>("");
- const [showNew,setShowNew]=useState(false);
- const [draft,setDraft]=useState({title:"",question:"",person:"",places:""});
- const [evidence,setEvidence]=useState({claim:"",source:"",quality:"Original",result:"Supports",notes:""});
- const [loaded,setLoaded]=useState(false);
- useEffect(()=>{try{const s=localStorage.getItem("gg-cases");setCases(s?JSON.parse(s):[starter]);}catch{setCases([starter])}finally{setLoaded(true)}},[]);
- useEffect(()=>{if(loaded)localStorage.setItem("gg-cases",JSON.stringify(cases))},[cases,loaded]);
- const current=cases.find(c=>c.id===active)||cases[0];
- const currentScore=useMemo(()=>score(current?.evidence||[]),[current]);
- const update=(patch:Partial<CaseFile>)=>current&&setCases(cs=>cs.map(c=>c.id===current.id?{...c,...patch}:c));
+ const [cases,setCases]=useState<CaseFile[]>([]); const [active,setActive]=useState<string>(""); const [showNew,setShowNew]=useState(false); const [draft,setDraft]=useState({title:"",question:"",person:"",places:""}); const [evidence,setEvidence]=useState({claim:"",source:"",quality:"Original",result:"Supports",notes:""}); const [loaded,setLoaded]=useState(false);
+ useEffect(()=>{try{const s=localStorage.getItem("gg-cases");setCases(s?JSON.parse(s):[starter])}catch{setCases([starter])}finally{setLoaded(true)}},[]); useEffect(()=>{if(loaded)localStorage.setItem("gg-cases",JSON.stringify(cases))},[cases,loaded]);
+ const current=cases.find(c=>c.id===active)||cases[0]; const currentScore=useMemo(()=>score(current?.evidence||[]),[current]); const update=(patch:Partial<CaseFile>)=>current&&setCases(cs=>cs.map(c=>c.id===current.id?{...c,...patch}:c));
  const addCase=()=>{if(!draft.title.trim()||!draft.question.trim())return;const c:CaseFile={id:crypto.randomUUID(),title:draft.title,question:draft.question,status:"Investigating",person:draft.person,places:draft.places,next:"Start with the strongest likely record.",evidence:[],created:new Date().toISOString()};setCases(cs=>[c,...cs]);setActive(c.id);setDraft({title:"",question:"",person:"",places:""});setShowNew(false)};
- const addEvidence=()=>{if(!current||!evidence.claim.trim()||!evidence.source.trim())return;update({evidence:[...current.evidence,{id:crypto.randomUUID(),...evidence}]});setEvidence({claim:"",source:"",quality:"Original",result:"Supports",notes:""})};
- const removeCase=()=>{if(!current)return;const rest=cases.filter(c=>c.id!==current.id);setCases(rest);setActive(rest[0]?.id||"")};
-
+ const addEvidence=()=>{if(!current||!evidence.claim.trim()||!evidence.source.trim())return;update({evidence:[...current.evidence,{id:crypto.randomUUID(),...evidence}]});setEvidence({claim:"",source:"",quality:"Original",result:"Supports",notes:""})}; const removeCase=()=>{if(!current)return;const rest=cases.filter(c=>c.id!==current.id);setCases(rest);setActive(rest[0]?.id||"")};
  return <main className="caseApp"><header className="caseHeader"><a href="/" className="caseBack"><ArrowLeft size={17}/> Genealogy Guide</a><div><p className="eyebrow">RESEARCH CASE FILES</p><h1>Investigate. Document. Prove.</h1></div><button className="primary" onClick={()=>setShowNew(true)}><Plus size={16}/> New Case</button></header>
  <section className="caseLayout"><aside className="caseList"><div className="caseListTitle"><strong>Your cases</strong><span>{cases.length}</span></div>{cases.map(c=><button className={current?.id===c.id?"caseItem active":"caseItem"} key={c.id} onClick={()=>setActive(c.id)}><strong>{c.title}</strong><span>{c.status}</span><small>{score(c.evidence).label} · {c.evidence.length} evidence items</small></button>)}</aside>
  <section className="caseMain">{current?<><div className="caseHero"><div><p className="eyebrow">CASE FILE</p><h2>{current.title}</h2><p>{current.question}</p></div><div className="caseScore"><div className="scoreRing" style={{"--score":`${currentScore.pct}%`} as React.CSSProperties}><b>{currentScore.pct}%</b></div><strong>{currentScore.label}</strong><small>documentary evidence strength</small></div></div>
@@ -40,9 +31,8 @@ export default function CasesPage(){
  <div className="caseGrid"><section className="caseCard"><div className="caseCardHead"><div><p className="eyebrow">EVIDENCE LEDGER</p><h3>What actually supports the claim?</h3></div><ShieldCheck/></div>{current.evidence.length===0?<div className="emptyCase"><FileSearch size={25}/><p>No evidence added yet.</p><small>Add each source separately. A hypothesis is not evidence.</small></div>:<div className="evidenceRows">{current.evidence.map(e=><article key={e.id}><div><strong>{e.claim}</strong><span>{e.source}</span><small>{e.notes}</small></div><div className="evidenceMeta"><b className={e.result.toLowerCase()}>{e.result}</b><span>{e.quality}</span><button onClick={()=>update({evidence:current.evidence.filter(x=>x.id!==e.id)})}><Trash2 size={14}/></button></div></article>)}</div>}</section>
  <section className="caseCard addEvidence"><p className="eyebrow">ADD EVIDENCE</p><h3>Log a source</h3><input value={evidence.claim} onChange={e=>setEvidence({...evidence,claim:e.target.value})} placeholder="What claim does this source address?"/><input value={evidence.source} onChange={e=>setEvidence({...evidence,source:e.target.value})} placeholder="Source / record citation"/><div className="twoCol"><select value={evidence.quality} onChange={e=>setEvidence({...evidence,quality:e.target.value})}>{Object.keys(qualityMap).map(x=><option key={x}>{x}</option>)}</select><select value={evidence.result} onChange={e=>setEvidence({...evidence,result:e.target.value})}><option>Supports</option><option>Conflicts</option><option>Neutral</option></select></div><textarea value={evidence.notes} onChange={e=>setEvidence({...evidence,notes:e.target.value})} placeholder="What does the source actually say? Page, image, repository, or context..."/><button className="primary full" onClick={addEvidence}><Save size={16}/> Add evidence</button><div className="qualityHelp">{qualityMap[evidence.quality]}</div></section></div>
  <section className="caseCard workflowCard"><div><p className="eyebrow">NEXT INVESTIGATION</p><h3>What should you search next?</h3><textarea value={current.next} onChange={e=>update({next:e.target.value})}/></div><div className="caseRules"><span><CheckCircle2 size={15}/> Original records first</span><span><CheckCircle2 size={15}/> Conflicts stay visible</span><span><CheckCircle2 size={15}/> No invented ancestors</span><span><CheckCircle2 size={15}/> Document negative searches</span></div></section>
- <section className="caseCard"><p className="eyebrow">RESEARCH STATUS</p><div className="statusButtons">{["Investigating","Needs records","Evidence conflict","Conclusion ready","Resolved"].map(s=><button className={current.status===s?"active":""} key={s} onClick={()=>update({status:s})}>{s}</button>)}</div></section>
- <div className="caseFooter"><button className="danger" onClick={removeCase}><Trash2 size={15}/> Delete case</button><a href="/">Return to Genealogy Guide</a></div>
+ <section className="caseCard"><p className="eyebrow">RESEARCH STATUS</p><div className="statusButtons">{["Investigating","Needs records","Evidence conflict","Conclusion ready","Resolved"].map(s=><button className={current.status===s?"active":""} key={s} onClick={()=>update({status:s})}>{s}</button>)}</div></section><div className="caseFooter"><button className="danger" onClick={removeCase}><Trash2 size={15}/> Delete case</button><a href="/">Return to Genealogy Guide</a></div>
  </>:<div className="emptyCase"><p>Create a case to begin an investigation.</p></div>}</section></section>
  {showNew&&<div className="modalBack" onClick={()=>setShowNew(false)}><div className="modal" onClick={e=>e.stopPropagation()}><button className="close" onClick={()=>setShowNew(false)}><X/></button><p className="eyebrow">NEW RESEARCH CASE</p><h2>What are you trying to prove?</h2><input value={draft.title} onChange={e=>setDraft({...draft,title:e.target.value})} placeholder="Case title"/><textarea value={draft.question} onChange={e=>setDraft({...draft,question:e.target.value})} placeholder="Example: Who were the parents of John Scoggins?"/><input value={draft.person} onChange={e=>setDraft({...draft,person:e.target.value})} placeholder="Person being investigated"/><input value={draft.places} onChange={e=>setDraft({...draft,places:e.target.value})} placeholder="County / state / country"/><button className="primary full" onClick={addCase}>Create case</button></div></div>}
- </main>
+ </main>;
 }
