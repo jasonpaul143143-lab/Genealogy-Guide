@@ -65,7 +65,10 @@ export default function KinleyDesk({close}:{close:()=>void}){
       const response=await fetch("/api/kinley",{
         method:"POST",
         headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({messages:nextMessages})
+        body:JSON.stringify({
+        messages:nextMessages,
+        tree: (()=>{try{return JSON.parse(localStorage.getItem("gg-tree") || "null")}catch{return null}})()
+      })
       });
 
       if(!response.ok || !response.body){
