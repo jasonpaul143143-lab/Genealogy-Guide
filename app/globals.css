@@ -304,3 +304,53 @@ main:after{right:0;background:
 
 
 .dangerButton{border:1px solid #e2b8b8;background:#fff7f7;color:#9b2c2c;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px}.dangerButton:hover:not(:disabled){background:#feecec;border-color:#cf8b8b}.dangerButton:disabled{opacity:.45;cursor:not-allowed}
+
+
+/* Genealogy Guide UI overhaul */
+:root{--gg-ink:#17251e;--gg-muted:#6c766f;--gg-green:#1f4d38;--gg-green-2:#2f6b4e;--gg-gold:#d9b65f;--gg-paper:#fffdf8;--gg-line:#e4ded2;--gg-soft:#f3f0e7}
+body{background:radial-gradient(circle at 8% 0%,#eef5ee 0,transparent 30%),radial-gradient(circle at 94% 4%,#f8efd8 0,transparent 28%),#f5f2ea;color:var(--gg-ink)}
+header{height:76px;padding:0 26px;box-shadow:0 8px 30px #20382a0d}
+.brandButton{transition:transform .2s ease}.brandButton:hover{transform:translateY(-1px)}
+.headerActions button{transition:.2s ease;box-shadow:0 2px 8px #20382a0b}.headerActions button:hover{transform:translateY(-2px);box-shadow:0 8px 18px #20382a16}
+.page{max-width:1320px;margin:auto;padding:38px 28px 115px}
+.page h2{font-size:clamp(42px,5vw,68px);letter-spacing:-1.5px}
+.lead{max-width:760px;color:var(--gg-muted)!important}
+.treeToolbar{padding:14px;background:#ffffffc9;border:1px solid var(--gg-line);border-radius:18px;box-shadow:0 10px 30px #20382a0a;flex-wrap:wrap}
+.treeToolbar .primary,.treeToolbar .secondary{box-shadow:0 5px 14px #20382a12;transition:.2s}.treeToolbar button:hover{transform:translateY(-2px)}
+.treeLayout{grid-template-columns:minmax(0,1.55fr) minmax(320px,.75fr);gap:22px}
+.treePanel,.personPanel{border-radius:28px;box-shadow:0 18px 45px #20382a0d}
+.treePanel{background:linear-gradient(180deg,#fffefa,#f9f6ee)}
+.personPanel{position:sticky;top:95px;align-self:start}
+.treeSectionBox{margin-top:22px;padding:18px;border:1px solid var(--gg-line);border-radius:18px;background:#f8f5ed}
+.treeSectionBox h4{margin:0 0 12px}
+.toolGrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.toolGrid article{position:relative;overflow:hidden;min-height:250px;padding:25px;border-radius:24px;box-shadow:0 12px 32px #20382a0b}
+.toolGrid article:before{content:"";position:absolute;inset:0 0 auto;height:4px;background:linear-gradient(90deg,var(--gg-green),var(--gg-gold));opacity:.9}
+.toolGrid article:hover{transform:translateY(-6px)!important;box-shadow:0 20px 45px #20382a18}
+.toolOpenButton{margin-top:18px!important;border:1px solid #cfc8b8!important;background:#f7f4eb!important;border-radius:12px!important;padding:10px 13px!important;transition:.2s!important}
+.toolOpenButton:hover{background:#1f4d38!important;color:#fff!important;border-color:#1f4d38!important}
+.toolModal{position:fixed!important;left:50%;top:50%;transform:translate(-50%,-50%);width:min(680px,calc(100% - 32px));max-height:82vh;overflow:auto;margin:0!important;z-index:100!important;background:#fffefa!important;border:1px solid #d9c88e!important;border-radius:26px!important;padding:28px!important;box-shadow:0 30px 100px #13241bcc!important}
+.toolModal:before{content:"";position:fixed;inset:-100vh;background:#13241b99;z-index:-1;pointer-events:none}
+.toolModalHead button{cursor:pointer;transition:.2s}.toolModalHead button:hover{background:#e7e0d1;transform:rotate(5deg)}
+.toolActions .primary,.toolActions .secondary{cursor:pointer}
+.kinleyBack{z-index:80!important;background:#102019dd!important;backdrop-filter:blur(8px)}
+.kinleyChat{width:min(1100px,96vw)!important;height:min(92vh,860px)!important;border-radius:30px!important;border:1px solid #d9d1c2!important;box-shadow:0 35px 120px #07130dcc!important}
+.kinleyChatHeader{height:78px!important;padding:0 24px!important;background:linear-gradient(90deg,#fffdf8,#f5f0e5)!important}
+.kinleyChatBody{background:radial-gradient(circle at 50% 0,#f4f7f1,#faf8f2 48%)!important}
+.kinleyWelcome{padding:86px 28px 55px!important}
+.kinleyWelcome h2{font-size:clamp(38px,5vw,58px)!important;letter-spacing:-1.2px}
+.kinleyWelcomeIcon{width:82px!important;height:82px!important;border-radius:24px!important;box-shadow:0 15px 35px #244d3b20}
+.kinleyStarterGrid button{border-radius:18px!important;padding:17px!important;min-height:86px!important;transition:.2s!important;box-shadow:0 5px 16px #20382a09}
+.kinleyStarterGrid button:hover{transform:translateY(-3px);border-color:#b9a66e;background:#fff!important;box-shadow:0 14px 30px #20382a13}
+.kinleyComposerArea{padding:16px 22px 20px!important;background:#fffdf8!important;border-top:1px solid #e4ded2!important}
+.kinleyComposer{max-width:900px!important;margin:auto!important;border:1px solid #cfc8b9!important;border-radius:20px!important;background:white!important;box-shadow:0 10px 30px #20382a12!important;padding:6px!important}
+.kinleyComposer:focus-within{border-color:#6d927c;box-shadow:0 0 0 4px #6d927c22,0 12px 35px #20382a13}
+.kinleyComposer textarea{padding:13px 12px!important}
+.kinleySend{width:44px!important;height:44px!important;border-radius:15px!important;background:var(--gg-green)!important;color:white!important;transition:.2s!important}
+.kinleySend:hover:not(:disabled){transform:scale(1.05);background:#2d684b!important}
+.kinleyMessage .messageBubble{border-radius:18px!important;box-shadow:0 5px 18px #20382a09}
+.kinleyMessage.user .messageBubble{background:#1f4d38!important;color:white!important}
+.kinleyMessage.assistant .messageBubble{background:#fffefa!important;border:1px solid #e2ddd2!important}
+.dangerButton{transition:.2s!important}
+@media(max-width:900px){.toolGrid{grid-template-columns:1fr 1fr}.treeLayout{grid-template-columns:1fr}.personPanel{position:static}.treeToolbar{align-items:stretch}.treeToolbar>*{margin:0}.kinleyStarterGrid{grid-template-columns:1fr}}
+@media(max-width:600px){.page{padding:28px 16px 110px}.toolGrid{grid-template-columns:1fr}.kinleyChat{width:100%!important;height:100dvh!important;border-radius:0!important}.kinleyWelcome{padding:55px 18px 35px!important}.kinleyStarterGrid{grid-template-columns:1fr}.treeToolbar{padding:10px}.treeToolbar button{flex:1}.treeToolbar>span{width:100%;justify-content:center}}
