@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import KinleyDesk from "./components/KinleyDesk";
+import ResearchCommandCenter from "./components/ResearchCommandCenter";
 import FamilyTreeCanvas from "./components/FamilyTreeCanvas";
 import Plans from "./components/Plans";
 import { parseMigrationStops } from "./lib/migration";
@@ -546,7 +547,7 @@ function Tools(){
  const saveTool=()=>{if(!open)return;localStorage.setItem("gg-tool-"+open,text);setSaved(x=>[...x.filter(v=>v!==open),open]);};
  return <section className="page"><p className="eyebrow">RESEARCH TOOLS</p><h2>Tools built around evidence.</h2><p className="lead">Every tool is designed to keep hypotheses, source evidence, and conclusions separate.</p>
  <div className="toolGrid">{tools.map(([t,d])=><article key={t}><div className="cardIcon"><Wrench size={22}/></div><h3>{t}</h3><p>{d}</p><button type="button" className="toolOpenButton" onClick={()=>openTool(t)} aria-label={"Open "+t}>Open Tool <ArrowRight size={15}/></button></article>)}</div>
- <div className="evidence"><h3>Evidence labels</h3><div>{["Supported","Probable","Possible","Unverified","Disproved"].map(x=><span key={x}>{x}</span>)}</div></div>
+ <ResearchCommandCenter/>\n <div className="evidence"><h3>Evidence labels</h3><div>{["Supported","Probable","Possible","Unverified","Disproved"].map(x=><span key={x}>{x}</span>)}</div></div>
  {saved.length>0&&<div className="toolSaved"><CheckCircle2 size={16}/> Saved locally: {saved.join(", ")}</div>}
  {open&&<div className="toolModal" role="dialog" aria-modal="true"><div className="toolModalHead"><div><p className="eyebrow">TOOL</p><h3>{open}</h3></div><button type="button" onClick={closeTool} aria-label="Close tool"><X/></button></div><p>{guide}</p><div className="toolTip">Tip: write the question as a claim you can test, then record the source and what it directly establishes.</div><textarea value={text} onChange={e=>setText(e.target.value)} placeholder="Enter your research question, claim, or notes here..."/><div className="toolActions"><button type="button" className="primary" onClick={saveTool}><CheckCircle2 size={16}/> Save locally</button><button type="button" className="secondary light" onClick={closeTool}>Close</button></div></div>}</section>
 }
