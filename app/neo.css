@@ -893,3 +893,11 @@ button:disabled{opacity:.52!important;cursor:not-allowed!important}
 .personPanel .attached small{
   color:#7f9086!important;
 }
+
+/* Selected-person life details */
+.personLifeFacts{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px!important}
+.personLifeFacts span{display:flex!important;flex-direction:column!important;gap:4px!important;background:#0e1c14!important;border:1px solid var(--ui-line)!important;border-radius:12px!important;padding:11px 12px!important;color:#dce5de!important}
+.personLifeFacts span strong{font-size:.72rem!important;text-transform:uppercase!important;letter-spacing:.08em!important;color:#e4c36b!important}
+.personLifeFacts span small{font-size:.9rem!important;color:#dce5de!important;line-height:1.4!important}
+.personLifeFacts .personResidence{grid-column:1/-1!important}
+@media(max-width:640px){.personLifeFacts{grid-template-columns:1fr!important}.personLifeFacts .personResidence{grid-column:auto!important}}
