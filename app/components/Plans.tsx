@@ -4,7 +4,7 @@ import { Check, X, Sparkles, CreditCard, ShieldCheck, Search, Users, Brain, Data
 import { useEffect, useState } from "react";
 import { KINLEY_FLAGSHIP, PLAN_CONFIG, normalizePlan, type PlanId } from "../lib/plans";
 
-const planOrder: PlanId[] = ["free", "researcher", "genealogist", "family"];
+const planOrder: PlanId[] = ["free", "researcher", "genealogist", "family"];\nconst PROTOTYPE_MODE = true;
 
 const planDetails: Record<PlanId, {
   features: string[];
@@ -68,7 +68,7 @@ export default function Plans({close}:{close:()=>void}){
     <div>
       <div className="plansKicker"><span className="plansSpark">✦</span> GENEALOGY GUIDE · KINLEY</div>
       <h2>Choose how deeply you want to research.</h2>
-      <p>Your subscription changes Kinley’s research depth, tools, and workspace. The evidence standard stays the same at every level.</p>
+      <p>{PROTOTYPE_MODE ? "Prototype mode is enabled: every Kinley tier is available for testing while billing is not connected. The evidence standard stays the same at every level." : "Your subscription changes Kinley’s research depth, tools, and workspace. The evidence standard stays the same at every level."}</p>
     </div>
     <button className="close" onClick={close} aria-label="Close plans"><X/></button>
    </div>
@@ -101,7 +101,7 @@ export default function Plans({close}:{close:()=>void}){
         <ul>{d.features.map(f=><li key={f}><Check size={15}/><span>{f}</span></li>)}</ul>
         <div className="planCapability"><span>Kinley mode</span><b>{p.mode}</b><span>Reasoning</span><b>{p.reasoning}</b></div>
         <button className={"primary full planChoose "+(isActive?"activePlanButton":"")} disabled={loading===id || isActive} onClick={()=>choosePlan(id)}>
-          {isActive ? <><ShieldCheck size={15}/> Current plan</> : loading===id ? "Opening checkout..." : <><CreditCard size={15}/> Choose {p.kinleyName}</>}
+          {isActive ? <><ShieldCheck size={15}/> Current plan</> : PROTOTYPE_MODE ? <><Sparkles size={15}/> Enable for prototype</> : loading===id ? "Opening checkout..." : <><CreditCard size={15}/> Choose {p.kinleyName}</>}
         </button>
       </article>
     })}
@@ -119,8 +119,8 @@ export default function Plans({close}:{close:()=>void}){
      <span>Billing stays separate from tree data</span>
    </div>
 
-   {message&&<div className="checkoutNotice">{message}<small>Live payments require a properly configured Stripe account and secure server environment variables.</small></div>}
-   <small className="plansFine">Prices shown are proposed Genealogy Guide pricing. A payment provider must be connected before real charges can occur.</small>
+   {message&&<div className="checkoutNotice">{message}<small>{PROTOTYPE_MODE ? "Prototype access only — no payment provider is connected." : "Live payments require a properly configured Stripe account and secure server environment variables."}</small></div>}
+   <small className="plansFine">{PROTOTYPE_MODE ? "PROTOTYPE MODE · All tiers are unlocked for testing. No charges are made and no payment is required." : "Prices shown are proposed Genealogy Guide pricing. A payment provider must be connected before real charges can occur."}</small>
   </div>
  </div>
 }
