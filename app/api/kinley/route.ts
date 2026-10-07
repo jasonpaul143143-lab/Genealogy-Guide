@@ -31,9 +31,9 @@ For difficult research use:
 `;
 
 export async function POST(request: NextRequest){
-  const key=process.env.OPENAI_API_KEY;
+  const key=process.env.OPENROUTER_API_KEY;
   if(!key){
-    return new Response(JSON.stringify({error:"Kinley needs an OPENAI_API_KEY in Vercel before live AI responses can run."}),{status:503,headers:{"Content-Type":"application/json"}});
+    return new Response(JSON.stringify({error:"Kinley needs an OPENROUTER_API_KEY in Vercel before live AI responses can run."}),{status:503,headers:{"Content-Type":"application/json"}});
   }
 
   try{
@@ -83,7 +83,7 @@ export async function POST(request: NextRequest){
       : "";
 
     const researchEnabled=canUse(plan,"webResearch") || canUse(plan,"deepResearch");
-    const model=process.env.OPENAI_MODEL || planConfig.model;
+    const model=process.env.OPENROUTER_MODEL || "openai/gpt-6-luna";
     const maxOutput=plan==="free" ? 320 : plan==="researcher" ? 500 : 650;
     const effort=plan==="free" ? "low" : "low";
 
@@ -111,11 +111,13 @@ ${researchEnabled
 
     if(researchEnabled) responseBody.tools=[{type:"web_search"}];
 
-    const upstream=await fetch("https://api.openai.com/v1/responses",{
+    const upstream=await fetch("https://openrouter.ai/api/v1/responses",{
       method:"POST",
       headers:{
         "Content-Type":"application/json",
-        "Authorization":`Bearer ${key}`
+        "Authorization":`Bearer ${key}`,
+        "HTTP-Referer":"https://genealogy-guide.vercel.app",
+        "X-Title":"Genealogy Guide"
       },
       body:JSON.stringify(responseBody)
     });
