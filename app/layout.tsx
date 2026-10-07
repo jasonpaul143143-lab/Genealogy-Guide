@@ -8,7 +8,7 @@ export const metadata: Metadata={
   title:"Genealogy Guide",
   description:"Learn genealogy, research family history, build your tree, and investigate evidence with Kinley.",
   manifest:"/manifest.webmanifest",
-  icons:{icon:"/icon.svg",shortcut:"/icon.svg",apple:"/icon.svg"}
+  icons:{icon:[{url:"/icon.svg?v=3",type:"image/svg+xml"}],shortcut:"/icon.svg?v=3",apple:"/icon.svg?v=3"}
 };
 
 export default function RootLayout({children}:{children:ReactNode}){
