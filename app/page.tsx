@@ -102,10 +102,10 @@ export default function HomePage(){
 
   return <main>
     <ResearchUpgradeBar/>
-    <header>
+    {!showKinley && <header>
       <button className="brand brandButton" onClick={()=>go("Home")}><Logo/><div><h1>Genealogy Guide</h1><p>Learn. Research. Prove.</p></div></button>
       <div className="headerActions"><button className="installButton" onClick={install}><Smartphone size={16}/> Install</button><button className="plansButton" onClick={()=>setShowPlans(true)}>Plans</button><button className="kinley" onClick={()=>setShowKinley(true)}><KinleyMark/> <span>Kinley</span></button></div>
-    </header>
+    </header>}
 
     {section==="Home" && <HomeSection go={go} setShowKinley={setShowKinley} setLesson={setLesson}/>}
     {section==="Learn" && <Learn lessons={lessons} lesson={lesson} setLesson={setLesson}/>}
