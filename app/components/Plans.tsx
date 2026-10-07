@@ -4,7 +4,8 @@ import { Check, X, Sparkles, CreditCard, ShieldCheck, Search, Users, Brain, Data
 import { useEffect, useState } from "react";
 import { KINLEY_FLAGSHIP, PLAN_CONFIG, normalizePlan, type PlanId } from "../lib/plans";
 
-const planOrder: PlanId[] = ["free", "researcher", "genealogist", "family"];\nconst PROTOTYPE_MODE = true;
+const planOrder: PlanId[] = ["free", "researcher", "genealogist", "family"];
+const PROTOTYPE_MODE = true;
 
 const planDetails: Record<PlanId, {
   features: string[];
@@ -41,24 +42,20 @@ export default function Plans({close}:{close:()=>void}){
    try{setActivePlan(normalizePlan(localStorage.getItem("gg-plan")));}catch{}
  },[]);
 
- const checkout=async(id:string)=>{
-   setLoading(id);setMessage("");
-   try{
-    const r=await fetch("/api/checkout",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({plan:id})});
-    const data=await r.json();
-    if(data.url) window.location.href=data.url;
-    else setMessage(data.error||"Checkout is not configured yet.");
-   }catch{setMessage("Could not start checkout. Please try again.");}
-   finally{setLoading("");}
- };
-
  const choosePlan=(id:PlanId)=>{
+   if(PROTOTYPE_MODE){
+     try{localStorage.setItem("gg-plan",id);}catch{}
+     setActivePlan(id);
+     setMessage(`${PLAN_CONFIG[id].kinleyName} enabled for prototype testing. No payment is required.`);
+     return;
+   }
    if(id==="free"){
      try{localStorage.setItem("gg-plan","free");}catch{}
      setActivePlan("free");
      return;
    }
-   checkout(id);
+   // Real checkout is intentionally unreachable while prototype mode is enabled.
+   setMessage("Checkout is not enabled in prototype mode.");
  };
 
  return <div className="modalBack plansBack" onClick={close}>
