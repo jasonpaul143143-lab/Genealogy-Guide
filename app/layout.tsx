@@ -7,7 +7,8 @@ import ServiceWorkerRegister from "./ServiceWorkerRegister";
 export const metadata: Metadata={
   title:"Genealogy Guide",
   description:"Learn genealogy, research family history, build your tree, and investigate evidence with Kinley.",
-  manifest:"/manifest.webmanifest"
+  manifest:"/manifest.webmanifest",
+  icons:{icon:"/icon.svg",shortcut:"/icon.svg",apple:"/icon.svg"}
 };
 
 export default function RootLayout({children}:{children:ReactNode}){
