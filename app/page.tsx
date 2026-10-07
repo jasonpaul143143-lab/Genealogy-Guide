@@ -542,10 +542,10 @@ function Tree(){
     <p className="eyebrow">SELECTED PERSON</p><h3>{current.name}</h3>
     <p><MapPin size={15}/> Relationship: {current.relation}</p>
     <div className="statusBadge">{current.status}</div>
-    {(current.birth||current.death||current.places)&&<div className="personFacts">
-      {current.birth&&<span><strong>Birth</strong>{current.birth}</span>}
-      {current.death&&<span><strong>Death</strong>{current.death}</span>}
-      {current.places&&<span><strong>Places</strong>{current.places}</span>}
+    {(current.birth||current.death||current.places)&&<div className="personFacts personLifeFacts">
+      {current.birth&&<span><strong>Birth date / place</strong><small>{current.birth}</small></span>}
+      {current.death&&<span><strong>Death date / place</strong><small>{current.death}</small></span>}
+      {current.places&&<span className="personResidence"><strong>Residence / places lived</strong><small>{current.places}</small></span>}
     </div>}
     <h4>Relationships</h4>
     {currentRels.length===0?<p className="empty">No relationship links recorded yet.</p>:currentRels.map(r=>{const id=r.from===current.id?r.to:r.from;const p=people.find(x=>x.id===id);return <button className="attached relationshipItem" key={r.id} onClick={()=>setSelected(id)}><GitBranch size={15}/><span>{r.type}<small>{p?.name||"Unknown person"}</small></span></button>})}
