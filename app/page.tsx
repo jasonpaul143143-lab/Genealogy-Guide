@@ -75,7 +75,9 @@ const GG_HISTORY="gg-version-history";\nconst GG_PRIVACY="gg-privacy-mode";\ncon
   ["Ancestry military records","Search military collections and service-related records on Ancestry.","https://www.ancestry.com/search/categories/military/"]
 ];
 
-function Logo(){return <div className="logo" aria-label="Genealogy Guide logo"><span/><span/><span/><i/></div>}
+function Logo(){return <div className="logo" aria-label="Genealogy Guide logo"><img src="/icon.svg" alt="" /></div>}
+
+function KinleyMark(){return <span className="kinleyMark" aria-hidden="true"><i/><i/><i/><b/><em/></span>}
 
 export default function HomePage(){
   const [section,setSection]=useState<Section>("Home");
@@ -97,7 +99,7 @@ export default function HomePage(){
   return <main>\n    <ResearchUpgradeBar/>
     <header>
       <button className="brand brandButton" onClick={()=>go("Home")}><Logo/><div><h1>Genealogy Guide</h1><p>Learn. Research. Prove.</p></div></button>
-      <div className="headerActions"><button className="installButton" onClick={install}><Smartphone size={16}/> Install</button><button className="plansButton" onClick={()=>setShowPlans(true)}>Plans</button><button className="kinley" onClick={()=>setShowKinley(true)}><Sparkles size={17}/> Kinley</button></div>
+      <div className="headerActions"><button className="installButton" onClick={install}><Smartphone size={16}/> Install</button><button className="plansButton" onClick={()=>setShowPlans(true)}>Plans</button><button className="kinley" onClick={()=>setShowKinley(true)}><KinleyMark/> <span>Kinley</span></button></div>
     </header>
 
     {section==="Home" && <HomeSection go={go} setShowKinley={setShowKinley} setLesson={setLesson}/>}
