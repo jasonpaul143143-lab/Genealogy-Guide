@@ -1019,3 +1019,86 @@ button:disabled{opacity:.52!important;cursor:not-allowed!important}
   .findNextStep{grid-template-columns:auto 1fr}
   .findNextStep .primary{grid-column:1/-1;width:100%;justify-content:center}
 }
+
+
+/* Responsive, tactile interactions across Genealogy Guide */
+button,a,.grid article,.toolGrid article,.lesson,.templateGrid>button{
+  -webkit-tap-highlight-color:transparent;
+}
+button{
+  transition:transform .16s cubic-bezier(.2,.8,.2,1),box-shadow .18s ease,
+    background-color .18s ease,border-color .18s ease,color .18s ease,filter .18s ease;
+  transform:translateZ(0);
+}
+button:active{transform:translateY(1px) scale(.975)}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{
+  outline:2px solid #e6c96f;outline-offset:3px;
+}
+@media(hover:hover) and (pointer:fine){
+  button:hover{filter:brightness(1.09)}
+  button.primary:hover,.primary:hover{transform:translateY(-2px);box-shadow:0 9px 24px rgba(0,0,0,.23)}
+  .grid article:hover,.toolGrid article:hover,.dnaCards article:hover{
+    transform:translateY(-3px);border-color:rgba(230,201,111,.38);
+    box-shadow:0 14px 32px rgba(0,0,0,.18);
+  }
+  .toolOpenButton:hover svg,.grid article button:hover svg,.lesson:hover>svg{
+    transform:translateX(3px);
+  }
+}
+button svg{transition:transform .18s ease}
+.toolOpenButton,.grid article button,.lesson{touch-action:manipulation}
+.actualToolsPage{padding-bottom:96px}
+.toolsIntro{padding:clamp(22px,4vw,44px);margin:0 0 24px;border-radius:24px;
+  background:linear-gradient(145deg,#0e2117,#08120d);border:1px solid rgba(230,201,111,.19)}
+.toolsIntro h2{font-size:clamp(32px,4.5vw,54px);line-height:1.05;margin:8px 0 12px}
+.toolSectionLabel{display:flex;align-items:end;justify-content:space-between;gap:16px;margin:28px 0 14px}
+.toolSectionLabel h3{margin:2px 0;color:#f2eee4;font-size:1.35rem}
+.toolSectionLabel>span{font-size:.78rem;color:#9ba99f}
+.actualToolCard{display:flex;flex-direction:column;min-height:240px}
+.actualToolCard .toolOpenButton{margin-top:auto;justify-content:center}
+.toolResultPanel{scroll-margin-top:24px;animation:toolPanelIn .24s ease-out both}
+.practicalToolModal{width:min(780px,calc(100vw - 28px));max-height:min(86vh,900px);overflow:auto}
+.practicalToolBody{display:flex;flex-direction:column;gap:15px}
+.practicalToolBody>p{color:#a7b4aa;line-height:1.6;margin:0}
+.practicalToolBody label,.citationGrid label{display:flex;flex-direction:column;gap:7px;color:#d5ded6;font-size:.84rem;min-width:0}
+.practicalToolBody input,.practicalToolBody textarea,.practicalToolBody select,.citationGrid input{
+  width:100%;min-width:0;background:#08130d;color:#edf1eb;border:1px solid rgba(185,204,190,.2);
+  border-radius:10px;padding:11px 12px;font:inherit;font-size:16px;
+}
+.practicalToolBody textarea{resize:vertical;line-height:1.5}
+.toolFormGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.toolFormWide{grid-column:1/-1}
+.toolComputedResult{margin-top:5px;padding:16px;border-radius:14px;border:1px solid rgba(230,201,111,.23);background:rgba(230,201,111,.055);display:flex;flex-direction:column;gap:9px;color:#b8c6bc}
+.toolComputedResult strong{color:#f4e8bd;font-size:1rem}
+.toolComputedResult span{font-size:.84rem;color:#e4d9b1}
+.toolComputedResult ul,.toolComputedResult ol{padding-left:22px;margin:3px 0;display:flex;flex-direction:column;gap:8px;line-height:1.5}
+.timelineResults li{display:flex;flex-direction:column;gap:3px}
+.timelineResults b{color:#e6c96f}
+.timelineResults small{color:#91a297}
+.toolFeedback{display:flex;align-items:flex-start;gap:8px;color:#d9e8dc;background:rgba(68,145,91,.12);padding:10px 12px;border-radius:10px;font-size:.85rem;line-height:1.5}
+.toolFilter{margin-top:8px}
+.toolSavedRows{display:flex;flex-direction:column;gap:9px}
+.toolSavedRows article{display:flex;justify-content:space-between;gap:12px;padding:12px;border:1px solid rgba(185,204,190,.16);border-radius:12px;background:rgba(255,255,255,.025)}
+.toolSavedRows article>div{min-width:0}
+.toolSavedRows strong{display:block;color:#eaf0e9}
+.toolSavedRows small{display:block;color:#91a297;margin-top:4px;line-height:1.5}
+.toolSavedRows p{font-size:.84rem;color:#aebbb2;margin:6px 0 0;overflow-wrap:anywhere}
+.dangerButton{align-self:flex-start;background:rgba(180,65,65,.12);border:1px solid rgba(220,100,100,.25);color:#ffc1b9;border-radius:9px;padding:8px 10px}
+.variantList{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.variantList button{display:flex;justify-content:space-between;gap:10px;align-items:center;text-align:left;overflow-wrap:anywhere;border:1px solid rgba(185,204,190,.17);background:rgba(255,255,255,.025);color:#e4ebe4;border-radius:10px;padding:10px}
+.variantList button span{font-size:.72rem;color:#e6c96f}
+.citationGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:12px 0}
+.citationOutput{padding:14px;border-radius:12px;background:#08130d;border:1px solid rgba(185,204,190,.18);color:#e5ece6;line-height:1.65;overflow-wrap:anywhere;margin:10px 0}
+.toolFeedback svg{flex:0 0 auto;margin-top:2px}
+@keyframes toolPanelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:650px){
+ .toolsIntro{padding:22px 18px}
+ .toolSectionLabel{align-items:flex-start;flex-direction:column;gap:5px}
+ .toolFormGrid,.citationGrid,.variantList{grid-template-columns:minmax(0,1fr)}
+ .toolFormWide{grid-column:auto}
+ .toolSavedRows article{flex-direction:column}
+ .practicalToolModal{padding:16px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
