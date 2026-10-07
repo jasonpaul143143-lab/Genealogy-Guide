@@ -750,3 +750,94 @@ button:disabled{opacity:.52!important;cursor:not-allowed!important}
   .section,.page{margin:0!important}
   .hero,.feature,.lessons,.recordsBox,.treePanel,.researchWorkspace,.researchCommandCenter{box-shadow:none!important}
 }
+
+
+/* Final dark-surface cleanup */
+.guidePrinciples span{
+  background:rgba(255,255,255,.035)!important;
+  color:#dce5de!important;
+  border:1px solid var(--ui-line)!important;
+}
+.guidePrinciples span:hover{
+  background:rgba(228,195,107,.07)!important;
+  color:#f2eee2!important;
+  border-color:rgba(228,195,107,.28)!important;
+}
+.guideMap button:hover{
+  background:rgba(228,195,107,.045)!important;
+  color:#dce5de!important;
+  border-color:rgba(228,195,107,.16)!important;
+}
+.guideMap button.active{
+  background:rgba(228,195,107,.09)!important;
+  color:#f0e8cf!important;
+}
+
+/* Eliminate legacy light plan surfaces, including the Essential/free card */
+.premiumPlansModal,
+.premiumPlansModal .premiumPlanCard,
+.premiumPlansModal .premiumPlanCard *,
+.premiumPlansModal .activePlanBanner,
+.premiumPlansModal .zenithTeaser,
+.premiumPlansModal .plansTrust span,
+.premiumPlansModal .checkoutNotice{
+  color-scheme:dark!important;
+}
+.premiumPlansModal .premiumPlanCard{
+  background:linear-gradient(145deg,#102019,#0a1510)!important;
+  color:#edf1eb!important;
+  border:1px solid var(--ui-line)!important;
+}
+.premiumPlansModal .premiumPlanCard .planIcon{
+  background:rgba(63,141,99,.14)!important;
+  color:#e4c36b!important;
+}
+.premiumPlansModal .premiumPlanCard .planTier{
+  color:#88978e!important;
+}
+.premiumPlansModal .premiumPlanCard h3,
+.premiumPlansModal .premiumPlanCard .planPrice strong{
+  color:#f5f2e9!important;
+}
+.premiumPlansModal .premiumPlanCard .planSubtitle,
+.premiumPlansModal .premiumPlanCard li,
+.premiumPlansModal .premiumPlanCard .planPrice span{
+  color:#9ba89f!important;
+}
+.premiumPlansModal .premiumPlanCard .planRule{
+  background:var(--ui-line)!important;
+}
+.premiumPlansModal .premiumPlanCard .planCapability{
+  background:rgba(255,255,255,.045)!important;
+  color:#aebbb3!important;
+  border:1px solid var(--ui-line)!important;
+}
+.premiumPlansModal .premiumPlanCard .planCapability b{
+  color:#e4c36b!important;
+}
+.premiumPlansModal .premiumPlanCard .planChoose{
+  color:#102017!important;
+}
+.premiumPlansModal .premiumPlanCard .planPopular{
+  background:#173d2b!important;
+  color:#e7cf7c!important;
+  border:1px solid rgba(228,195,107,.18)!important;
+}
+.premiumPlansModal .premiumPlanCard.sage,
+.premiumPlansModal .premiumPlanCard.gold,
+.premiumPlansModal .premiumPlanCard.violet,
+.premiumPlansModal .premiumPlanCard.midnight{
+  background:linear-gradient(145deg,#102019,#0a1510)!important;
+}
+.premiumPlansModal .premiumPlanCard:hover{
+  background:linear-gradient(145deg,#13271d,#0b1711)!important;
+  border-color:rgba(228,195,107,.24)!important;
+}
+.premiumPlansModal .checkoutNotice{
+  background:rgba(228,195,107,.06)!important;
+  color:#d6c992!important;
+  border-color:rgba(228,195,107,.18)!important;
+}
+.premiumPlansModal .checkoutNotice small{
+  color:#9ba89f!important;
+}
