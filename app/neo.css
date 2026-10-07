@@ -388,3 +388,118 @@ main [style*="#ffffff"],main [style*="#fffdf8"],main [style*="#faf8f2"],main [st
 .workspaceHeader{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}.workspaceHeader h3{font-family:"DM Serif Display";font-size:30px;margin:0 0 5px}.workspaceHeader p:not(.eyebrow){color:var(--gg-muted);line-height:1.5;max-width:700px}.workspaceActions{display:flex;gap:7px;flex-wrap:wrap}.workspaceTabs{display:flex;gap:7px;overflow:auto;padding:16px 0;border-bottom:1px solid var(--gg-line)}.workspaceTabs button{border:1px solid var(--gg-line);background:#fffdf8;color:#667169;border-radius:12px;padding:9px 13px;font-weight:700;white-space:nowrap}.workspaceTabs button.active{background:var(--gg-green);color:white;border-color:var(--gg-green)}.workspaceGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-top:18px}.workspaceGrid label,.workspaceForm{display:flex;flex-direction:column;gap:7px}.workspaceGrid label{font-size:12px;font-weight:800;color:#526057}.workspaceGrid textarea,.workspaceForm input,.workspaceForm select,.workspaceForm textarea{border:1px solid #d8d1c3;border-radius:12px;padding:12px;background:#faf8f2;color:#24362d;resize:vertical}.workspaceGrid textarea{min-height:125px}.workspaceGrid .wide,.workspaceForm .wide{grid-column:1/-1}.caseChecklist{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;padding:13px;border:1px solid #ddd6c8;border-radius:14px;background:#f5f2e9}.caseChecklist strong{width:100%;color:#315443}.caseChecklist span{padding:6px 9px;border-radius:999px;background:#fffdf8;border:1px solid #e0d9cd;color:#69736b;font-size:11px}.recordSearchBox{grid-column:1/-1;border:1px solid #ddd6c8;border-radius:18px;padding:17px;background:#fffdf8}.recordSearchBox>div:first-child{display:flex;gap:10px}.recordSearchBox svg{color:#315b45;flex:none}.recordSearchBox strong,.recordSearchBox small{display:block}.recordSearchBox small{color:#7a827b;line-height:1.4;margin-top:3px}.recordSearchLinks{display:grid!important;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:13px}.recordSearchLinks a{display:flex;justify-content:space-between;gap:7px;border:1px solid #e0d9cd;border-radius:12px;padding:10px;text-decoration:none;color:#315443;background:#faf8f2;font-size:12px}.recordSearchLinks a small{font-size:10px}.workspaceForm{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;padding-top:18px}.workspaceForm .primary{justify-self:start}.workspaceList{display:grid;gap:9px;margin-top:16px}.workspaceEmpty{padding:28px;border:1px dashed #cfc8ba;border-radius:15px;color:#818a82;display:flex;align-items:center;justify-content:center;gap:8px}.evidenceRow,.searchRow{display:flex;justify-content:space-between;gap:15px;padding:15px;border:1px solid #e0d9cd;border-radius:15px;background:#fffdf8}.evidenceRow>div,.searchRow>div{min-width:0}.evidenceRow strong,.searchRow strong{display:block;color:#31473b}.evidenceRow small,.searchRow small,.evidenceRow p,.searchRow p,.evidenceRow span,.searchRow span{display:block;color:#778078;font-size:12px;line-height:1.45;margin-top:4px}.evidenceRow>b{height:max-content;border-radius:999px;padding:6px 9px;background:#edf2ed;color:#315443;font-size:10px;white-space:nowrap}.level-disproved{border-color:#d9aaaa}.level-disproved>b{background:#f8e9e9;color:#8e4141}.level-supported{border-color:#9bb89f}.level-probable{border-color:#c6b477}.level-possible{border-color:#c8c1a5}.searchRow>button,.timelineRows button{border:0;background:#f0eee6;color:#315443;border-radius:10px;width:34px;height:34px;display:grid;place-items:center;flex:none}.searchRow.done{opacity:.65}.searchRow.done strong{text-decoration:line-through}.workspaceAlert{display:flex;gap:9px;align-items:flex-start;margin-top:15px;padding:13px;border-radius:14px;background:#fff5dd;color:#705d2e;border:1px solid #e2cf8f}.timelineRows{display:grid;gap:8px;margin-top:15px}.timelineRows article{display:grid;grid-template-columns:110px 1fr 34px;gap:12px;align-items:start;padding:13px;border-left:3px solid #d8b45d;background:#fffdf8;border-radius:0 12px 12px 0}.timelineRows time{font-weight:800;color:#9a7730}.timelineRows strong,.timelineRows span,.timelineRows small{display:block}.timelineRows span,.timelineRows small{color:#78817a;font-size:12px;margin-top:3px}.qaGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding-top:18px}.qaGrid article{border:1px solid #e0d9cd;border-radius:15px;padding:16px;background:#fffdf8;display:flex;flex-direction:column;gap:5px}.qaGrid svg{color:#315b45}.qaGrid strong{font-family:"DM Serif Display";font-size:18px}.qaGrid b{color:#315443}.qaGrid small{color:#7a827b;line-height:1.4}.researchWorkspace .modalBack{z-index:110}
 @media(max-width:850px){.recordSearchLinks{grid-template-columns:1fr 1fr}.workspaceGrid{grid-template-columns:1fr}.workspaceForm{grid-template-columns:1fr 1fr}.qaGrid{grid-template-columns:1fr 1fr}.workspaceHeader{flex-direction:column}}
 @media(max-width:550px){.researchWorkspace{padding:17px;border-radius:20px}.recordSearchLinks,.workspaceForm,.qaGrid{grid-template-columns:1fr}.timelineRows article{grid-template-columns:1fr 34px}.timelineRows time{grid-column:1/-1}.workspaceActions{width:100%}.workspaceActions button{flex:1;justify-content:center}}
+
+
+/* UI REDESIGN — unified research-grade interface */
+:root{
+  --ui-bg:#06100b;--ui-surface:#0b1710;--ui-surface2:#0f1d15;--ui-surface3:#13251b;
+  --ui-border:rgba(228,195,107,.13);--ui-border2:rgba(255,255,255,.08);
+  --ui-text:#f2f0e7;--ui-muted:#89988f;--ui-gold:#e4c36b;--ui-green:#4d9a6c;
+}
+body{background:
+ radial-gradient(900px 520px at 50% -180px,rgba(71,139,91,.16),transparent 65%),
+ linear-gradient(180deg,#06100b 0%,#08130d 48%,#06100b 100%)!important}
+body:before{opacity:.32;background-size:52px 52px}
+main{max-width:1480px!important;padding-bottom:110px}
+
+/* cleaner command header */
+header{height:72px!important;padding:0 28px!important;position:sticky!important;top:0!important;z-index:90!important}
+.brand{gap:12px!important}.brand h1{font-size:20px!important;letter-spacing:-.3px}.brand p{font-size:9px!important;letter-spacing:.14em;text-transform:uppercase}
+.headerActions{gap:7px!important}
+.headerActions button{min-height:38px!important;border-radius:11px!important;font:700 11px "Space Grotesk",sans-serif!important}
+.logo{width:34px!important;height:34px!important;border-radius:11px!important}
+
+/* navigation becomes a restrained command bar */
+nav{position:fixed!important;left:50%!important;bottom:18px!important;transform:translateX(-50%)!important;z-index:100!important;
+ display:flex!important;gap:4px!important;padding:7px!important;border-radius:17px!important;
+ background:rgba(6,16,11,.91)!important;border:1px solid rgba(228,195,107,.15)!important;
+ box-shadow:0 18px 55px rgba(0,0,0,.48)!important}
+nav button{min-width:82px!important;height:42px!important;padding:0 13px!important;border-radius:11px!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:7px!important;font-size:10px!important}
+nav button.active{background:rgba(228,195,107,.10)!important;border:1px solid rgba(228,195,107,.22)!important;color:#f0d47a!important}
+
+/* reduce oversized marketing feel */
+.hero{margin:24px 20px 22px!important;padding:46px 48px!important;border-radius:24px!important;min-height:0!important}
+.hero h2{max-width:850px!important;font-size:clamp(43px,5.2vw,68px)!important;line-height:1.02!important}
+.hero p:not(.eyebrow){max-width:760px!important;font-size:14px!important;line-height:1.7!important}
+.heroActions{margin-top:24px!important}
+.principle{max-width:320px!important;border-radius:17px!important;padding:18px!important}
+
+/* consistent section rhythm */
+.page,.section{padding-left:20px!important;padding-right:20px!important}
+.sectionTitle{margin-bottom:18px!important}
+.sectionTitle h3{font-size:32px!important}
+.sectionTitle>div>p:not(.eyebrow){font-size:12px!important;line-height:1.6!important}
+.grid{gap:12px!important}.grid article{border-radius:17px!important;padding:19px!important}
+.stats{gap:10px!important}.stats div{border-radius:15px!important;padding:17px!important}
+
+/* research workspace — remove legacy light UI completely */
+.researchWorkspace{
+ margin:26px 20px 0!important;padding:0!important;border:1px solid var(--ui-border)!important;border-radius:24px!important;
+ background:linear-gradient(145deg,rgba(15,29,21,.96),rgba(7,17,11,.98))!important;
+ box-shadow:0 25px 75px rgba(0,0,0,.28)!important;overflow:hidden!important}
+.workspaceHeader{padding:24px 24px 18px!important;border-bottom:1px solid var(--ui-border2)!important}
+.workspaceHeader h3{font:700 27px "DM Serif Display",serif!important;color:var(--ui-text)!important}
+.workspaceHeader p:not(.eyebrow){color:var(--ui-muted)!important;font-size:11px!important}
+.workspaceTabs{padding:12px 18px!important;background:rgba(255,255,255,.018)!important;border-bottom:1px solid var(--ui-border2)!important}
+.workspaceTabs button{background:rgba(255,255,255,.035)!important;color:#9ba89f!important;border:1px solid var(--ui-border2)!important;border-radius:10px!important}
+.workspaceTabs button.active{background:rgba(228,195,107,.10)!important;color:var(--ui-gold)!important;border-color:rgba(228,195,107,.28)!important}
+.workspaceGrid,.workspaceForm{padding:20px!important}
+.workspaceGrid label{color:#9ba89f!important}
+.workspaceGrid textarea,.workspaceForm input,.workspaceForm select,.workspaceForm textarea{
+ background:rgba(255,255,255,.035)!important;color:#e8eee9!important;border:1px solid var(--ui-border2)!important;border-radius:10px!important}
+.caseChecklist,.recordSearchBox,.evidenceRow,.searchRow,.qaGrid article,.timelineRows article,.workspaceEmpty{
+ background:rgba(255,255,255,.025)!important;border-color:var(--ui-border2)!important;color:#dce5de!important}
+.caseChecklist strong,.recordSearchBox strong,.evidenceRow strong,.searchRow strong{color:#e7ece8!important}
+.caseChecklist span,.recordSearchLinks a{background:rgba(255,255,255,.035)!important;border-color:var(--ui-border2)!important;color:#aab7af!important}
+.recordSearchLinks a{color:#d9c16b!important}
+.evidenceRow small,.searchRow small,.evidenceRow p,.searchRow p,.evidenceRow span,.searchRow span,
+.qaGrid small,.timelineRows span,.timelineRows small,.recordSearchBox small{color:#7f8e85!important}
+.evidenceRow>b{background:rgba(228,195,107,.08)!important;color:var(--ui-gold)!important}
+.searchRow>button,.timelineRows button{background:rgba(255,255,255,.05)!important;color:#dce5de!important}
+.workspaceAlert{background:rgba(228,195,107,.06)!important;border-color:rgba(228,195,107,.16)!important;color:#cdbd8a!important}
+.timelineRows article{border-left-color:#caa752!important}
+.qaGrid article{box-shadow:none!important}
+.qaGrid b{color:#d9c16b!important}
+.workspaceActions .dangerButton{background:rgba(190,75,75,.09)!important}
+
+/* forms and modals */
+.modal,.toolModal,.kinleyDesk,.premiumPlansModal{border-radius:22px!important}
+.toolModalHead,.premiumPlansHead{border-bottom-color:var(--ui-border2)!important}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{
+ outline:2px solid rgba(228,195,107,.7)!important;outline-offset:2px!important}
+button:disabled{opacity:.45;cursor:not-allowed}
+
+/* tables/cards across tools */
+.recordsBox,.evidence,.personPanel,.treePanel,.feature,.lessons,.toolGrid article{border-radius:17px!important}
+.toolGrid{gap:12px!important}.toolGrid article{padding:18px!important}
+.treeToolbar{border-radius:14px!important}
+.treeNode,.familyTreeCard{border-radius:13px!important}
+
+/* mobile command bar */
+@media(max-width:700px){
+ header{height:64px!important;padding:0 14px!important}
+ .brand h1{font-size:17px!important}.brand p{display:none}
+ .headerActions .installButton{display:none}
+ .headerActions button{padding:0 10px!important}
+ .hero{margin:14px 12px 18px!important;padding:30px 24px!important;border-radius:20px!important}
+ .hero h2{font-size:39px!important}
+ .hero p:not(.eyebrow){font-size:12px!important}
+ .principle{margin-top:22px;max-width:none!important}
+ .page,.section{padding-left:12px!important;padding-right:12px!important}
+ .researchWorkspace{margin:18px 12px 0!important;border-radius:19px!important}
+ .workspaceHeader{padding:19px 17px 15px!important}
+ .workspaceGrid,.workspaceForm{padding:15px!important}
+ nav{bottom:10px!important;max-width:calc(100vw - 16px)!important;width:max-content!important}
+ nav button{min-width:57px!important;height:40px!important;padding:0 8px!important}
+ nav button span{font-size:9px!important}
+}
+@media(max-width:430px){
+ .headerActions .plansButton{display:none}
+ .hero h2{font-size:34px!important}
+ nav button{min-width:51px!important;padding:0 6px!important}
+ nav button span{display:none!important}
+ nav button{min-width:42px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+}
