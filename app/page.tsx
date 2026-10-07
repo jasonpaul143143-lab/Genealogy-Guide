@@ -79,7 +79,7 @@ const recordCollections = [
   ["Ancestry military records","Search military collections and service-related records on Ancestry.","https://www.ancestry.com/search/categories/military/"]
 ];
 
-function Logo(){return <div className="logo" aria-label="Genealogy Guide logo"><img src="/icon.svg" alt="" /></div>}
+function Logo(){return <div className="logo" aria-label="Genealogy Guide logo"><img src="/icon.svg?v=4" alt="" /></div>}
 
 function KinleyMark(){return <span className="kinleyMark" aria-hidden="true"><i/><i/><i/><b/><em/></span>}
 
