@@ -841,3 +841,55 @@ button:disabled{opacity:.52!important;cursor:not-allowed!important}
 .premiumPlansModal .checkoutNotice small{
   color:#9ba89f!important;
 }
+
+
+/* Tree selected-person notes: keep all note/evidence surfaces in the dark theme */
+.personPanel,
+.personPanel .notes,
+.personPanel .note,
+.personPanel textarea,
+.personPanel input,
+.personPanel select,
+.personPanel .recordCheck,
+.personPanel .attached,
+.personPanel .evidence{
+  color-scheme:dark!important;
+}
+.personPanel{
+  background:#0b1711!important;
+  color:#dce5de!important;
+  border-color:var(--ui-line)!important;
+}
+.personPanel h3,
+.personPanel h4{
+  color:#f0eee5!important;
+}
+.personPanel>p,
+.personPanel .empty,
+.personPanel .recordCheck{
+  color:#9ba89f!important;
+}
+.personPanel textarea,
+.personPanel input,
+.personPanel select{
+  background:#0e1c14!important;
+  color:#e7ece7!important;
+  border-color:var(--ui-line)!important;
+}
+.personPanel textarea::placeholder,
+.personPanel input::placeholder{
+  color:#718078!important;
+}
+.personPanel .evidence,
+.personPanel .notes,
+.personPanel .note{
+  background:#0e1c14!important;
+  color:#dce5de!important;
+  border-color:var(--ui-line)!important;
+}
+.personPanel .attached{
+  color:#b9c8bf!important;
+}
+.personPanel .attached small{
+  color:#7f9086!important;
+}
