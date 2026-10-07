@@ -46,10 +46,10 @@ export async function POST(request: NextRequest){
     // repeatedly sending the entire conversation/tree back to the model.
     const messages=raw
       .filter((m:any)=>m && (m.role==="user" || m.role==="kinley") && typeof m.text==="string")
-      .slice(-8)
+      .slice(-6)
       .map((m:any)=>({
         role:m.role==="kinley" ? "assistant" : "user",
-        content:String(m.text).slice(-1800)
+        content:String(m.text).slice(-1200)
       }));
 
     if(!messages.length){
@@ -69,10 +69,10 @@ export async function POST(request: NextRequest){
       const s=JSON.stringify(item).toLowerCase();
       return tokens.reduce((n:string|number,t:string)=>Number(n)+(s.includes(t)?1:0),0);
     };
-    const compactPeople=[...people].sort((a:any,b:any)=>score(b)-score(a)).slice(0,10);
+    const compactPeople=[...people].sort((a:any,b:any)=>score(b)-score(a)).slice(0,8);
     const personIds=new Set(compactPeople.map((p:any)=>p?.id).filter(Boolean));
-    const compactRelationships=relationships.filter((r:any)=>personIds.has(r?.from)||personIds.has(r?.to)).slice(0,18);
-    const compactSources=sources.slice(0,10);
+    const compactRelationships=relationships.filter((r:any)=>personIds.has(r?.from)||personIds.has(r?.to)).slice(0,12);
+    const compactSources=sources.slice(0,6);
 
     const treePacket=(compactPeople.length||compactRelationships.length||compactSources.length)
       ? JSON.stringify({people:compactPeople,relationships:compactRelationships,sources:compactSources})
@@ -84,8 +84,8 @@ export async function POST(request: NextRequest){
 
     const researchEnabled=canUse(plan,"webResearch") || canUse(plan,"deepResearch");
     const model=process.env.OPENAI_MODEL || planConfig.model;
-    const maxOutput=plan==="free" ? 450 : plan==="researcher" ? 700 : 900;
-    const effort=plan==="free" ? "low" : plan==="researcher" ? "medium" : "medium";
+    const maxOutput=plan==="free" ? 320 : plan==="researcher" ? 500 : 650;
+    const effort=plan==="free" ? "low" : "low";
 
     const instructions=KINLEY_INSTRUCTIONS + treeContext + `
 ACTIVE PLAN: ${planConfig.name}
@@ -123,11 +123,19 @@ ${researchEnabled
     const payload=await upstream.json().catch(()=>null);
 
     if(!upstream.ok){
-      const detail=payload?.error?.message || payload?.detail || "Unknown OpenAI error.";
+      const detail=String(payload?.error?.message || payload?.detail || "");
+      const isRateLimit=upstream.status===429 || /rate limit|tokens per min|TPM|too many requests/i.test(detail);
+      if(isRateLimit){
+        return new Response(JSON.stringify({
+          error:"Kinley is temporarily at its research capacity.",
+          detail:"The AI service is rate-limited right now. Your family-tree data was not lost. Please wait before trying the same request again.",
+          code:"KINLEY_RATE_LIMIT"
+        }),{status:429,headers:{"Content-Type":"application/json","Retry-After":"3600","Cache-Control":"no-store"}});
+      }
       return new Response(JSON.stringify({
-        error:"Kinley's research engine returned an error.",
-        detail:String(detail).slice(0,700)
-      }),{status:upstream.status===429?429:502,headers:{"Content-Type":"application/json"}});
+        error:"Kinley could not complete that research request.",
+        detail:detail.slice(0,500)
+      }),{status:upstream.status>=400&&upstream.status<500?upstream.status:502,headers:{"Content-Type":"application/json"}});
     }
 
     const answer=typeof payload?.output_text==="string"
