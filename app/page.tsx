@@ -15,6 +15,7 @@ import VisualExperience from "./components/VisualExperience";
 import AncestorGallery from "./components/AncestorGallery";
 import ResearchWorkspace from "./components/ResearchWorkspace";
 import { parseMigrationStops } from "./lib/migration";
+import { normalizePlan } from "./lib/plans";
 import { unzipSync, strFromU8 } from "fflate";
 
 type Section = "Home"|"Learn"|"Research"|"Tree"|"Tools"|"DNA";
